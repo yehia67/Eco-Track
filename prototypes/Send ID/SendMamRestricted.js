@@ -10,7 +10,7 @@ let mamState = Mam.init('https://nodes.devnet.thetangle.org:443')
 // We are using MAM restricted mode with a shared secret in this example
 const mamType = 'restricted'
 const mamSecret = 'DONTSHARETHISPASSWORD'
-
+let root 
 mamState = Mam.changeMode(mamState, mamType, mamSecret)
 
 const Publish = async data => {
@@ -23,8 +23,8 @@ const Publish = async data => {
 
   // Attach the message
   await Mam.attach(message.payload, message.address, 3, 9)
-  console.log('Sent message to the Tangle!')
-  console.log('Address: ' + message.root)
+  return message.root
+  
 }
 module.exports ={
   execute:Publish

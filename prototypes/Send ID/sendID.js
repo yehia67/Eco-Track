@@ -1,4 +1,6 @@
 
+const SendMamRestricted = require("./SendMamRestricted.js")
 const SendPublicTransaction= require("./SendPublicTransaction.js")
-
-SendPublicTransaction.execute()
+SendMamRestricted.execute("initialize root").then(function(result) {
+    SendPublicTransaction.execute(result)
+ })
