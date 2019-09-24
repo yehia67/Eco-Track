@@ -10,7 +10,6 @@ let mamState = Mam.init('https://nodes.devnet.thetangle.org:443')
 // We are using MAM restricted mode with a shared secret in this example
 const mamType = 'restricted'
 const mamSecret = 'DONTSHARETHISPASSWORD'
-let root 
 mamState = Mam.changeMode(mamState, mamType, mamSecret)
 
 const Publish = async data => {

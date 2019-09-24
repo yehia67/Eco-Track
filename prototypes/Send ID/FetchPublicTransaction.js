@@ -9,29 +9,28 @@ const iota = iotaLibrary.composeAPI({
   provider: 'https://nodes.devnet.iota.org:443'
 })
 
-const address =
-  'LOREMOORLDHELLOWORLDHELLOWORLDHELLOWORLDHELLOWORLDHELLOWORLDHELLOWORLDHELLOWORLQD'
-const FetchPublicTransaction = () =>{
+const FetchPublicTransaction =  (_address) =>{
+  
       iota
-      .findTransactionObjects({ addresses: [address] })
+      .findTransactionObjects({ addresses: [_address] })
       .then(response => {
-        const msg = response
-          .sort((a, b) => a.currentIndex - b.currentIndex)
-          .map(tx => tx.signatureMessageFragment)
-          .join('')
-
         console.log('Encoded message:')
-        console.log(msg)
-
+        console.log(response[0].signatureMessageFragment)
+    
+        // Modify trytes into a consumable length
+        const trytes = response[0].signatureMessageFragment.slice(0, -1)
         //Convert trytes to plan text
-        const data = Converter.trytesToAscii(msg)
+        //Convert trytes to plan text
+        const data = Converter.trytesToAscii(trytes)
         console.log('Decoded message:')
         console.log(data)
+        return data
       })
       .catch(err => {
         console.error(err)
       })
-}
+
+    }
 module.exports ={
   execute:FetchPublicTransaction
 }
