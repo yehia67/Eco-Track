@@ -17,6 +17,7 @@ const logData = data => console.log(trytesToAscii(data))
 
 const FetchMam = async (_root) => {
   // Callback used to pass data + returns next_root
+  console.log("inside function root is",_root) // outptu 'somthing'
   const resp = await Mam.fetch(_root, mamType, mamSecret, logData)
 }
 module.exports ={
