@@ -19,6 +19,8 @@ const execute =  (_root) => {
     const main = async() =>{
             // Callback used to pass data + returns next_root
     const resp = await Mam.fetch(root, mamType, mamSecret, logData)
+    console.log(resp)
+
     }
     main()
 
