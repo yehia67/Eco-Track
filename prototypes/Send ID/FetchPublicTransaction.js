@@ -8,6 +8,7 @@ const Converter = require('@iota/converter')
 const iota = iotaLibrary.composeAPI({
   provider: 'https://nodes.devnet.iota.org:443'
 })
+
 const FetchPublicTransaction = async (_address) =>{
    return new Promise(function(resolve, reject) {
       iota
