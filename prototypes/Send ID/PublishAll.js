@@ -1,7 +1,7 @@
 const SendMamRestricted = require('./SendMamRestricted.js')
-const PublishAll = (no)=>{
+const PublishAll = (noOfMessages)=>{
     const products = []
-    for (let index = 0; index < no; index++) {
+    for (let index = 0; index < noOfMessages; index++) {
         products.push({
             id: index,
             time: (new Date()).toLocaleString()

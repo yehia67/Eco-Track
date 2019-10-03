@@ -25,18 +25,6 @@ const Publish = async data => {
   return message.root
   
 }
-const PublishAll = ()=>{
-    const products = []
-    for (let index = 0; index < 10; index++) {
-        products.push({
-            id: index,
-            time: (new Date()).toLocaleString()
-        })    
-    }
-    Array.prototype.forEach.call(products,product =>{
-        Publish(JSON.stringify(product))//try this address DGKQSLAHOSJMAKWSMWUITXVAIBOVXEYKNPRQIPP9DKJUHCIKGVLAHBFDHMGURNQU9LQHQJ99KVINMDQNE
-    })
-}
 
 
 module.exports ={
