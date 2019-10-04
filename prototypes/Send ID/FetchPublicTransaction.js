@@ -1,17 +1,15 @@
 ///////////////////////////////
 // Fetch your HELLOWORLD Message
 ///////////////////////////////
+const mostFrequent = require('./mostFrequent')
 
-const iotaLibrary = require('@iota/core')
-const Converter = require('@iota/converter')
 
-const iota = iotaLibrary.composeAPI({
-  provider: 'https://nodes.devnet.iota.org:443'
-})
+
+
 
 const FetchPublicTransaction = async (_address) =>{
    return new Promise(function(resolve, reject) {
-      iota
+      mostFrequent.iota
       .findTransactionObjects({ addresses: [_address] },function(error, response) {
         if (error) {
           reject(error);
@@ -24,7 +22,7 @@ const FetchPublicTransaction = async (_address) =>{
         const trytes = response[0].signatureMessageFragment.slice(0, -1)
         //Convert trytes to plan text
         //Convert trytes to plan text
-        const data = Converter.trytesToAscii(trytes)
+        const data = mostFrequent.converter.trytesToAscii(trytes)
         console.log('Decoded message:')
         console.log(data) 
         resolve(data)

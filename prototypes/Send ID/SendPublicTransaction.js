@@ -1,15 +1,13 @@
 ///////////////////////////////
 // Send Data
 ///////////////////////////////
-const iotaLibrary = require('@iota/core')
-const Converter = require('@iota/converter')
 
-const iota = iotaLibrary.composeAPI({
-  provider: 'https://nodes.devnet.iota.org:443'
-})
+const mostFrequent = require('./mostFrequent')
+
+
 
 const SendPublicTransaction = (_seed,_address,_message) =>{
-  const message = Converter.asciiToTrytes(_message)
+  const message = mostFrequent.converter.asciiToTrytes(_message)
   
   const transfers = [
     {
@@ -18,9 +16,9 @@ const SendPublicTransaction = (_seed,_address,_message) =>{
       message: message // The message converted into trytes
     }
   ]
-        iota
+        mostFrequent.iota
           .prepareTransfers(_seed, transfers)
-          .then(trytes => iota.sendTrytes(trytes, 3, 14))
+          .then(trytes => mostFrequent.iota.sendTrytes(trytes, 3, 14))
           .then(bundle => {
             console.log('Transfer successfully sent')
             bundle.map(tx => console.log(tx))
