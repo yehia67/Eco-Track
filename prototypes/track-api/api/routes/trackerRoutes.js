@@ -1,12 +1,16 @@
 'use strict';
 module.exports = function(app) {
-  var todoList = require('../controllers/trackerController');
+  var tracker = require('../controllers/trackerController')
 
-  // todoList Routes
-  app.route('/tasks')
+  // tracker Routes
+
     
+  app.route('/tasks')
+      .get(tracker.test);
 
-
+  app.route('/createproducts')
+     .post(tracker.create_products)
+    
   app.route('/tasks/:taskId')
     
 };

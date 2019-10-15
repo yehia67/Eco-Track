@@ -5,9 +5,9 @@ const data = JSON.stringify({
 })
 
 const options = {
-  hostname: 'flaviocopes.com',
-  port: 443,
-  path: '/todos',
+  hostname: 'localhost',
+  port: 3000,
+  path: '/createproducts',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

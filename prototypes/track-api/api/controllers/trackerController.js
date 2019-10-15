@@ -1,9 +1,5 @@
 'use strict';
-
-
-//@name
-//@date
-//@noOfItems
+const initComm = require('./iota_comm_modules/initComm')
 const generateMainID =(_name,_noOfItems) =>{
         let mainID = ''
         const name = _name.split(' ')
@@ -15,9 +11,13 @@ const generateMainID =(_name,_noOfItems) =>{
 
 
 
-exports.list_all_tasks = function(req, res) {
-    const mainID = generateMainID(req.name,req.noOfItems)
-    
+exports.create_products = function(req, res) {
+  /*   const mainID = generateMainID(req.name,req.noOfItems)
+    initComm.execute() */
+  
+    res.json(req.body.isa)  
 }
 
-
+exports.test = (req,res)=>{
+    res.json({todo: 'Buy the milk yarab'})
+}
