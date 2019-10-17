@@ -14,8 +14,8 @@ const generateMainID =(_name,_noOfItems) =>{
 exports.create_products = function(req, res) {
   /*   const mainID = generateMainID(req.name,req.noOfItems)
     initComm.execute() */
-  
-    res.json(req.body.isa)  
+    
+    res.json(req.body)  
 }
 
 exports.test = (req,res)=>{

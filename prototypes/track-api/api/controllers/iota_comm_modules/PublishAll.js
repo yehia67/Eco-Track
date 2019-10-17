@@ -1,17 +1,17 @@
 const SendMamRestricted = require('./SendMamRestricted.js')
-const PublishAll = (noOfMessages)=>{
-    const products = []
-    for (let index = 0; index < noOfMessages; index++) {
-        products.push({
-            id: index,
-            time: (new Date()).toLocaleString()
-        })    
-    }
-    Array.prototype.forEach.call(products,product =>{
-        SendMamRestricted.execute(JSON.stringify(product))//try this address DGKQSLAHOSJMAKWSMWUITXVAIBOVXEYKNPRQIPP9DKJUHCIKGVLAHBFDHMGURNQU9LQHQJ99KVINMDQNE
-    })
-}
+const addresses = []
 
+const PublishAll = (_products)=>{
+    Array.prototype.forEach.call(_products,product =>{
+       /*  SendMamRestricted.execute(JSON.stringify(product)).then(function(result){
+         //try this address DGKQSLAHOSJMAKWSMWUITXVAIBOVXEYKNPRQIPP9DKJUHCIKGVLAHBFDHMGURNQU9LQHQJ99KVINMDQNE
+         }) */
+         addresses.push(SendMamRestricted.execute(JSON.stringify(product)))
+     })
+    console.log('addressatt',addresses)
+    return Promise.all(addresses)
+      
+}
 
 module.exports ={
   execute:PublishAll
