@@ -10,12 +10,13 @@ const generateMainID =(_name,_noOfItems) =>{
 }
 
 
-
 exports.create_products = function(req, res) {
-  /*   const mainID = generateMainID(req.name,req.noOfItems)
-    initComm.execute() */
-    
-    res.json(req.body)  
+     console.log('___________________________________________________',req.body.products)  
+     initComm.execute(req.body.products).then(function(tracker) {
+       console.log("***************************",tracker)
+       console.log('type-------------',typeof(req.body))
+      res.json(tracker)  
+    }) 
 }
 
 exports.test = (req,res)=>{

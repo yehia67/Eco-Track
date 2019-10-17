@@ -7,7 +7,7 @@ const trackedProducts = {
 } 
 
 //For Testing
-const products = [{
+/* const products = [{
   id: '15p6013',
   time: (new Date()).toLocaleString()
 },
@@ -19,7 +19,7 @@ const products = [{
 initComm(products).then(function (params) {
   console.log(params)
 }) 
-
+ */
 const init = (_products)=>{
     SendMamRestricted.execute("initialize root").then(function(result) {
       trackedProducts['rootAddress'] = result
