@@ -5,13 +5,13 @@ module.exports = function(app) {
   // tracker Routes
   app.route('/getproducts')
       .get(tracker.get_products);
-    
-  app.route('/tasks')
-      .get(tracker.test);
 
   app.route('/createproducts')
      .post(tracker.create_products)
-    
-  app.route('/tasks/:taskId')
-    
+
+  app.route('/updateproduct')
+      .post(tracker.update_product)  
+
+  app.route('/tasks')
+      .get(tracker.test); 
 };

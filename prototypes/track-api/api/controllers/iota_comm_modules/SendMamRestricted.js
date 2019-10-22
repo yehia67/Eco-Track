@@ -27,7 +27,9 @@ const Publish = async data => {
   
 }
 
-
+/* Publish("Data data").then(function(r){
+console.log(r)
+}) */
 module.exports ={
   execute:Publish
 }
