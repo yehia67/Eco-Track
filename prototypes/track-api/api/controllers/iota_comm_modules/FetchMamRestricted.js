@@ -12,16 +12,20 @@ const mamSecret = 'DONTSHARETHISPASSWORD'
 let mamState = IotaGlobal.Mam.init('https://nodes.devnet.iota.org:443')
 
 // Callback used to pass data out of the fetch
-const resp = [] 
+let resp = [] 
 const logData = data => { 
-   resp.push(IotaGlobal.converter.trytesToAscii(data))
+  resp.push(IotaGlobal.converter.trytesToAscii(data))
 }
 const FetchMam = async (_root) => {
   // Callback used to pass data + returns next_root
   await IotaGlobal.Mam.fetch(_root, mamType, mamSecret, logData)
   return resp
 }
-
+const cleanResp = ()=>{
+  resp = []
+}
+cleanResp()
 module.exports ={
-  execute:FetchMam
+  execute:FetchMam,
+  cleanResp:cleanResp
 }
