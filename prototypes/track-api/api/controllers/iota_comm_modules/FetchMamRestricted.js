@@ -24,6 +24,9 @@ const FetchMam = async (_root) => {
 const cleanResp = ()=>{
   resp = []
 }
+FetchMam('TVYQWSSYTGINVQBVMEJAPTZYYYFVKIUROECWZSTLLHSIEBPGJHKKUNUOOGNRN9ZTSQVDLQPSKBIVHNCKD').then(function (params) {
+  console.log(params)
+})
 cleanResp()
 module.exports ={
   execute:FetchMam,

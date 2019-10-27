@@ -14,7 +14,7 @@ exports.create_products = (req, res) => {
 }
 exports.update_product = (req, res) => {
   console.log(req.body.data)
- sendMamRestricted.execute(req.body.data).then(function(tracker) {
+  sendMamRestricted.execute(JSON.stringify(req.body.data)).then(function(tracker) {
   res.json(tracker)  
 })   
 }
