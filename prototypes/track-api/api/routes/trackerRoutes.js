@@ -12,6 +12,4 @@ module.exports = function(app) {
   app.route('/updateproduct')
       .post(tracker.update_product)  
 
-  app.route('/tasks')
-      .get(tracker.test); 
 };

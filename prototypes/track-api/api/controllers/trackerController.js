@@ -13,11 +13,8 @@ exports.create_products = (req, res) => {
     }) 
 }
 exports.update_product = (req, res) => {
-  console.log(req.body.data)
   sendMamRestricted.execute(JSON.stringify(req.body.data)).then(function(tracker) {
   res.json(tracker)  
 })   
 }
-exports.test = (req,res)=>{
-    res.json({todo: 'Buy the milk yarab'})
-}
+
