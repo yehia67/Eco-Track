@@ -25,6 +25,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,9 @@ import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends AppCompatActivity {
     private TextView mTextView; //ECP 2017-01-16
-
+    Button setAddress;
+    EditText address;
+   SaveReceivingAddress manageAddress = new SaveReceivingAddress();
     // list of NFC technologies detected:
     private final String[][] techList = new String[][] {
             new String[] {
@@ -61,11 +64,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        address = (EditText) findViewById(R.id.address);
+        setAddress = (Button) findViewById(R.id.setAddress);
         mTextView = (TextView) findViewById(R.id.textView_explanation);
-        mTextView.setText("onCreate:");
-    }
+        mTextView.setText("item data will appeare here when you start scanning");
 
+    }
+    public  void  storeAddress(View view){
+
+        //Toast.makeText(getApplicationContext(),manageAddress.checkAddress(address.getText().toString()),LENGTH_LONG).show();
+      if(manageAddress.checkAddress(address.getText().toString())){
+            Toast.makeText(getApplicationContext(),"Good Address " + address.getText().toString(), LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(),"Bad Address " + address.getText().toString(), LENGTH_LONG).show();
+
+        }
+    }
  
 
     @Override

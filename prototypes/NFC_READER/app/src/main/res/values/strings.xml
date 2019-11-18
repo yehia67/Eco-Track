@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">NFC_RECLYING_PRODUCTS</string>
-    <string name="explanation">yarab</string>
+    <string name="receiving_address">Receiving Address</string>
+    <string name="default_address">Your default address is not available yet please enter it to get your token.</string>
 </resources>
