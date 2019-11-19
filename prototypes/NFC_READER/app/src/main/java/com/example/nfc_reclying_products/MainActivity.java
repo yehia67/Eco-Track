@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextView; //ECP 2017-01-16
     Button setAddress;
     EditText address;
+    TextView currentAddress;
    SaveReceivingAddress manageAddress = new SaveReceivingAddress();
     // list of NFC technologies detected:
     private final String[][] techList = new String[][] {
@@ -67,18 +70,30 @@ public class MainActivity extends AppCompatActivity {
         address = (EditText) findViewById(R.id.address);
         setAddress = (Button) findViewById(R.id.setAddress);
         mTextView = (TextView) findViewById(R.id.textView_explanation);
-        mTextView.setText("item data will appeare here when you start scanning");
+        mTextView.setText("item data will appear here when you start scanning");
+        getCurrentAddress();
+    }
+    public void getCurrentAddress(){
+        currentAddress = (TextView) findViewById(R.id.defaultReceivingAddress);
+        SharedPreferences prefs = getSharedPreferences("Local Address", MODE_PRIVATE);
+        String getAddress = prefs.getString("address", "404 address");
+        if (!getAddress.equals("404 address")){
+            currentAddress.setText("Your current address is "+ getAddress);
+        }
 
     }
     public  void  storeAddress(View view){
-
-        //Toast.makeText(getApplicationContext(),manageAddress.checkAddress(address.getText().toString()),LENGTH_LONG).show();
       if(manageAddress.checkAddress(address.getText().toString())){
-            Toast.makeText(getApplicationContext(),"Good Address " + address.getText().toString(), LENGTH_LONG).show();
+          try {
+              manageAddress.storeAddress(address.getText().toString(),getApplicationContext());
+          }
+          catch (Exception e){
+              Toast.makeText(getApplicationContext(),e.getLocalizedMessage(), LENGTH_LONG).show();
+
+          }
         }
         else {
-            Toast.makeText(getApplicationContext(),"Bad Address " + address.getText().toString(), LENGTH_LONG).show();
-
+            Toast.makeText(getApplicationContext(),"Invalid Address ", LENGTH_LONG).show();
         }
     }
  
