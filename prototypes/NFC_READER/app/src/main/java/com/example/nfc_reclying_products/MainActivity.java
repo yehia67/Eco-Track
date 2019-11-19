@@ -33,6 +33,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -41,6 +53,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+
+import cz.msebera.android.httpclient.entity.mime.Header;
+
 import static android.content.ContentValues.TAG;
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -72,6 +87,21 @@ public class MainActivity extends AppCompatActivity {
         mTextView = (TextView) findViewById(R.id.textView_explanation);
         mTextView.setText("item data will appear here when you start scanning");
         getCurrentAddress();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.14:3002/test",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       Toast.makeText(getApplicationContext(),response, LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),error.getLocalizedMessage(), LENGTH_LONG).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
     public void getCurrentAddress(){
         currentAddress = (TextView) findViewById(R.id.defaultReceivingAddress);
