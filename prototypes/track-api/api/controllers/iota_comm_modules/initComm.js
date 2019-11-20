@@ -1,7 +1,8 @@
 const IotaGlobal = require('./IotaGlobal')
-const SendMamRestricted = require("./SendMamRestricted.js")
-const SendPublicTransaction= require("./SendPublicTransaction.js")
-const PublishAll = require('./PublishAll.js')
+const SendMamRestricted = require("./SendMamRestricted")
+const SendPublicTransaction= require("./SendPublicTransaction")
+const postCall = require("../../../calls/post")
+const PublishAll = require('./PublishAll')
 const trackedProducts = {
   rootAddress: ''
 } 
@@ -33,13 +34,12 @@ const initComm = async(_products) =>{
   return trackedProducts
 }
 
-const getAddresses = () =>{
-  trackedProducts['addresses'].push('clientID')
-  console.log(trackedProducts)
-  return trackedProducts['addresses']
+const initRecycling = () =>{
+  const addressAndId = trackedProducts['addresses']
+  addressAndId.push('clientID')
+  postCall.post("http://localhost:3002/initClient",addressAndId)
 }
 
  module.exports ={
-    execute:initComm,
-    getAddresses:getAddresses
+    execute:initComm
   }

@@ -1,31 +1,20 @@
-const https = require('https')
-
-const data = JSON.stringify({
-  todo: 'Buy the milk'
-})
-
-const options = {
-  hostname: 'localhost',
-  port: 3000,
-  path: '/createproducts',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Content-Length': data.length
+const fetch = require("node-fetch");
+const postCall = (url,data)=>{
+  const param ={
+    headers:{
+      "content-type":"application/json;charset=UTF-8"
+    },
+    body:data,
+    method:"POST"
   }
+  fetch(url,param)
+  .then(data =>{return data.json})
+  .then(res=>{
+    console.log("-----------------------------------------------")
+    console.log(res)})
+  .catch(error=>console.log(error))
 }
-
-const req = https.request(options, (res) => {
-  console.log(`statusCode: ${res.statusCode}`)
-
-  res.on('data', (d) => {
-    process.stdout.write(d)
-  })
-})
-
-req.on('error', (error) => {
-  console.error(error)
-})
-
-req.write(data)
-req.end()
+postCall("http://localhost:3002/initClient","{data:'dataaa yaraaaab'}")
+module.exports ={
+   post:postCall
+}
