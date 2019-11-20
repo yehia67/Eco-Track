@@ -33,7 +33,13 @@ const initComm = async(_products) =>{
   return trackedProducts
 }
 
+const getAddresses = () =>{
+  trackedProducts['addresses'].push('clientID')
+  console.log(trackedProducts)
+  return trackedProducts['addresses']
+}
 
  module.exports ={
-    execute:initComm
+    execute:initComm,
+    getAddresses:getAddresses
   }
