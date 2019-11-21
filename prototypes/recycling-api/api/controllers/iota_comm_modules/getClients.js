@@ -12,11 +12,10 @@ const getClients = async (_address)=>{
     }));
 }
   
-/* //Test get client functions
+ /*  //Test get client functions
 getClients(iotaGlobal.address).then(function(d){
     console.log(d)
-
-})   */
+})     */
 module.exports ={
     execute:getClients
 }

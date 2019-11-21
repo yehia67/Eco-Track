@@ -1,7 +1,7 @@
 const iotaGlobal = require("./IotaGlobal")
 const depth = 3;
 const minimumWeightMagnitude = 9;
-const addClient = (_address,clientsMap) =>{
+const addClient = async (_address,clientsMap) =>{
     const messageInTrytes = iotaGlobal.converter.asciiToTrytes(JSON.stringify(clientsMap));
     const transfers = [
         {
@@ -32,3 +32,4 @@ addClient(iotaGlobal.address,initClient)   */
 module.exports ={
     execute:addClient
 }
+
