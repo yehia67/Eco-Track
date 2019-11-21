@@ -14,7 +14,7 @@ const postCall = (url,data)=>{
     console.log(res)})
   .catch(error=>console.log(error))
 }
-postCall("http://localhost:3002/initClient","{data:'dataaa yaraaaab'}")
+//postCall("http://localhost:3002/initClient","{data:'dataaa yaraaaab'}")
 module.exports ={
    post:postCall
 }
