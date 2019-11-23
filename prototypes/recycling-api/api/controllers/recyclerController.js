@@ -1,6 +1,7 @@
 'use strict';
 
-exports.initClient = async (req,res) =>{
+exports.setProductOwner = async (req,res) =>{
+  
   res.json(req.data)
 }
 

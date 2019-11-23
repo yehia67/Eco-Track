@@ -1,0 +1,4 @@
+
+setProductOwner = (ownerAddress,productAddress) =>{
+
+}

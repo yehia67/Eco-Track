@@ -3,8 +3,8 @@ module.exports = function(app) {
   var recycler = require('../controllers/recyclerController')
 
   // recycler Routes
-  app.route('./initClient')
-      .post(recycler.initClient);
+  app.route('./setProductOwner')
+      .post(recycler.setProductOwner);
 
   app.route('/test')
       .get(recycler.test);
