@@ -87,8 +87,9 @@ public class MainActivity extends AppCompatActivity {
         mTextView = (TextView) findViewById(R.id.textView_explanation);
         mTextView.setText("item data will appear here when you start scanning");
         getCurrentAddress();
+        /*-----------------------------------------------------------------------------------------------------*/
         RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.14:3002/test",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.56:3002/test",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+        /*-----------------------------------------------------------------------------------------------------*/
     }
     public void getCurrentAddress(){
         currentAddress = (TextView) findViewById(R.id.defaultReceivingAddress);
@@ -286,7 +288,24 @@ public class MainActivity extends AppCompatActivity {
         DateFormat TIME_FORMAT = SimpleDateFormat.getDateTimeInstance();
         Date now = new Date();
 
-        mTextView.setText(TIME_FORMAT.format(now) + '\n' + sb.toString());
+        /*-----------------------------------------------------------------------------------------------------*/
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.56:3002/test",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mTextView.setText(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),error.getLocalizedMessage(), LENGTH_LONG).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+        /*-----------------------------------------------------------------------------------------------------*/
+        //mTextView.setText(TIME_FORMAT.format(now) + '\n' + sb.toString());
         return sb.toString();
     }
 

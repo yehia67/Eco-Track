@@ -1,8 +1,14 @@
 
-const initClients = require(initClients)
+const initClients = require('./initClients')
 const getAddressTrytesContent = require('./getAddressTrytesContent')
 setProductOwner = (ownerAddress,productAddress) =>{
+    try{
     const trytes = getAddressTrytesContent.execute(productAddress,0)
-    initClients.setProductOwner(ownerAddress,trytes)
-    return "200 ok"
+     return initClients.setOwner(ownerAddress,trytes)
+    }catch(exception){
+          console.log(exception)
+    }
+}
+module.exports ={
+    execute:setProductOwner
 }

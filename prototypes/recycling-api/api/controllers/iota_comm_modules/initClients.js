@@ -18,19 +18,33 @@ const initClient =  async (clientID,rootAddress) =>{
 const createOwnedProducts = async(rootAddress) =>{
     const productsTrytes =  await getAddressTrytesContent.execute(rootAddress,1)// 1 array of trytes option
     for (let index = 0; index < productsTrytes.length; index++) {
-        ownerMap[productsTrytes[index]] = 0
+        ownerMap[productsTrytes[index]] = 2
     }
 }
 const setOwner = (ownerAddress,productTryte) =>{
+   /*  ***********check init function********* if(ownerMap[productTryte] === 2){
+        ownerMap[productTryte] = ownerAddress
+        return "Set Owner Succsesfuly!!"
+    }
+    else{
+        return "Error Owner doesn't exist"
+    } */
     ownerMap[productTryte] = ownerAddress
+    return "Set Owner Succsesfuly!!"
 }
 module.exports ={
     execute:init,
     setOwner:setOwner
 }
-   /*  createOwnedProducts('GBVAUDTCDEHLUQZAANFBJ9ZUMFKIGAFMSGL9YEVUZYGVZCYAODHOTMLCJOLQNCOUCBRRDNXJBHLXUUQTA').then(function(r){
+//Test Cases
+   /* init('Client 01','MNVWHOYPVMFWJGNEHQELOZW9OFBQUSN9LSJXJFQJLXXOBSMEIRUKDRIVTMKCEBCXFGYVGOXCXQGSMQDXW').then(function(){
+       console.log("done")
+       const x =  setOwner('address','CVJUQUEZPDO9RYLUHEKKTCGK9XG9MAXRCVQIVPLRGTLUEUFKIEUUTNHSWAANBTXQMFVXMBBTHZRLSUUAF')
+       console.log(x)
+
+   }) */
+/*  createOwnedProducts('GBVAUDTCDEHLUQZAANFBJ9ZUMFKIGAFMSGL9YEVUZYGVZCYAODHOTMLCJOLQNCOUCBRRDNXJBHLXUUQTA').then(function(r){
             console.log(r)
     }) */
 
 //initClient("CLIENT02ID","NWGHLCCYCBJISRSOYTHGSKTAGZIAYLZWWPANKZXCMKRHBPYMBKOEVWRCKVSVWRT9VYDBUNQJKENXMWIOD")
-//address map of products id to 0 own map
