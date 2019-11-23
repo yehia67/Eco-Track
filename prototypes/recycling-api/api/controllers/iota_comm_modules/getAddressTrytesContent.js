@@ -10,14 +10,26 @@ const mamSecret = 'DONTSHARETHISPASSWORD'
 
 // Initialise MAM State
 let mamState = IotaGlobal.Mam.init('https://nodes.devnet.iota.org:443')
-const FetchMam = async (_root) => {
+/**
+ * 
+ * @param {the root address} _root 
+ * @param {option = 0 user need the trytescontent option = 1 user need messge of trytescontent} option 
+ */
+const FetchMam = async (_root,option) => {
   // Output syncronously once fetch is completed
-  const result = await IotaGlobal.Mam.fetchSingle(_root, mamType, mamSecret)
-  return result.payload
+  if(option === 0){
+    const result = await IotaGlobal.Mam.fetchSingle(_root, mamType, mamSecret)
+    return result.payload
+  }
+  else{
+    const result = await IotaGlobal.Mam.fetch(_root, mamType, mamSecret)
+    return result.messages
+  }
+ 
 }
-/*  FetchMam("LSULKKHSLABGNQPZVAFTOYPCOSVSKQWYFCXUKNLHIESHWKFRZYXPKEBIBKRHQBJCU9KZHTFRFPPENUKAJ").then(function(r){
+ /*  FetchMam("LSULKKHSLABGNQPZVAFTOYPCOSVSKQWYFCXUKNLHIESHWKFRZYXPKEBIBKRHQBJCU9KZHTFRFPPENUKAJ",1).then(function(r){
   console.log(r)
- }) */
+ })  */
 module.exports ={
   execute:FetchMam
 }
