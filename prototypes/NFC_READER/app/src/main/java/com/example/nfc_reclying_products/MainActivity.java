@@ -33,10 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -289,21 +293,32 @@ public class MainActivity extends AppCompatActivity {
         Date now = new Date();
 
         /*-----------------------------------------------------------------------------------------------------*/
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.56:3002/test",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        mTextView.setText(response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.getLocalizedMessage(), LENGTH_LONG).show();
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            String URL = "http://192.168.1.56:3002/setProductOwner";
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("id", "address");
+            jsonBody.put("rootAddress", "MNVWHOYPVMFWJGNEHQELOZW9OFBQUSN9LSJXJFQJLXXOBSMEIRUKDRIVTMKCEBCXFGYVGOXCXQGSMQDXW");
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(getApplicationContext(),response,LENGTH_LONG);
+                    mTextView.setText(response);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("VOLLEY", error.toString());
+                }
+            });
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         /*-----------------------------------------------------------------------------------------------------*/
         //mTextView.setText(TIME_FORMAT.format(now) + '\n' + sb.toString());
         return sb.toString();
