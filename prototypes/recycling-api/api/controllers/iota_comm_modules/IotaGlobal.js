@@ -6,6 +6,7 @@ let address = 'TTWAFVTWJKUQKNA9KPZFZCIECTRGUFDDJSTSYQSQOCGQJCSDIAVZANJTZBLOHAD9V
 const iota =iotaLibrary.composeAPI({
     provider: 'https://nodes.devnet.iota.org:443'
 })
+const lengthModifier = (str) =>{ return str.substring( str.lastIndexOf("{"),str.lastIndexOf("}")+1) }
 const SetAddress = (_address) =>{
     address = _address;
 }
@@ -16,5 +17,6 @@ module.exports = {
     seed : seed ,
     address : address ,
     SetAddress: SetAddress,
+    lengthModifier:lengthModifier,
     iota : iota
 }

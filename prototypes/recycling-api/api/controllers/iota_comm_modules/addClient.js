@@ -10,6 +10,8 @@ const addClient = async (_address,clientsMap) =>{
           message: messageInTrytes
         }
       ];
+    return Promise.resolve(
+  
       iotaGlobal.iota
         .prepareTransfers(iotaGlobal.seed, transfers)
         .then(trytes => {
@@ -20,7 +22,7 @@ const addClient = async (_address,clientsMap) =>{
         })
         .catch(err => {
             console.error(err)
-        });
+        }))
 
 }
 

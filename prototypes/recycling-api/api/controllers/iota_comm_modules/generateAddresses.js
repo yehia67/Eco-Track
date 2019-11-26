@@ -9,10 +9,11 @@ const generateAddresses = async (index,securityLevel,numberOfAddresses) =>{
       console.log(err)
     }));
 }
-generateAddresses(0,1,1).then(function(r){
-console.log(r)
-})
 
 module.exports ={
     execute:generateAddresses
 }
+/* generateAddresses(0,1,1).then(function(r){
+console.log(r)
+})
+ */

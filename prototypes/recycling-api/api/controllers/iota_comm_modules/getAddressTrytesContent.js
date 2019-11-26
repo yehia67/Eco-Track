@@ -19,7 +19,7 @@ const FetchMam = async (_root,option) => {
   // Output syncronously once fetch is completed
   if(option === 0){
     const result = await IotaGlobal.Mam.fetchSingle(_root, mamType, mamSecret)
-    return result.payload
+    return  result.payload
   }
   else{
     const result = await IotaGlobal.Mam.fetch(_root, mamType, mamSecret)
@@ -27,9 +27,9 @@ const FetchMam = async (_root,option) => {
   }
  
 }
- /*  FetchMam("LSULKKHSLABGNQPZVAFTOYPCOSVSKQWYFCXUKNLHIESHWKFRZYXPKEBIBKRHQBJCU9KZHTFRFPPENUKAJ",1).then(function(r){
+ /*    FetchMam("GSRMRCCHBRFXJOFBQDXPKLWDRZTHHBVVYPHZZAUXDKIPVRG9DDRIQBTQCTTCJZPHPQZLCIMPNEYBJUIYZ",0).then(function(r){
   console.log(r)
- })  */
+ }) */   
 module.exports ={
   execute:FetchMam
 }

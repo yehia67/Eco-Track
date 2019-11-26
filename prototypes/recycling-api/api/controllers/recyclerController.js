@@ -4,8 +4,8 @@ const setProductOwner = require('./iota_comm_modules/setProductOwner')
 exports.init = async (req,res) =>{
   console.log(req.body.id)
   console.log(req.body.rootAddress)
-  await initClients.execute(req.body.id,req.body.rootAddress)
-  res.json("200 ok")
+  const response = await initClients.execute(req.body.id,req.body.rootAddress)
+  res.json(response)
 }
 exports.setProductOwner = async (req,res) =>{
   console.log(req.body.id)

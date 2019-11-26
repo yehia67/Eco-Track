@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         getCurrentAddress();
         /*-----------------------------------------------------------------------------------------------------*/
         RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.56:3002/test",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.43.174:3002/test",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -169,29 +169,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             Log.d("onNewIntent", "2");
-            mTextView.setText( "NFC Tag\n" + ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID)));
 
             //if(getIntent().hasExtra(NfcAdapter.EXTRA_TAG)){
-
-            Parcelable tagN = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            if (tagN != null) {
-                Log.d(TAG, "Parcelable OK");
-                NdefMessage[] msgs;
-                byte[] empty = new byte[0];
-                byte[] id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
-                byte[] payload = dumpTagData(tagN).getBytes();
-                NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
-                NdefMessage msg = new NdefMessage(new NdefRecord[] { record });
-                msgs = new NdefMessage[] { msg };
-
-                //Log.d(TAG, msgs[0].toString());
-
-
-            }
-            else {
-                Log.d(TAG, "Parcelable NULL");
-            }
-
 
 
             Parcelable[] messages1 = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
@@ -209,12 +188,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("onNewIntent:", "NfcAdapter.EXTRA_TAG");
 
                 Parcelable[] messages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-                if (messages != null) {
-                    Log.d(TAG, "Found " + messages.length + " NDEF messages");
+                if (messages != null && messages.length > 0 ) {
+
+                    readTextFromMessage((NdefMessage) messages[0]);
                 }
             }
             else {
-                Log.d(TAG, "Write to an unformatted tag not implemented");
+                mTextView.setText("No NFC found");
             }
 
 
@@ -222,167 +202,86 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String dumpTagData(Parcelable p) {
-        StringBuilder sb = new StringBuilder();
-        Tag tag = (Tag) p;
-        byte[] id = tag.getId();
-        sb.append("Tag ID (hex): ").append(getHex(id)).append("\n");
-        sb.append("Tag ID (dec): ").append(getDec(id)).append("\n");
-        sb.append("ID (reversed): ").append(getReversed(id)).append("\n");
+    private void readTextFromMessage(NdefMessage ndefMessage) {
 
+        NdefRecord[] ndefRecords = ndefMessage.getRecords();
 
+        if(ndefRecords != null && ndefRecords.length>0){
 
-        String prefix = "android.nfc.tech.";
-        sb.append("Technologies: ");
-        for (String tech : tag.getTechList()) {
-            sb.append(tech.substring(prefix.length()));
-            sb.append(", ");
-        }
-        sb.delete(sb.length() - 2, sb.length());
-        for (String tech : tag.getTechList()) {
-            if (tech.equals(MifareClassic.class.getName())) {
-                sb.append('\n');
-                MifareClassic mifareTag = MifareClassic.get(tag);
-                String type = "Unknown";
-                switch (mifareTag.getType()) {
-                    case MifareClassic.TYPE_CLASSIC:
-                        type = "Classic";
-                        break;
-                    case MifareClassic.TYPE_PLUS:
-                        type = "Plus";
-                        break;
-                    case MifareClassic.TYPE_PRO:
-                        type = "Pro";
-                        break;
-                }
-                sb.append("Mifare Classic type: ");
-                sb.append(type);
-                sb.append('\n');
+            NdefRecord ndefRecord = ndefRecords[0];
 
-                sb.append("Mifare size: ");
-                sb.append(mifareTag.getSize() + " bytes");
-                sb.append('\n');
+            String tagContent = getTextFromNdefRecord(ndefRecord);
+            if(manageAddress.checkAddress(tagContent)){
+                mTextView.setText(tagContent);
+                setOwner(tagContent);
+            }
+            else {
+                mTextView.setText("Invalid Address :" +tagContent);
 
-                sb.append("Mifare sectors: ");
-                sb.append(mifareTag.getSectorCount());
-                sb.append('\n');
-
-                sb.append("Mifare blocks: ");
-                sb.append(mifareTag.getBlockCount());
             }
 
-            if (tech.equals(MifareUltralight.class.getName())) {
-                sb.append('\n');
-                MifareUltralight mifareUlTag = MifareUltralight.get(tag);
-                String type = "Unknown";
-                switch (mifareUlTag.getType()) {
-                    case MifareUltralight.TYPE_ULTRALIGHT:
-                        type = "Ultralight";
-                        break;
-                    case MifareUltralight.TYPE_ULTRALIGHT_C:
-                        type = "Ultralight C";
-                        break;
-                }
-                sb.append("Mifare Ultralight type: ");
-                sb.append(type);
-            }
-        }
-        Log.d("Datos: ", sb.toString());
-
-        DateFormat TIME_FORMAT = SimpleDateFormat.getDateTimeInstance();
-        Date now = new Date();
-
-        /*-----------------------------------------------------------------------------------------------------*/
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = "http://192.168.1.56:3002/setProductOwner";
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("id", "address");
-            jsonBody.put("rootAddress", "MNVWHOYPVMFWJGNEHQELOZW9OFBQUSN9LSJXJFQJLXXOBSMEIRUKDRIVTMKCEBCXFGYVGOXCXQGSMQDXW");
-            final String requestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Toast.makeText(getApplicationContext(),response,LENGTH_LONG);
-                    mTextView.setText(response);
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
-                }
-            });
-
-            requestQueue.add(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        /*-----------------------------------------------------------------------------------------------------*/
-        //mTextView.setText(TIME_FORMAT.format(now) + '\n' + sb.toString());
-        return sb.toString();
-    }
-
-
-    private String getHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = bytes.length - 1; i >= 0; --i) {
-            int b = bytes[i] & 0xff;
-            if (b < 0x10)
-                sb.append('0');
-            sb.append(Integer.toHexString(b));
-            if (i > 0) {
-                sb.append(" ");
-            }
-        }
-        return sb.toString();
-    }
-
-    private long getDec(byte[] bytes) {
-        long result = 0;
-        long factor = 1;
-        for (int i = 0; i < bytes.length; ++i) {
-            long value = bytes[i] & 0xffl;
-            result += value * factor;
-            factor *= 256l;
-        }
-        return result;
-    }
-
-    private long getReversed(byte[] bytes) {
-        long result = 0;
-        long factor = 1;
-        for (int i = bytes.length - 1; i >= 0; --i) {
-            long value = bytes[i] & 0xffl;
-            result += value * factor;
-            factor *= 256l;
-        }
-        return result;
-    }
-
-    private String ByteArrayToHexString(byte [] inarray) {
-
-        Log.d("ByteArrayToHexString", inarray.toString());
-
-        int i, j, in;
-        String [] hex = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
-        String out= "";
-
-        for(j = 0 ; j < inarray.length ; ++j)
+        }else
         {
-            in = (int) inarray[j] & 0xff;
-            i = (in >> 4) & 0x0f;
-            out += hex[i];
-            i = in & 0x0f;
-            out += hex[i];
+            Toast.makeText(this, "No NDEF records found!", Toast.LENGTH_SHORT).show();
         }
-//CE7AEED4
-//EE7BEED4
-        Log.d("ByteArrayToHexString", String.format("%0" + (inarray.length * 2) + "X", new BigInteger(1,inarray)));
 
-
-        return out;
     }
+    private void setOwner(String _productAddress){
+        /*-----------------------------------------------------------------------------------------------------*/
+        SharedPreferences prefs = getSharedPreferences("Local Address", MODE_PRIVATE);
+        String getAddress = prefs.getString("address", "404 address");
+        Toast.makeText(getApplicationContext(), getAddress +"********"+_productAddress, LENGTH_LONG);
+
+        if(!getAddress.equals("404 address"))
+        {
+            try {
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                String URL = "http://192.168.43.174:3002/setProductOwner";
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("id", getAddress);
+                jsonBody.put("rootAddress", _productAddress);
+                final String requestBody = jsonBody.toString();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), response, LENGTH_LONG);
+
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), String.valueOf((error)), LENGTH_LONG);
+
+                    }
+                });
+
+                requestQueue.add(stringRequest);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please save your current address to own any product", LENGTH_LONG);
+        }
+        /*-----------------------------------------------------------------------------------------------------*/
+    }
+
+    public String getTextFromNdefRecord(NdefRecord ndefRecord) {
+        String tagContent = null;
+        try {
+            byte[] payload = ndefRecord.getPayload();
+            String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16";
+            int languageSize = payload[0] & 0063;
+            tagContent = new String(payload, languageSize + 1,
+                    payload.length - languageSize - 1, textEncoding);
+        } catch (UnsupportedEncodingException e) {
+            Log.e("getTextFromNdefRecord", e.getMessage(), e);
+        }
+        return tagContent;
+    }
+
+
 
 }

@@ -1,9 +1,9 @@
 
 const initClients = require('./initClients')
 const getAddressTrytesContent = require('./getAddressTrytesContent')
-setProductOwner = (ownerAddress,productAddress) =>{
+setProductOwner = async (ownerAddress,productAddress) =>{
     try{
-    const trytes = getAddressTrytesContent.execute(productAddress,0)
+    const trytes = await getAddressTrytesContent.execute(productAddress,0)
      return initClients.setOwner(ownerAddress,trytes)
     }catch(exception){
           console.log(exception)
