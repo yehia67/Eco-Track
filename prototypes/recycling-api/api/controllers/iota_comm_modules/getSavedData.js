@@ -17,9 +17,9 @@ getSavedData(iotaGlobal.address).then(function(d){
     console.log(d)
 })     */
    //Test get owners functions
-getSavedData(iotaGlobal.clientsProductsAddress).then(function(d){
+/* getSavedData(iotaGlobal.clientsProductsAddress).then(function(d){
     console.log(d)
-})     
+}) */     
 
 module.exports ={
     execute:getSavedData

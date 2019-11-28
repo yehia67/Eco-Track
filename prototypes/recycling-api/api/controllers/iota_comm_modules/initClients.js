@@ -18,7 +18,6 @@ const createOwnedProducts = async(rootAddress) =>{
     const currentOwnerMap = await getSavedData.execute(iotaGlobal.clientsProductsAddress)
     const ownersMap = JSON.parse(iotaGlobal.lengthModifier(currentOwnerMap))
     const productsTrytes =  await getAddressTrytesContent.execute(rootAddress,1)// 1 array of trytes option
-    console.log(productsTrytes)
     for (let index = 0; index < productsTrytes.length; index++) {
         ownersMap[productsTrytes[index]] = 2
     }
@@ -78,4 +77,4 @@ module.exports ={
   }
   
  
-  testCases()
+  //testCases()
