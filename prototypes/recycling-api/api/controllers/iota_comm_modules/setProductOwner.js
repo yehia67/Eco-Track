@@ -4,7 +4,8 @@ const getAddressTrytesContent = require('./getAddressTrytesContent')
 setProductOwner = async (ownerAddress,productAddress) =>{
     try{
     const trytes = await getAddressTrytesContent.execute(productAddress,0)
-     return initClients.setOwner(ownerAddress,trytes)
+     const result = await initClients.setOwner(ownerAddress,trytes)
+     return result
     }catch(exception){
           console.log(exception)
     }

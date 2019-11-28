@@ -1,7 +1,7 @@
 const iotaGlobal = require("./IotaGlobal")
 const depth = 3;
 const minimumWeightMagnitude = 9;
-const addClient = async (_address,clientsMap) =>{
+const sendData = async (_address,clientsMap) =>{
     const messageInTrytes = iotaGlobal.converter.asciiToTrytes(JSON.stringify(clientsMap));
     const transfers = [
         {
@@ -30,8 +30,15 @@ const addClient = async (_address,clientsMap) =>{
 //initialize the map
  const initClient  = {}
 initClient['ClientID01'] = "NWGHLCCYCBJISRSOYTHGSKTAGZIAYLZWWPANKZXCMKRHBPYMBKOEVWRCKVSVWRT9VYDBUNQJKENXMWIOD"
-addClient(iotaGlobal.address,initClient)   */
+sendData(iotaGlobal.address,initClient)   */
+
+/* //owner map
+ const mapOwners  = {}
+ mapOwners['FJKGIDJHLMJRVPDNMQCGBRUQCNEDCFHUYSKCTBHGAGDAJUKBQZDACZPFJE9YOHMDT9C9SDJSAECQVSICW'] = "2"
+ mapOwners['WGOTI9JQNBL9YXZDPEBFCEWURQSITXHRCIXXYTMGIYDDKNJOSZBG99CZXFXDYHWUGOLOSBGNNQDXPFNYJ'] = "2"
+ mapOwners['BMBODSDKONOWFGJMVWMLGAB9AGTPQGSLDYUODXUQPKWPILTKZNFBAKYJWZUC9XMUW9SCBQSEGTSGKBBXG'] = "2" 
+sendData(iotaGlobal.clientsProductsAddress,mapOwners)   */
 module.exports ={
-    execute:addClient
+    execute:sendData
 }
 

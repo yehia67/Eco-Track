@@ -1,5 +1,5 @@
 const iotaGlobal = require('./IotaGlobal')
-const getClients = async (_address)=>{
+const getSavedData = async (_address)=>{
   return Promise.resolve(
     iotaGlobal.iota.findTransactionObjects({ addresses: [_address] })
     .then(response => {
@@ -13,9 +13,14 @@ const getClients = async (_address)=>{
 }
   
  /*  //Test get client functions
-getClients(iotaGlobal.address).then(function(d){
+getSavedData(iotaGlobal.address).then(function(d){
     console.log(d)
 })     */
+   //Test get owners functions
+getSavedData(iotaGlobal.clientsProductsAddress).then(function(d){
+    console.log(d)
+})     
+
 module.exports ={
-    execute:getClients
+    execute:getSavedData
 }
