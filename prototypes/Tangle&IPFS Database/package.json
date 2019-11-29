@@ -23,8 +23,9 @@
         "@iota/mam": "^0.7.3",
         "express": "^4.17.1",
         "express-load": "^1.1.16",
+        "ipfs-http-client": "^40.0.1",
+        "ipfs-mini": "^1.1.5",
         "node-fetch": "^2.6.0",
-        "zeromq": "^5.1.0",
-        "ipfs-http-client": "^40.0.1"
+        "zeromq": "^5.1.0"
     }
 }
