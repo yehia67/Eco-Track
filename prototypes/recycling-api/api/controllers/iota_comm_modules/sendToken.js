@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////
 const iotaGlobal = require('./IotaGlobal')
 // Create a wrapping function so you can use async/await
-const snedToken = async (_receivingAddress,_value) => {
+const sendToken = async (_receivingAddress,_value) => {
 
 
 
@@ -31,6 +31,6 @@ const snedToken = async (_receivingAddress,_value) => {
   }
 }
 module.exports ={
-    execute:snedToken
+    execute:sendToken
 }
 /* snedToken('ALNUSDMZBXOKCZSVKULZRRFZYXKHZJMBXQATHJRAUEXSBIVLUMZMYWNCEHFRLZGFFPUAGYBNAOVOQHWBA',1); */

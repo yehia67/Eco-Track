@@ -3,7 +3,8 @@ const getSavedData = async (_address)=>{
   return Promise.resolve(
     iotaGlobal.iota.findTransactionObjects({ addresses: [_address] })
     .then(response => {
-        const trytes = response[response.length - 1].signatureMessageFragment.slice(0, -1)
+        console.log(response.length )
+        const trytes = response[response.length-1].signatureMessageFragment.slice(0, -1)
         const data = iotaGlobal.converter.trytesToAscii(trytes) 
         return data
     })
@@ -11,15 +12,16 @@ const getSavedData = async (_address)=>{
         console.error(err)
     }));
 }
-  
- /*  //Test get client functions
-getSavedData(iotaGlobal.address).then(function(d){
+   
+
+  //Test get client functions
+getSavedData(iotaGlobal.clientaddress).then(function(d){
     console.log(d)
-})     */
+})      
    //Test get owners functions
-getSavedData(iotaGlobal.clientsProductsAddress).then(function(d){
+/* getSavedData(iotaGlobal.clientsProductsAddress).then(function(d){
     console.log(d)
-})     
+})    */  
 
 module.exports ={
     execute:getSavedData

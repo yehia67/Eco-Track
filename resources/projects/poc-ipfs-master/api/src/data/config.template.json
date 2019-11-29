@@ -1,0 +1,21 @@
+{
+    "node": {
+        "provider": "https://MYNODE/",
+        "depth": 3,
+        "mwm": 9
+    },
+    "ipfs": {
+        "provider": "MYIPFSNODE_PROVIDER",
+        "token": "MYIPFSNODE_TOKEN"
+    },
+    "dynamoDbConnection": {
+        "region": "AWS-REGION",
+        "accessKeyId": "AWS-ACCESS-KEY-ID",
+        "secretAccessKey": "AWS-SECRET-ACCESS-KEY",
+        "dbTablePrefix": "DATABASE-TABLE-PREFIX"
+    },
+    "allowedDomains": [
+        "https://ipfs.iota.works",
+        "https://ipfs.iota.org"
+    ]
+}

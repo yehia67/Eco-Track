@@ -1,43 +1,34 @@
 const iotaGlobal = require("./IotaGlobal")
-const depth = 3;
-const minimumWeightMagnitude = 9;
-const sendData = async (_address,clientsMap) =>{
-    const messageInTrytes = iotaGlobal.converter.asciiToTrytes(JSON.stringify(clientsMap));
-    const transfers = [
-        {
-          value: 0,
-          address: _address,
-          message: messageInTrytes
-        }
-      ];
-    return Promise.resolve(
-  
-      iotaGlobal.iota
-        .prepareTransfers(iotaGlobal.seed, transfers)
-        .then(trytes => {
-            return iotaGlobal.iota.sendTrytes(trytes, depth, minimumWeightMagnitude);
-        })
-        .then(bundle => {
-            console.log(`Bundle hash: ${bundle[0].bundle}`);
-        })
-        .catch(err => {
-            console.error(err)
-        }))
+const sendData = async (channel,newData) =>{
+    let mamState = iotaGlobal.getMamState(channel)
 
+    const trytes = iotaGlobal.converter.asciiToTrytes(JSON.stringify(newData))
+    const message = iotaGlobal.Mam.create(mamState, trytes)
+
+    mamState = message.state
+    // Attach the payload
+    await iotaGlobal.Mam.attach(message.payload, message.address, 3, 9)
+    
+    console.log('Published', packet, '\n');
+    return message.root
 }
 
-/* 
-//initialize the map
- const initClient  = {}
-initClient['ClientID01'] = "NWGHLCCYCBJISRSOYTHGSKTAGZIAYLZWWPANKZXCMKRHBPYMBKOEVWRCKVSVWRT9VYDBUNQJKENXMWIOD"
-sendData(iotaGlobal.address,initClient)   */
-
-/* //owner map
- const mapOwners  = {}
- mapOwners['FJKGIDJHLMJRVPDNMQCGBRUQCNEDCFHUYSKCTBHGAGDAJUKBQZDACZPFJE9YOHMDT9C9SDJSAECQVSICW'] = "2"
- mapOwners['WGOTI9JQNBL9YXZDPEBFCEWURQSITXHRCIXXYTMGIYDDKNJOSZBG99CZXFXDYHWUGOLOSBGNNQDXPFNYJ'] = "2"
- mapOwners['BMBODSDKONOWFGJMVWMLGAB9AGTPQGSLDYUODXUQPKWPILTKZNFBAKYJWZUC9XMUW9SCBQSEGTSGKBBXG'] = "2" 
-sendData(iotaGlobal.clientsProductsAddress,mapOwners)   */
+const test = async()=>{
+      //initialize the map
+      const initClient  = {}
+      initClient['NewClientID00001'] = "NWGHLCCYCBJISRSOYTHGSKTAGZIAYLZWWPANKZXCMKRHBPYMBKOEVWRCKVSVWRT9VYDBUNQJKENXMWIOD"
+      initClient['CLIENT02ID'] = "NWGHLCCYCBJISRSOYTHGSKTAGZIAYLZWWPANKZXCMKRHBPYMBKOEVWRCKVSVWRT9VYDBUNQJKENXMWIOD"
+      initClient['ID1'] = "FLNPHTCHPFTFWAFTAHHIJRLCXQETBQGHHTBVGHPDEMADSDVLPUGJMFMGXXIAIUQTSCHKETVJBUPD9RRBX"
+      const result = await sendData(1,initClient)   
+      console.log(result)
+      /* //owner map
+      const mapOwners  = {}
+      mapOwners['FJKGIDJHLMJRVPDNMQCGBRUQCNEDCFHUYSKCTBHGAGDAJUKBQZDACZPFJE9YOHMDT9C9SDJSAECQVSICW'] = "2"
+      mapOwners['WGOTI9JQNBL9YXZDPEBFCEWURQSITXHRCIXXYTMGIYDDKNJOSZBG99CZXFXDYHWUGOLOSBGNNQDXPFNYJ'] = "2"
+      mapOwners['BMBODSDKONOWFGJMVWMLGAB9AGTPQGSLDYUODXUQPKWPILTKZNFBAKYJWZUC9XMUW9SCBQSEGTSGKBBXG'] = "2" 
+      sendData(iotaGlobal.clientsProductsAddress,mapOwners)   */
+  }
+  test()
 module.exports ={
     execute:sendData
 }
