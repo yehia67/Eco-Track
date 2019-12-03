@@ -6,9 +6,22 @@ const fetchData = async(_sideKey,_provider,_root)=>{
     mamState = Mam.changeMode(mamState, 'restricted', _sideKey)
     const result = await Mam.fetch(_root, 'restricted', _sideKey)
  
-     return JSON.parse(trytesToAscii(result.messages[0]))
+     return result.messages
+}
+const transalate = (messages) =>{
+    if(option === 1){
+    const translatedMessage = []
+    for (let index = 0; index < messages.length; index++) {
+        translatedMessage.push(trytesToAscii(messages[index]));      
+    }
+    return translatedMessage
+}
+else{
+    return trytesToAscii(messages)
+}
 }
 
 module.exports ={
-    execute:fetchData
+    execute:fetchData,
+    transalate:transalate
 }

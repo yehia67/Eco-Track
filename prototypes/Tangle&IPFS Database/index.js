@@ -1,7 +1,7 @@
 const addToIPFS = require('./actions/Functions/IPFS/add')
 const pushMamData = require('./actions/Functions/MAM/pushData')
 const fetchMamData = require('./actions/Functions/MAM/fetchData')
-const provider = 'https://nodes.devnet.iota.org'
+const provider = 'https://nodes.devnet.iota.org:443'
 const catFromIPFS = require('./actions/Functions/IPFS/cat')
 const main = async()=>{
 }
@@ -10,9 +10,18 @@ const create = async(DBJSON,Password)=>{
      const root = await pushMamData.execute(Password,provider,ipfsHash)
      return root 
 }
-const read = async(root,Password)=>{
+const read = async(root,Password,option)=>{
       const fetchIPFShash = await fetchMamData.execute(Password,provider,root)
-      const DB = await catFromIPFS.execute(fetchIPFShash)
+      console.log(fetchIPFShash)
+      let DB
+      if(option === 1){
+        let result = await catFromIPFS.execute(fetchIPFShash)
+        DB = fetchMamData.transalate(result,1) 
+      }
+      else{
+         let result = await catFromIPFS.execute(fetchIPFShash)
+         DB = fetchMamData.transalate(result,0)
+      }
       return DB
 }
 const update = async(root,Password,newData)=>{
@@ -28,4 +37,9 @@ const deleteRaw = async(root,Password,key)=>{
    return newRoot
 }
 
-main()
+module.exports={
+   create:create,
+   read:read,
+   update:update,
+   deleteRaw:deleteRaw
+}
