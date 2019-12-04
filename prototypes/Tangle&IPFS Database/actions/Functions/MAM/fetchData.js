@@ -8,16 +8,18 @@ const fetchData = async(_sideKey,_provider,_root)=>{
  
      return result.messages
 }
-const transalate = (messages) =>{
+const transalate = (messages,option) =>{
     if(option === 1){
     const translatedMessage = []
     for (let index = 0; index < messages.length; index++) {
+        
         translatedMessage.push(trytesToAscii(messages[index]));      
     }
     return translatedMessage
 }
 else{
-    return trytesToAscii(messages)
+      const result =  trytesToAscii(messages)
+      return result
 }
 }
 

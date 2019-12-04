@@ -7,7 +7,7 @@ const test = async()=>{
     data['isa'] = 'isa'
     data['el7'] = 'el7'
     const root = await upload.execute(data)
-    console.log(root)
+    console.log(root)  
     const result = await fetch.execute(root)
    console.log(result)
 }

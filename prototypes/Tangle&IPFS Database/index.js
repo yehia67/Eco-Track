@@ -7,22 +7,16 @@ const main = async()=>{
 }
 const create = async(DBJSON,Password)=>{
      const ipfsHash = await addToIPFS.execute(DBJSON)
+     console.log("the ipfs hash",ipfsHash)
      const root = await pushMamData.execute(Password,provider,ipfsHash)
      return root 
 }
 const read = async(root,Password,option)=>{
-      const fetchIPFShash = await fetchMamData.execute(Password,provider,root)
-      console.log(fetchIPFShash)
-      let DB
-      if(option === 1){
-        let result = await catFromIPFS.execute(fetchIPFShash)
-        DB = fetchMamData.transalate(result,1) 
-      }
-      else{
-         let result = await catFromIPFS.execute(fetchIPFShash)
-         DB = fetchMamData.transalate(result,0)
-      }
-      return DB
+      const fetchIPFShashInTrytes = await fetchMamData.execute(Password,provider,root)
+      let ipfsHash =  fetchMamData.transalate(fetchIPFShashInTrytes[0],0)
+      const result = await catFromIPFS.execute(ipfsHash.substring(1,ipfsHash.length-1))
+      const DB = JSON.parse(result)  
+      return DB 
 }
 const update = async(root,Password,newData)=>{
       const DB = await read(root,Password)
