@@ -11,16 +11,16 @@ const create = async(DBJSON,Password)=>{
      const root = await pushMamData.execute(Password,provider,ipfsHash)
      return root 
 }
-const read = async(root,Password,option)=>{
+const read = async(root,Password)=>{
       const fetchIPFShashInTrytes = await fetchMamData.execute(Password,provider,root)
       let ipfsHash =  fetchMamData.transalate(fetchIPFShashInTrytes[0],0)
       const result = await catFromIPFS.execute(ipfsHash.substring(1,ipfsHash.length-1))
       const DB = JSON.parse(result)  
       return DB 
 }
-const update = async(root,Password,newData)=>{
+const update = async(root,Password,key,value)=>{
       const DB = await read(root,Password)
-      DB.push(newData)
+      DB[key] = value
       const newRoot = await create(DB,Password)
       return newRoot
 }

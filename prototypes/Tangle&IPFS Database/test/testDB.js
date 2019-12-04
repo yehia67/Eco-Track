@@ -12,7 +12,15 @@ const test = async()=>{
     //initalize DB
      const DBroot = await DB.create(testMap,"SECRETGDAN")
     console.log("root of created DB",DBroot)  
-    const readDB = await DB.read(DBroot,"SECRETGDAN",0)
+    const readDB = await DB.read(DBroot,"SECRETGDAN")
     console.log(readDB)  
+    const updateDB = await DB.update(DBroot,"SECRETGDAN","Yarab","ISA")
+    console.log(updateDB)
+    const readNewDB = await DB.read(updateDB,"SECRETGDAN")
+    console.log(readNewDB)
+    const deleteDB = await DB.deleteRaw(updateDB,"SECRETGDAN","Yarab")
+    console.log(deleteDB)
+    const readNewDelDB = await DB.read(deleteDB,"SECRETGDAN")
+    console.log(readNewDelDB)  
 }
   test()
