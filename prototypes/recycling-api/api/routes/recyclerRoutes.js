@@ -5,7 +5,13 @@ module.exports = function(app) {
   // recycler Routes
   app.route('/init')
   .post(recycler.init);
-
+ 
+  app.route('/send')
+  .post(recycler.send);
+ 
+  app.route('/fetch')
+  .post(recycler.fetch);
+ 
   app.route('/setProductOwner')
       .post(recycler.setProductOwner);
   app.route('/giveReward')
