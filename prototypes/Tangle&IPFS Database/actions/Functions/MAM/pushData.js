@@ -1,14 +1,13 @@
 const Mam = require('@iota/mam')
 const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
-
+const globalState = require('./GlobalState')
 const pushData = async(_secretKey,_provider,packet) =>{
-    let mamState = Mam.init(_provider)
-    mamState = Mam.changeMode(mamState, 'restricted', _secretKey)
+
     const trytes = asciiToTrytes(JSON.stringify(packet))
-    const message = Mam.create(mamState, trytes)
+    const message = Mam.create(globalState.mamState, trytes)
 
     // Save new mamState
-    mamState = message.state
+    globalState.mamState = message.state
 
     // Attach the payload
     await Mam.attach(message.payload, message.address, 3, 9)

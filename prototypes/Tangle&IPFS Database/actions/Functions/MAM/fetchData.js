@@ -1,29 +1,30 @@
 const Mam = require('@iota/mam')
+// Init State
+const mamType = 'restricted'
 const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
+// Initialise MAM State
+let mamState =Mam.init('https://nodes.devnet.iota.org:443')
 
-const fetchData = async(_sideKey,_provider,_root)=>{
-    mamState = Mam.init(_provider)
-    mamState = Mam.changeMode(mamState, 'restricted', _sideKey)
-    const result = await Mam.fetch(_root, 'restricted', _sideKey)
- 
-     return result.messages
-}
-const transalate = (messages,option) =>{
-    if(option === 1){
-    const translatedMessage = []
-    for (let index = 0; index < messages.length; index++) {
-        
-        translatedMessage.push(trytesToAscii(messages[index]));      
+// Callback used to pass data out of the fetch 
+const logData = data => console.log( trytesToAscii(data))
+
+const fetchRoot = async(_root,sidekey)=>{
+    console.log(_root)
+    console.log(sidekey)
+    const resp = await  Mam.fetch(_root, mamType, sidekey, logData)
+    const tryteMessages = resp.messages
+    const asciiMessages = []
+    for (let index = 0; index < tryteMessages.length; index++) {
+        asciiMessages.push(trytesToAscii(tryteMessages[index]))
     }
-    return translatedMessage
+     return asciiMessages
 }
-else{
-      const result =  trytesToAscii(messages)
-      return result
+const test = async()=>{
+    
+    const result = await fetchRoot('TRETKSTEFKWKGHNVVPUIS99IIRJKAGDTUZQKCHAWEIIOZMEHPUXZXDXSQDSZVY9WAWXXUTM9ACYEIJXCF')
+    console.log(result)
 }
-}
-
-module.exports ={
-    execute:fetchData,
-    transalate:transalate
+//test()
+module.exports = {
+    execute:fetchRoot
 }

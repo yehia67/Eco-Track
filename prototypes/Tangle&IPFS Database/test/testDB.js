@@ -10,17 +10,17 @@ for (let index = 0; index < 10; index++) {
 }
 const test = async()=>{
     //initalize DB
-     const DBroot = await DB.create(testMap,"SECRETGDAN")
+     const DBroot = await DB.create(testMap,"YARABYARAB")
     console.log("root of created DB",DBroot)  
-    const readDB = await DB.read(DBroot,"SECRETGDAN")
+    const readDB = await DB.read(DBroot,"YARABYARAB")
     console.log(readDB)  
-    const updateDB = await DB.update(DBroot,"SECRETGDAN","Yarab","ISA")
+    const updateDB = await DB.update(DBroot,"YARABYARAB","Yarab","ISA")
     console.log(updateDB)
-    const readNewDB = await DB.read(updateDB,"SECRETGDAN")
+    const readNewDB = await DB.read(updateDB,"YARABYARAB")
     console.log(readNewDB)
-    const deleteDB = await DB.deleteRaw(updateDB,"SECRETGDAN","Yarab")
+    const deleteDB = await DB.deleteRaw(updateDB,"YARABYARAB","Yarab")
     console.log(deleteDB)
-    const readNewDelDB = await DB.read(deleteDB,"SECRETGDAN")
+    const readNewDelDB = await DB.read(deleteDB,"YARABYARAB")
     console.log(readNewDelDB)  
 }
   test()

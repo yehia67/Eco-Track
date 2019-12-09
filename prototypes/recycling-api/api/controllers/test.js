@@ -15,5 +15,5 @@ const pushData = async(_secretKey,_provider,packet) =>{
 
   return message.root
 }
-test()
+
 //"QDIYPKPDDTK9EOX9J9UDCZCSVKQRBLOMANJOFGJGNPIEMEPPUFUHTY9QVFCOQBQSGF9QWRLEG9QB9L9PW"
