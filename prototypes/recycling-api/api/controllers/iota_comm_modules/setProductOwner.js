@@ -1,5 +1,5 @@
 
-const initClients = require('./initClients')
+const initClients = require('./manageClients')
 const getAddressTrytesContent = require('./getAddressTrytesContent')
 setProductOwner = async (ownerAddress,productAddress) =>{
     try{

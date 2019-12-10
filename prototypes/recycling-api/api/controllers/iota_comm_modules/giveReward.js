@@ -1,5 +1,5 @@
 const sendToken = require('./sendToken')
-const initClient = require('./initClients')
+const initClient = require('./manageClients')
 const getAddressTrytesContent = require('./getAddressTrytesContent')
 giveRewards = async(productAddress) =>{
     const tytesOfProduct = await getAddressTrytesContent(productAddress)

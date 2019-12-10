@@ -1,5 +1,5 @@
 'use strict';
-const initClients = require('./iota_comm_modules/initClients')
+const initClients = require('./iota_comm_modules/manageClients')
 const setProductOwner = require('./iota_comm_modules/setProductOwner')
 const giveReward = require('./iota_comm_modules/giveReward')
 const testMam = require('./iota_comm_modules/testMam')
