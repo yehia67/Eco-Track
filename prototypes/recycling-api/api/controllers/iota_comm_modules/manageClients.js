@@ -1,6 +1,8 @@
 const testMam = require('./testMam')
+const addIPFS = require('./add')
+const catIPFS = require('./cat')
 const clients_products_owner = {}
-const initializePropreries = ()=>{
+const initializePropreries = async()=>{
     clients_products_owner['client01'] = {
         'product1A':false,
         'product1B':false,
@@ -37,17 +39,24 @@ const initializePropreries = ()=>{
         'product3I':false,
         'product3J':false,
     }
-    return clients_products_owner
+    const ipfsHash = await addIPFS.execute(clients_products_owner)
+    return ipfsHash
 }
-const addNewClient = (clientID,products)=>{
-    const currentPropreties = initializePropreries()
-    currentPropreties[clientID] = products
-    return currentPropreties
+const addNewClient = async (clientID,products)=>{
+    const currentPropretiesHash = await initializePropreries()
+    const currentPropretiesString = await catIPFS.execute(currentPropretiesHash)
+    const currentPropretiesJSON = JSON.parse(currentPropretiesString)
+    currentPropretiesJSON[clientID] = products
+    const newPropretiesHash = await addIPFS.execute(currentPropretiesJSON)
+    return newPropretiesHash
 
 }
-const addNewOwner = (proprieties,clientID,productID,ownerID)=>{
-    proprieties[clientID].productID = ownerID
-    return proprieties
+const addNewOwner = async(proprietiesHash,clientID,productID,ownerID)=>{
+    const currentPropretiesString = await catIPFS.execute(proprietiesHash)
+    const currentPropretiesJSON = JSON.parse(currentPropretiesString)
+    currentPropretiesJSON[clientID].productID = ownerID
+    const newPropretiesHash = await addIPFS.execute(currentPropretiesJSON)
+    return newPropretiesHash
 }
 const init = async(clientID,rootAddress)=>{
    products={
@@ -62,13 +71,17 @@ const init = async(clientID,rootAddress)=>{
     'product4I':false,
     'product4J':false,
    }
-   const newClientProprities = addNewClient('Client04',products)
-   console.log(newClientProprities)
-   const newOwnerProprities = addNewOwner(newClientProprities,'Client04','product4A','Owner01')
-   console.log(newOwnerProprities)
+   const newClientProprities = await addNewClient('Client04',products)
+   const newOwnerPropritiesHash = await addNewOwner(newClientProprities,'Client04','product4A','Owner01')
+   const newOwnerPropritiesString = await catIPFS.execute(newOwnerPropritiesHash)
+   const newOwnerProprities = JSON.parse(newOwnerPropritiesString)
+   return newOwnerProprities
+
 
 }
-init(1,1)
+init(1,1).then(function(r){
+    console.log(r)
+})
 module.exports ={
     execute:init
 }
