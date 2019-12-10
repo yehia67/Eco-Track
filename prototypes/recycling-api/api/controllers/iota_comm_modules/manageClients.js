@@ -1,4 +1,4 @@
-const testMam = require('./testMam')
+const mamManage = require('./testMam')
 const addIPFS = require('./add')
 const catIPFS = require('./cat')
 const clients_products_owner = {}
@@ -40,23 +40,30 @@ const initializePropreries = async()=>{
         'product3J':false,
     }
     const ipfsHash = await addIPFS.execute(clients_products_owner)
-    return ipfsHash
+    const root = await mamManage.send(ipfsHash)
+    return root
 }
 const addNewClient = async (clientID,products)=>{
-    const currentPropretiesHash = await initializePropreries()
-    const currentPropretiesString = await catIPFS.execute(currentPropretiesHash)
+    const currentPropretiesRoot = await initializePropreries()
+    const currentPropretiesHash = await mamManage.fetch(currentPropretiesRoot)
+    const lastHash = currentPropretiesHash[currentPropretiesHash.length-1]
+    const currentPropretiesString = await catIPFS.execute(lastHash.substring(1,lastHash.length-1))
     const currentPropretiesJSON = JSON.parse(currentPropretiesString)
     currentPropretiesJSON[clientID] = products
     const newPropretiesHash = await addIPFS.execute(currentPropretiesJSON)
-    return newPropretiesHash
+    const newPropretiesRoot = await mamManage.send(newPropretiesHash)
+    return newPropretiesRoot
 
 }
-const addNewOwner = async(proprietiesHash,clientID,productID,ownerID)=>{
-    const currentPropretiesString = await catIPFS.execute(proprietiesHash)
+const addNewOwner = async(_root,clientID,productID,ownerID)=>{
+    const proprietiesHash = await mamManage.fetch(_root)
+    const lastHash = proprietiesHash[proprietiesHash.length-1]
+    const currentPropretiesString = await catIPFS.execute(lastHash.substring(1,lastHash.length-1))
     const currentPropretiesJSON = JSON.parse(currentPropretiesString)
     currentPropretiesJSON[clientID].productID = ownerID
     const newPropretiesHash = await addIPFS.execute(currentPropretiesJSON)
-    return newPropretiesHash
+    const root = await mamManage.send(newPropretiesHash)
+    return root
 }
 const init = async(clientID,rootAddress)=>{
    products={
@@ -72,8 +79,13 @@ const init = async(clientID,rootAddress)=>{
     'product4J':false,
    }
    const newClientProprities = await addNewClient('Client04',products)
-   const newOwnerPropritiesHash = await addNewOwner(newClientProprities,'Client04','product4A','Owner01')
-   const newOwnerPropritiesString = await catIPFS.execute(newOwnerPropritiesHash)
+   console.log('new Client root',newClientProprities)
+   const newOwnerPropritiesRoot = await addNewOwner(newClientProprities,'Client04','product4A','Owner01')
+   console.log('new owner root',newOwnerPropritiesRoot)
+   const newOwnerPropritiesHash = await mamManage.fetch(newOwnerPropritiesRoot)
+   const lastHash = newOwnerPropritiesHash[newOwnerPropritiesHash.length-1]
+   console.log(lastHash.substring(1,lastHash.length-1))
+   const newOwnerPropritiesString = await catIPFS.execute(lastHash.substring(1,lastHash.length-1))
    const newOwnerProprities = JSON.parse(newOwnerPropritiesString)
    return newOwnerProprities
 
