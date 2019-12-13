@@ -15,13 +15,13 @@ const initializePropreries = async()=>{
     }
     products['AB9CCUACOSC9VHQQFSVUGOVLAGNYJYDPROPBYTZIGNVOF9KMFNXBMSUGFFA9HTVHBPKPGGIBGSRJPUXZK'] = {
         'name':'product02',
-        'address':'KUUIWJVPFYABYPMNKLPOKTPYGBXDFFFNQQKGFANNXCZDQZWEVHSCWWBWQASVWGCQCQUZUDAPBGHVBYEDI',
+        'address':'AB9CCUACOSC9VHQQFSVUGOVLAGNYJYDPROPBYTZIGNVOF9KMFNXBMSUGFFA9HTVHBPKPGGIBGSRJPUXZK',
         'owner':false,
         'producer':'client01'
     }
     products['LHSQELEGSRM9IAQCUBPXOLYXDMFOAPNJFS9JPOJBSRUDJAIRTWHTZCJCFLVYVRJPGPNXEWDDRGTCGKRAB'] = {
         'name':'product03',
-        'address':'KUUIWJVPFYABYPMNKLPOKTPYGBXDFFFNQQKGFANNXCZDQZWEVHSCWWBWQASVWGCQCQUZUDAPBGHVBYEDI',
+        'address':'LHSQELEGSRM9IAQCUBPXOLYXDMFOAPNJFS9JPOJBSRUDJAIRTWHTZCJCFLVYVRJPGPNXEWDDRGTCGKRAB',
         'owner':false,
         'producer':'client01'
     }
@@ -39,6 +39,8 @@ const addNewClient = async (_root,_products)=>{
         currentPropretiesJSON[productsJSON[i].address] = productsJSON[i]
     }
     const newPropretiesHash = await addIPFS.execute(currentPropretiesJSON)
+    console.log('new client added succufully 200OK')
+    console.log(currentPropretiesJSON)
     const newPropretiesRoot = await mamManage.send(newPropretiesHash)
     return newPropretiesRoot
 }
@@ -46,6 +48,8 @@ const addNewOwner = async(_root,productAddress,ownerAddress)=>{
     const proprietiesHash = await mamManage.fetch(_root)
     const currentPropretiesString = await catIPFS.execute(getLastHash(proprietiesHash))
     const currentPropretiesJSON = JSON.parse(currentPropretiesString)
+    console.log('new Owner added succufully 200OK')
+    console.log(currentPropretiesJSON)
     currentPropretiesJSON[productAddress].owner = ownerAddress 
     console.log(currentPropretiesJSON)
     const newPropretiesHash = await addIPFS.execute(currentPropretiesJSON)
@@ -86,10 +90,10 @@ const init = async()=>{
 
 
 }
-/*   init().then(function(r){
+  /* init().then(function(r){
     console.log('**************************************')
     console.log(r)
-})   */
+})    */
 module.exports ={
     init:initializePropreries,
     addNewClient:addNewClient,
