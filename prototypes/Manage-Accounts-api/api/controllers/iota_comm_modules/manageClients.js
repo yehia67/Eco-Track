@@ -102,6 +102,7 @@ const init = async()=>{
 })  */
 module.exports ={
     init:initializePropreries,
-    addNewClient:addNewClient
+    addNewClient:addNewClient,
+    addNewOwner:addNewOwner
 }
 
