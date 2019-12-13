@@ -4,20 +4,26 @@ module.exports = function(app) {
 
   // recycler Routes
   app.route('/init')
-  .get(recycler.init);
- 
+     .get(recycler.init); 
+     
   app.route('/send')
-  .post(recycler.send);
- 
+     .post(recycler.send);
+
   app.route('/fetch')
-  .post(recycler.fetch);
- 
+     .post(recycler.fetch);
+
   app.route('/addClient')
-      .post(recycler.addClient);
+     .post(recycler.addClient);
+
+  app.route('/addOwner')
+     .post(recycler.addOwner); 
+
   app.route('/giveReward')
-     .post(recycler.giveReward)
+     .post(recycler.giveReward);
+
   app.route('/checkOwners')  
      .get(recycler.checkOwners);
+
   app.route('/test')
-      .get(recycler.test);
+     .get(recycler.test);
 };

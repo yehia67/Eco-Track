@@ -51,8 +51,8 @@ const addNewClient = async (_root,clientID,products)=>{
     const currentPropretiesRoot = _root
     const currentPropretiesHash = await mamManage.fetch(currentPropretiesRoot)
     const currentPropretiesString = await catIPFS.execute(getLastHash(currentPropretiesHash))
-    const currentPropretiesJSON = JSON.parse(currentPropretiesString)  
-    currentPropretiesJSON[clientID] = JSON.parse(products)
+    const currentPropretiesJSON = JSON.parse(currentPropretiesString)
+    currentPropretiesJSON[clientID] = JSON.parse(JSON.stringify(products))
     const newPropretiesHash = await addIPFS.execute(currentPropretiesJSON)
     const newPropretiesRoot = await mamManage.send(newPropretiesHash)
     return newPropretiesRoot
@@ -66,7 +66,7 @@ const addNewOwner = async(_root,productAddress,ownerAddress)=>{
    /* const productData = await mamManage.fetch(productAddress) //for now I will not fetch the address of products as I entered them on JSON Object
     const productDataJSON = JSON.parse(productData)
     const clientID = productDataJSON['Client04'] //for now I choose client number 4 to set a product owner*/
-    currentPropretiesJSON['Client04'].productID = ownerAddress
+    currentPropretiesJSON['client03'].productID = ownerAddress
     const newPropretiesHash = await addIPFS.execute(currentPropretiesJSON)
     const root = await mamManage.send(newPropretiesHash)
     return root
@@ -97,9 +97,9 @@ const init = async()=>{
 
 
 }
- init(1,1).then(function(r){
+/*  init(1,1).then(function(r){
     console.log(r)
-}) 
+})  */
 module.exports ={
     init:initializePropreries,
     addNewClient:addNewClient
