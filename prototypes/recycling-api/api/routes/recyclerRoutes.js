@@ -4,7 +4,7 @@ module.exports = function(app) {
 
   // recycler Routes
   app.route('/init')
-  .post(recycler.init);
+  .get(recycler.init);
  
   app.route('/send')
   .post(recycler.send);
@@ -12,8 +12,8 @@ module.exports = function(app) {
   app.route('/fetch')
   .post(recycler.fetch);
  
-  app.route('/setProductOwner')
-      .post(recycler.setProductOwner);
+  app.route('/addClient')
+      .post(recycler.addClient);
   app.route('/giveReward')
      .post(recycler.giveReward)
   app.route('/checkOwners')  

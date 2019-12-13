@@ -1,15 +1,25 @@
 'use strict';
-const initClients = require('./iota_comm_modules/manageClients')
-const setProductOwner = require('./iota_comm_modules/setProductOwner')
 const giveReward = require('./iota_comm_modules/giveReward')
 const testMam = require('./iota_comm_modules/testMam')
+const manageClients = require('./iota_comm_modules/manageClients')
 exports.init = async (req,res) =>{
-  console.log(req.body.clientID)
-  console.log(req.body.rootAddress)
-  const response = await initClients.execute(req.body.clientID,req.body.rootAddress)
+  const response = await manageClients.init()
   res.json(response)
 }
-
+exports.addClient = async (req,res) =>{
+  console.log(req.body.root)
+  console.log(req.body.clientID)
+  console.log(req.body.products)
+  const response = await manageClients.addNewClient(req.body.root,req.body.clientID,req.body.products)
+  res.json(response)
+}
+exports.addOwner = async (req,res) =>{
+  console.log(req.body.root)
+  console.log(req.body.ownerAddress)
+  console.log(req.body.productAddress)
+  const response = await manageClients.addNewClient(req.body.root,req.body.ownerAddress,req.body.productAddress)
+  res.json(response)
+}
 exports.send = async (req,res) =>{
   console.log(req.body.data)
   const root = await testMam.send(req.body.data)
