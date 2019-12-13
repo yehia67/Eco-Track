@@ -6,12 +6,6 @@ module.exports = function(app) {
   app.route('/init')
      .get(recycler.init); 
      
-  app.route('/send')
-     .post(recycler.send);
-
-  app.route('/fetch')
-     .post(recycler.fetch);
-
   app.route('/addClient')
      .post(recycler.addClient);
 
@@ -21,8 +15,11 @@ module.exports = function(app) {
   app.route('/giveReward')
      .post(recycler.giveReward);
 
-  app.route('/checkOwners')  
-     .get(recycler.checkOwners);
+     app.route('/send')
+     .post(recycler.send);
+
+  app.route('/fetch')
+     .post(recycler.fetch);
 
   app.route('/test')
      .get(recycler.test);

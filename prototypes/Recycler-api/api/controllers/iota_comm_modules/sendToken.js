@@ -33,4 +33,6 @@ const sendToken = async (_receivingAddress,_value) => {
 module.exports ={
     execute:sendToken
 }
-/* snedToken('ALNUSDMZBXOKCZSVKULZRRFZYXKHZJMBXQATHJRAUEXSBIVLUMZMYWNCEHFRLZGFFPUAGYBNAOVOQHWBA',1); */
+/*  sendToken('ALNUSDMZBXOKCZSVKULZRRFZYXKHZJMBXQATHJRAUEXSBIVLUMZMYWNCEHFRLZGFFPUAGYBNAOVOQHWBA',1).then(function(){
+   console.log('done')
+ });  */

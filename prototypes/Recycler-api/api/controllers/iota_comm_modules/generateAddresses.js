@@ -9,7 +9,7 @@ const generateAddresses = async (index,securityLevel,numberOfAddresses) =>{
       console.log(err)
     }));
 }
- generateAddresses(2,1,1).then(function(r){
+ generateAddresses(0,3,1).then(function(r){
     console.log(r)
     })
       
