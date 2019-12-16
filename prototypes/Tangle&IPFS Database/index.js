@@ -1,41 +1,55 @@
 const addToIPFS = require('./actions/Functions/IPFS/add')
-const pushMamData = require('./actions/Functions/MAM/pushData')
-const fetchMamData = require('./actions/Functions/MAM/fetchData')
+const manageMAM = require('./actions/Functions/MAM/manageMAM')
 const provider = 'https://nodes.devnet.iota.org:443'
 const catFromIPFS = require('./actions/Functions/IPFS/cat')
-const create = async(DBJSON,Password)=>{
-     const ipfsHash = await addToIPFS.execute(DBJSON)
-     console.log("the ipfs hash",ipfsHash)
-     const root = await pushMamData.execute(Password,provider,ipfsHash)
+const getLastHash = (AsciiArray) =>{
+   const lastHash = AsciiArray[AsciiArray.length-1]
+   return lastHash.substring(1,lastHash.length-1)
+}
+const create = async(DBJSON)=>{
+     const ipfsHash = await addToIPFS.execute(JSON.parse(JSON.stringify(DBJSON)))
+     const root = await manageMAM.send(ipfsHash)
      return root 
 }
-const read = async(root,Password)=>{
-      console.log('root',root.length)
-      console.log('Password',Password.length)
-      const fetchIPFShash = await fetchMamData.execute(root,Password)
-      console.log(fetchIPFShash)
-      /* let ipfsHash =  fetchIPFShash[fetchIPFShash.length-1]
-      const result = await catFromIPFS.execute(ipfsHash.substring(1,ipfsHash.length-1))
-      const DB = JSON.parse(result)   */
-      return fetchIPFShash 
+const read = async(root)=>{
+      const fetchIPFShash = await manageMAM.fetch(root)
+      console.log(getLastHash(fetchIPFShash))
+      const fetchedIPFS = catFromIPFS.execute(getLastHash(fetchIPFShash))
+      return fetchedIPFS 
 }
-const update = async(root,Password,key,value)=>{
-      const DB = await read(root,Password)
-      DB[key] = value
-      const newRoot = await create(DB,Password)
+const update = async(root,key,value)=>{
+      const DB = await read(root)
+      const DBjson = JSON.parse(DB)
+      DBjson[key] = value
+      const newRoot = await create(DBjson)
       return newRoot
 }
-const deleteRaw = async(root,Password,key)=>{
-   const DB = await read(root,Password)
-   delete DB[key];
-   const newRoot = await create(DB,Password)
+const deleteRaw = async(root,key)=>{
+   const DB = await read(root)
+   const DBjson = JSON.parse(DB)
+/*    console.log('---------------')
+   console.log(DBjson) */
+   delete DBjson[key];
+   //console.log(DBjson)
+   const newRoot = await create(DBjson)
    return newRoot
 }
 const main = async()=>{
-   const root = await pushMamData.execute('YARABYARAB',provider,"isa isa yarab")
-   console.log(root)
-   const fetchIPFShash = await fetchMamData.execute(root,'YARABYARAB')
-   console.log(fetchIPFShash)
+    const yarab = {}
+    yarab['isa'] = "yarab yarab"
+    yarab['bsmlah'] = "yarab yarab"
+    const firstRoot = await create(yarab)
+    console.log(firstRoot)
+    const readFirstDB = await read(firstRoot)
+    console.log(readFirstDB)
+    const updateRoot = await update(firstRoot,'isa isa','yarab yarab bsmlah')
+    console.log(updateRoot)
+    const readUpdatedDB = await read(updateRoot)
+    console.log(readUpdatedDB)
+    const rootDeletedDB = await deleteRaw(updateRoot,'bsmlah')
+    console.log(rootDeletedDB)
+    const readThirdDB = await read(rootDeletedDB)
+    console.log(readThirdDB)
 }
 main()
 module.exports={
