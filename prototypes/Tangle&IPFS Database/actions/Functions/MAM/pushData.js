@@ -19,7 +19,7 @@ const test = async()=>{
     const result = await pushData('aaaaa')
     console.log(result)
 }
-//test()
+test()
 module.exports ={
     execute:pushData
 }

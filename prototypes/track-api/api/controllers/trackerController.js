@@ -4,6 +4,7 @@ const fetchMamRestricted = require('./iota_comm_modules/FetchMamRestricted')
 const sendMamRestricted = require('./iota_comm_modules/SendMamRestricted')
 
 exports.get_products = async (req,res) =>{
+  console.log(req.query.address)
   const productsData = await fetchMamRestricted.execute(req.query.address)
   res.json(productsData)
  }

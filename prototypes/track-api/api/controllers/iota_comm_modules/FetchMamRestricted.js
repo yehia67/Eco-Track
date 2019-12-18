@@ -21,8 +21,11 @@ const FetchMam = async (_root) => {
   await IotaGlobal.Mam.fetch(_root, mamType, mamSecret, logData)
   return resp
 }
-
-
+const test = async()=>{
+  const data = await FetchMam('OTSOBGIRNVAQYLNETBLJXORCWLIMADIEAIDNTPSMYZDWSVMWWVKUGBO9HZMBPGNTGNQXBWCUCN9CCETHD')
+  console.log(data)
+}
+//test()
 module.exports ={
   execute:FetchMam
 }

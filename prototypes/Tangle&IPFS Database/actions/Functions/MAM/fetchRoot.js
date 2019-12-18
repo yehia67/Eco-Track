@@ -1,17 +1,9 @@
-const Mam = require('@iota/mam')
-// Init State
-const mamType = 'restricted'
-const mamSecret = 'DONTSHARETHISPASSWORD'
 const iotaGlobal = require('./IotaGlobal')
 const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
-// Initialise MAM State
-let mamState =Mam.init('https://nodes.devnet.iota.org:443')
 
-// Callback used to pass data out of the fetch
-const logData = data => console.log( trytesToAscii(data))
 
 const fetchRoot = async(_root)=>{
-    const resp = await  Mam.fetch(_root, 'restricted', iotaGlobal.sideKey, logData)
+    const resp = await  iotaGlobal.Mam.fetch(_root, 'restricted', iotaGlobal.sideKey)
     const tryteMessages = resp.messages
     const asciiMessages = []
     for (let index = 0; index < tryteMessages.length; index++) {
@@ -21,7 +13,7 @@ const fetchRoot = async(_root)=>{
 }
 const test = async()=>{
     
-    const result = await fetchRoot('TGUDEIBNSGUXH9CXOFNOYMOOAQECOSLYXRJPHCJECRQFZDGVJBCUYAMTYNPULG9GIKLPYLYQVTMHLPGAI')
+    const result = await fetchRoot('VDFYGWNSQU9RAIATFDHBEZLPZSGTTAXDNZIVAKBTQJCTZFXJDYIITFYEDRVA9Z9AQSSKCPDTJMVEMHDQR')
     console.log(result)
 }
 //test()

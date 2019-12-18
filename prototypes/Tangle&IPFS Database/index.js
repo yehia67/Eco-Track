@@ -1,6 +1,5 @@
 const addToIPFS = require('./actions/Functions/IPFS/add')
 const manageMAM = require('./actions/Functions/MAM/manageMAM')
-const provider = 'https://nodes.devnet.iota.org:443'
 const catFromIPFS = require('./actions/Functions/IPFS/cat')
 const getLastHash = (AsciiArray) =>{
    const lastHash = AsciiArray[AsciiArray.length-1]
