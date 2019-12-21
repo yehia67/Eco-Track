@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.entity.mime.Header;
 
 public class ApiCalls {
-    private static final String BASE_URL = "http://192.168.1.36:5002/";
+    private static final String BASE_URL = "http://192.168.1.4:5002/";
     private static AsyncHttpClient client = new AsyncHttpClient();
     public void  get(String url) {
         // Request a string response from the provided URL.

@@ -28,8 +28,13 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -45,7 +50,39 @@ public class MainActivity extends AppCompatActivity {
     Button myItemsButton;
     Button scanNfcTagButton;
     Button setAddress;
+    public static final String root = "FLPYQZOAFZ9COLVBO9LJNZJYIWJJKDDQGZMHYJSLLNTANN9QWFUCQRLUVDQVBNTZUPKNAJAJKAODQVIYN";
     //private final String[][] techList = {new String[]{NfcA.class.getName(), NfcB.class.getName(), NfcF.class.getName(), NfcV.class.getName(), IsoDep.class.getName(), MifareClassic.class.getName(), MifareUltralight.class.getName(), Ndef.class.getName()}};
+//-----------------------------------------------------------------------------------------------------------------------
+   public void ApiInit(){
+       try{
+
+           RequestQueue requestQueue = Volley.newRequestQueue(this);
+           String URL = "http://192.168.1.4:5002/init";
+           StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
+                   new Response.Listener<String>() {
+                       @Override
+                       public void onResponse(String response) {
+                           Toast.makeText(getApplicationContext(),"Api Init response : "+response, LENGTH_LONG).show();
+                       }
+                   }, new Response.ErrorListener() {
+               @Override
+               public void onErrorResponse(VolleyError error) {
+                   Toast.makeText(getApplicationContext(),error.getLocalizedMessage(), LENGTH_LONG).show();
+               }
+           });
+
+           requestQueue.add(stringRequest);
+
+
+       }catch (Exception e){
+           e.printStackTrace();
+           Toast.makeText(this,"catch error",Toast.LENGTH_SHORT).show();
+       }
+   }
+   //---------------------------------------------------------------------------------
+
+
+
 
     /* access modifiers changed from: protected */
     public void onActivityResult(int requestCode2, int resultCode, Intent data) {
@@ -79,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         historyButton = (Button) findViewById(R.id.historyButton);
         myItemsButton = (Button) findViewById(R.id.myItemsButton);
         getCurrentAddress();
+        ApiInit();
         //Intent intent = getIntent();
         final Intent scanNfcTagIntentGo = new Intent(this, ScanNfcTag.class);
         Context applicationContext = getApplicationContext();
