@@ -15,7 +15,7 @@ const test = async()=>{
     const data = await fetch(root)
     console.log(data)
 }
-test()
+//test()
 module.exports={
     send:send,
     fetch:fetch

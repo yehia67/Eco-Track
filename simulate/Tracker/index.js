@@ -103,7 +103,37 @@ const senario_2 = async()=>{
    const readThirdDB = await read(rootDeletedDB)
    console.log(readThirdDB)
 }
-senario_2()
+//senario_2()
+
+const senario_3 = async()=>{
+   const products = {}
+   for(let i = 0; i < 10;i++){
+      products['id-'+i] ={
+         'id':'id-'+i,
+         'eco-percent': 2.5*i +"%"
+      }
+   }
+
+   const firstRoot = await create(products,0)
+   console.log('root',firstRoot)
+   const readFirstDB = await read(firstRoot)
+   console.log(readFirstDB)
+   const newProduct = {
+      'id':'newID-0',
+      'eco-percent':'99%'
+   }
+   const updateRoot = await update(firstRoot,'newProduct',newProduct,0)
+   console.log(updateRoot)
+   console.log('-----------------------')
+   const readUpdatedDB = await read(updateRoot)
+   console.log(readUpdatedDB)
+   console.log('-----------------------')
+   const rootDeletedDB = await deleteRaw(updateRoot,'id-0')
+   console.log(rootDeletedDB)
+   const readThirdDB = await read(rootDeletedDB)
+   console.log(readThirdDB)
+}
+//senario_3()
 
 module.exports={
    create:create,
