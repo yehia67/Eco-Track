@@ -12,6 +12,7 @@ import android.nfc.tech.NfcB;
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -22,19 +23,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -50,44 +59,13 @@ public class MainActivity extends AppCompatActivity {
     Button myItemsButton;
     Button scanNfcTagButton;
     Button setAddress;
-    public static final String root = "FLPYQZOAFZ9COLVBO9LJNZJYIWJJKDDQGZMHYJSLLNTANN9QWFUCQRLUVDQVBNTZUPKNAJAJKAODQVIYN";
-    //private final String[][] techList = {new String[]{NfcA.class.getName(), NfcB.class.getName(), NfcF.class.getName(), NfcV.class.getName(), IsoDep.class.getName(), MifareClassic.class.getName(), MifareUltralight.class.getName(), Ndef.class.getName()}};
-//-----------------------------------------------------------------------------------------------------------------------
-   public void ApiInit(){
-       try{
-
-           RequestQueue requestQueue = Volley.newRequestQueue(this);
-           String URL = "http://192.168.1.4:5002/init";
-           StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
-                   new Response.Listener<String>() {
-                       @Override
-                       public void onResponse(String response) {
-                           Toast.makeText(getApplicationContext(),"Api Init response : "+response, LENGTH_LONG).show();
-                       }
-                   }, new Response.ErrorListener() {
-               @Override
-               public void onErrorResponse(VolleyError error) {
-                   Toast.makeText(getApplicationContext(),error.getLocalizedMessage(), LENGTH_LONG).show();
-               }
-           });
-
-           requestQueue.add(stringRequest);
-
-
-       }catch (Exception e){
-           e.printStackTrace();
-           Toast.makeText(this,"catch error",Toast.LENGTH_SHORT).show();
-       }
-   }
-   //---------------------------------------------------------------------------------
-
-
-
-
+    public  String root = "";
+    public boolean flag = true ;
+    private static final String baseUrl = "http://192.168.1.4:5002/";
     /* access modifiers changed from: protected */
-    public void onActivityResult(int requestCode2, int resultCode, Intent data) {
-        super.onActivityResult(requestCode2, resultCode, data);
-        if (requestCode2 == 1) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
             try {
                 String scannedItem = data.getStringExtra(ScanNfcTag.key);
                 this.mTextView.setText(scannedItem);
@@ -116,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
         historyButton = (Button) findViewById(R.id.historyButton);
         myItemsButton = (Button) findViewById(R.id.myItemsButton);
         getCurrentAddress();
-        ApiInit();
         //Intent intent = getIntent();
         final Intent scanNfcTagIntentGo = new Intent(this, ScanNfcTag.class);
         Context applicationContext = getApplicationContext();
+
 
         changeAddress.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
@@ -133,23 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(scanNfcTagIntentGo, requestCode);
             }
         });
-        /*-----------------------------------------------------------------------------------------------------*/
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.4:5002/test",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(),response, LENGTH_LONG).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.getLocalizedMessage(), LENGTH_LONG).show();
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-        /*-----------------------------------------------------------------------------------------------------*/
     }
 
     public void getCurrentAddress() {
@@ -191,4 +152,5 @@ public class MainActivity extends AppCompatActivity {
         }
         getCurrentAddress();
     }
+
 }
