@@ -15,3 +15,4 @@ const PublishAll = (_products)=>{
 module.exports ={
   execute:PublishAll
 }
+

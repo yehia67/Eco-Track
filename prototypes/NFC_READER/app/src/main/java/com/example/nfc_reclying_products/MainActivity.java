@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
        try{
 
            RequestQueue requestQueue = Volley.newRequestQueue(this);
-           String URL = "http://192.168.1.4:5002/init";
+           String URL = "http://192.168.1.14:5002/init";
            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
                    new Response.Listener<String>() {
                        @Override
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         });
         /*-----------------------------------------------------------------------------------------------------*/
         RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.4:5002/test",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.14:5002/test",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

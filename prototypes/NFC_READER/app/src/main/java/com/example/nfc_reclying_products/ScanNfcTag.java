@@ -143,7 +143,7 @@ public class ScanNfcTag extends AppCompatActivity {
     private void GiveReward(String _productAddress){
         try{
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            String url = "http://192.168.1.4:5002/giveReward"; /*add url and routes IPV4*/
+            String url = "http://192.168.1.14:5002/giveReward"; /*add url and routes IPV4*/
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("root", root);/*put request Body*/
             jsonBody.put("productAddress", _productAddress);
@@ -187,7 +187,7 @@ public class ScanNfcTag extends AppCompatActivity {
         {
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                String url = "http://192.168.1.4:5002/addOwner"; //add url and routes IPV4
+                String url = "http://192.168.1.14:5002/addOwner"; //add url and routes IPV4
                 //JSONArray jsonArray = new JSONArray();
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("root", root);//put request Body

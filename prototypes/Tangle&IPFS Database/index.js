@@ -50,7 +50,7 @@ const main = async()=>{
     const readThirdDB = await read(rootDeletedDB)
     console.log(readThirdDB)
 }
-main()
+//main()
 module.exports={
    create:create,
    read:read,
