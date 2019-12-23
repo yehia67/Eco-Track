@@ -47,6 +47,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity {
     static final int requestCode = 1;
@@ -54,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
     Button changeAddress;
     TextView currentAddress;
     Button historyButton;
-    private TextView mTextView;
+    TextView mTextView;
     SaveReceivingAddress manageAddress = new SaveReceivingAddress();
     Button myItemsButton;
     Button scanNfcTagButton;
     Button setAddress;
-    public  String root = "";
+    public  String root;
     public boolean flag = true ;
     private static final String baseUrl = "http://192.168.1.4:5002/";
     /* access modifiers changed from: protected */
@@ -68,10 +69,11 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             try {
                 String scannedItem = data.getStringExtra(ScanNfcTag.key);
+                AddOwner(scannedItem);
                 this.mTextView.setText(scannedItem);
                 Context applicationContext = getApplicationContext();
                 StringBuilder sb = new StringBuilder();
-                sb.append("message is ");
+                sb.append("product address is ");
                 sb.append(scannedItem);
                 Toast.makeText(applicationContext, sb.toString(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
@@ -94,10 +96,30 @@ public class MainActivity extends AppCompatActivity {
         historyButton = (Button) findViewById(R.id.historyButton);
         myItemsButton = (Button) findViewById(R.id.myItemsButton);
         getCurrentAddress();
-        //Intent intent = getIntent();
+        Intent mainActivitygetIntent1 = getIntent();
         final Intent scanNfcTagIntentGo = new Intent(this, ScanNfcTag.class);
         Context applicationContext = getApplicationContext();
-
+        //------------------------------------------------------------------------------------------
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest initRequest = new StringRequest(Request.Method.GET,baseUrl+"init",new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(),"init response "+response.toString(), LENGTH_LONG).show();
+                root = response ;
+                root = root.replaceAll("\"","");
+                SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("root", MODE_PRIVATE).edit() ;
+                editor.putString("root", root);
+                editor.apply();
+                Toast.makeText(getApplicationContext(),"root stored successfully!", LENGTH_LONG);
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),error.toString(), LENGTH_LONG).show();
+            }
+        });
+        requestQueue.add(initRequest);
+        //------------------------------------------------------------------------------------------
 
         changeAddress.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
@@ -152,5 +174,70 @@ public class MainActivity extends AppCompatActivity {
         }
         getCurrentAddress();
     }
+    //----------------------------------------------------------------------------------------------------------------
+    public void AddOwner(String _productAdress){
+        SharedPreferences sharedPreferences = getSharedPreferences("Local Address", Context.MODE_PRIVATE);
+        String ownerAdderss = sharedPreferences.getString("address", "404 address");
+        if(!(ownerAdderss == "404 address")){
+            try {
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("root",root);
+                jsonBody.put("productAddress",_productAdress);
+                jsonBody.put("ownerAddress",ownerAdderss);
+                final String requestBody = jsonBody.toString();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, baseUrl+"addOwner", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(),"response is "+response, LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),error.toString(), LENGTH_LONG).show();
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                        String responseString = "";
+                        if (response != null) {
+                            responseString = String.valueOf(response.statusCode);
+                            // can get more details such as response.headers
+                        }
+                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                    }
+                };
+                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        0,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+                requestQueue.add(stringRequest);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+             Toast.makeText(getApplicationContext(), ownerAdderss , LENGTH_SHORT).show();
+        }
+
+    }
+    //-----------------------------------------------------------------------------------------------------------
 
 }

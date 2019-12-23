@@ -1,5 +1,7 @@
 package com.example.nfc_reclying_products;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -21,23 +23,32 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import java.io.UnsupportedEncodingException;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ScanNfcTag extends AppCompatActivity {
+import java.io.UnsupportedEncodingException;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
+
+public class ScanForReward extends AppCompatActivity {
     private static final String baseUrl = "http://192.168.1.4:5002/";
     public static final String key = "Key";
-    Intent mainActivityIntentGo ;
+    Intent scanForReward2 ,startMenueIntentGo;
     SaveReceivingAddress manageAddress = new SaveReceivingAddress();
-    Intent scanNfcTagIntent2;
-    public  String root = "";
     private final String[][] techList = new String[][] {
             new String[] {
                     NfcA.class.getName(),
@@ -49,19 +60,16 @@ public class ScanNfcTag extends AppCompatActivity {
                     MifareUltralight.class.getName(), Ndef.class.getName()
             }
     };
-
-
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_scan_nfc_tag);
-        scanNfcTagIntent2 = getIntent();
-        mainActivityIntentGo = new Intent(this, MainActivity.class);
+        setContentView(R.layout.activity_scan_for_reward);
+        scanForReward2 = getIntent();
+        startMenueIntentGo = new Intent(this, startMenue.class);
 
 
     }
 
-    /* access modifiers changed from: protected */
     public void onResume() {
         super.onResume();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -109,8 +117,8 @@ public class ScanNfcTag extends AppCompatActivity {
                 }
                 return;
             }
-            this.scanNfcTagIntent2.putExtra(key, "No NFC found");
-            setResult(-1, this.scanNfcTagIntent2);
+            this.scanForReward2.putExtra(key, "No NFC found");
+            setResult(-1, this.scanForReward2);
             finish();
         }
     }
@@ -120,26 +128,26 @@ public class ScanNfcTag extends AppCompatActivity {
         NdefRecord[] ndefRecords = ndefMessage.getRecords();
         if (ndefRecords == null || ndefRecords.length <= 0) {
             Toast.makeText(this, "No NDEF records found!", Toast.LENGTH_SHORT).show();
-            startActivity(this.mainActivityIntentGo);
+            startActivity(this.startMenueIntentGo);
             return;
         }
         String tagContent = getTextFromNdefRecord(ndefRecords[0]);
         boolean checkAddress = this.manageAddress.checkAddress(tagContent);
         String str = key;
         if (checkAddress) {
-            this.scanNfcTagIntent2.putExtra(str, tagContent);
-            setResult(1, this.scanNfcTagIntent2);
+            this.scanForReward2.putExtra(str, tagContent);
+            setResult(2, this.scanForReward2);
             finish();
 
             return;
         }
         else {
-            Intent intent = this.scanNfcTagIntent2;
+            Intent intent = this.scanForReward2;
             StringBuilder sb = new StringBuilder();
             sb.append("Invalid Address :");
             sb.append(tagContent);
             intent.putExtra(str, sb.toString());
-            setResult(-1, this.scanNfcTagIntent2);
+            setResult(-1, this.scanForReward2);
             finish();
         }
 
@@ -160,4 +168,5 @@ public class ScanNfcTag extends AppCompatActivity {
         }
         return tagContent;
     }
+
 }
