@@ -50,26 +50,26 @@ import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity {
-    static final int requestCode = 1;
+    Constants base_url = new Constants();
+    static final int request_code = 1;
     EditText address;
-    Button changeAddress;
-    TextView currentAddress;
-    Button historyButton;
+    Button change_address;
+    TextView current_address;
+    Button history_button;
     TextView mTextView;
-    SaveReceivingAddress manageAddress = new SaveReceivingAddress();
-    Button myItemsButton;
-    Button scanNfcTagButton;
-    Button setAddress;
+    SaveReceivingAddress manage_address = new SaveReceivingAddress();
+    Button my_items_button;
+    Button scan_nfc_tag_button;
+    Button set_address;
     public  String root;
     public boolean flag = true ;
-    private static final String baseUrl = "http://192.168.1.4:5002/";
     /* access modifiers changed from: protected */
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+    public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
+        super.onActivityResult(_requestCode, _resultCode, _data);
+        if (_requestCode == 1) {
             try {
-                String scannedItem = data.getStringExtra(ScanNfcTag.key);
-                AddOwner(scannedItem);
+                String scannedItem = _data.getStringExtra(ScanNfcTag.key);
+                addOwner(scannedItem);
                 this.mTextView.setText(scannedItem);
                 Context applicationContext = getApplicationContext();
                 StringBuilder sb = new StringBuilder();
@@ -87,21 +87,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_main);
         address = (EditText) findViewById(R.id.address);
-        setAddress = (Button) findViewById(R.id.setAddress);
-        changeAddress = (Button) findViewById(R.id.changeAdress);
-        changeAddress.setVisibility(View.INVISIBLE);
+        set_address = (Button) findViewById(R.id.setAddress);
+        change_address = (Button) findViewById(R.id.changeAdress);
+        change_address.setVisibility(View.INVISIBLE);
         mTextView = (TextView) findViewById(R.id.textView_explanation);
         mTextView.setText("item data will appear here when you start scanning");
-        scanNfcTagButton = (Button) findViewById(R.id.scanNfcTagButton);
-        historyButton = (Button) findViewById(R.id.historyButton);
-        myItemsButton = (Button) findViewById(R.id.myItemsButton);
+        scan_nfc_tag_button = (Button) findViewById(R.id.scanNfcTagButton);
+        history_button = (Button) findViewById(R.id.historyButton);
+        my_items_button = (Button) findViewById(R.id.myItemsButton);
         getCurrentAddress();
-        Intent mainActivitygetIntent1 = getIntent();
-        final Intent scanNfcTagIntentGo = new Intent(this, ScanNfcTag.class);
-        Context applicationContext = getApplicationContext();
+        Intent main_activity_get_intent1 = getIntent();
+        final Intent scan_nfc_tag_intent_go = new Intent(this, ScanNfcTag.class);
         //------------------------------------------------------------------------------------------
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest initRequest = new StringRequest(Request.Method.GET,baseUrl+"init",new Response.Listener<String>(){
+        RequestQueue request_queue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest init_request = new StringRequest(Request.Method.GET,base_url.BASE_URL+"init",new Response.Listener<String>(){
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getApplicationContext(),"init response "+response.toString(), LENGTH_LONG).show();
@@ -118,54 +117,53 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),error.toString(), LENGTH_LONG).show();
             }
         });
-        requestQueue.add(initRequest);
+        request_queue.add(init_request);
         //------------------------------------------------------------------------------------------
 
-        changeAddress.setOnClickListener(new OnClickListener() {
+        change_address.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
                 MainActivity.this.address.setEnabled(true);
-                MainActivity.this.setAddress.setVisibility(View.VISIBLE);
-                MainActivity.this.changeAddress.setVisibility(View.INVISIBLE);
+                MainActivity.this.set_address.setVisibility(View.VISIBLE);
+                MainActivity.this.change_address.setVisibility(View.INVISIBLE);
             }
         });
-        this.scanNfcTagButton.setOnClickListener(new OnClickListener() {
+        this.scan_nfc_tag_button.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
-                startActivityForResult(scanNfcTagIntentGo, requestCode);
+                startActivityForResult(scan_nfc_tag_intent_go, request_code);
             }
         });
     }
 
     public void getCurrentAddress() {
-        currentAddress = (TextView) findViewById(R.id.defaultReceivingAddress);
+        current_address = (TextView) findViewById(R.id.defaultReceivingAddress);
         String str = "404 address";
         SharedPreferences prefs = getSharedPreferences("Local Address", MODE_PRIVATE);
-        String getAddress = prefs.getString("address", "404 address");
-        //String getAddress = getSharedPreferences("Local Address", 0).getString("address", str);
-        if (!getAddress.equals(str)) {
-            changeAddress.setVisibility(View.VISIBLE);
-            changeAddress.setText("Change Address");
+        String get_address = prefs.getString("address", "404 address");
+        if (!get_address.equals(str)) {
+            change_address.setVisibility(View.VISIBLE);
+            change_address.setText("Change Address");
             address.setEnabled(false);
-            setAddress.setVisibility(View.INVISIBLE);
-            scanNfcTagButton.setVisibility(View.VISIBLE);
-            historyButton.setVisibility(View.VISIBLE);
-            myItemsButton.setVisibility(View.VISIBLE);
-            TextView textView = this.currentAddress;
+            set_address.setVisibility(View.INVISIBLE);
+            scan_nfc_tag_button.setVisibility(View.VISIBLE);
+            history_button.setVisibility(View.VISIBLE);
+            my_items_button.setVisibility(View.VISIBLE);
+            TextView text_view = this.current_address;
             StringBuilder sb = new StringBuilder();
             sb.append("Your current address is ");
-            sb.append(getAddress);
-            textView.setText(sb.toString());
+            sb.append(get_address);
+            text_view.setText(sb.toString());
             return;
         }
-        this.setAddress.setText("Set Adress");
-        this.scanNfcTagButton.setVisibility(View.INVISIBLE);
-        this.historyButton.setVisibility(View.INVISIBLE);
-        this.myItemsButton.setVisibility(View.INVISIBLE);
+        this.set_address.setText("Set Adress");
+        this.scan_nfc_tag_button.setVisibility(View.INVISIBLE);
+        this.history_button.setVisibility(View.INVISIBLE);
+        this.my_items_button.setVisibility(View.INVISIBLE);
     }
 
-    public void storeAddress(View view) {
-        if (manageAddress.checkAddress(address.getText().toString())) {
+    public void storeAddress(View _view) {
+        if (manage_address.checkAddress(address.getText().toString())) {
             try {
-                manageAddress.storeAddress(this.address.getText().toString(), getApplicationContext());
+                manage_address.storeAddress(this.address.getText().toString(), getApplicationContext());
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -175,19 +173,19 @@ public class MainActivity extends AppCompatActivity {
         getCurrentAddress();
     }
     //----------------------------------------------------------------------------------------------------------------
-    public void AddOwner(String _productAdress){
-        SharedPreferences sharedPreferences = getSharedPreferences("Local Address", Context.MODE_PRIVATE);
-        String ownerAdderss = sharedPreferences.getString("address", "404 address");
-        if(!(ownerAdderss == "404 address")){
+    public void addOwner(String _productAdress){
+        SharedPreferences shared_preferences = getSharedPreferences("Local Address", Context.MODE_PRIVATE);
+        String owner_adderss = shared_preferences.getString("address", "404 address");
+        if(!(owner_adderss == "404 address")){
             try {
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                JSONObject jsonBody = new JSONObject();
-                jsonBody.put("root",root);
-                jsonBody.put("productAddress",_productAdress);
-                jsonBody.put("ownerAddress",ownerAdderss);
-                final String requestBody = jsonBody.toString();
+                RequestQueue request_queue = Volley.newRequestQueue(getApplicationContext());
+                JSONObject json_body = new JSONObject();
+                json_body.put("root",root);
+                json_body.put("productAddress",_productAdress);
+                json_body.put("ownerAddress",owner_adderss);
+                final String request_body = json_body.toString();
 
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, baseUrl+"addOwner", new Response.Listener<String>() {
+                StringRequest string_request = new StringRequest(Request.Method.POST, base_url.BASE_URL+"addOwner", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(getApplicationContext(),"response is "+response, LENGTH_LONG).show();
@@ -206,9 +204,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public byte[] getBody() throws AuthFailureError {
                         try {
-                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                            return request_body == null ? null : request_body.getBytes("utf-8");
                         } catch (UnsupportedEncodingException uee) {
-                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", request_body, "utf-8");
                             return null;
                         }
                     }
@@ -223,18 +221,18 @@ public class MainActivity extends AppCompatActivity {
                         return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
                     }
                 };
-                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                string_request.setRetryPolicy(new DefaultRetryPolicy(
                         0,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-                requestQueue.add(stringRequest);
+                request_queue.add(string_request);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         else {
-             Toast.makeText(getApplicationContext(), ownerAdderss , LENGTH_SHORT).show();
+             Toast.makeText(getApplicationContext(), owner_adderss , LENGTH_SHORT).show();
         }
 
     }

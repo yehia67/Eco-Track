@@ -23,7 +23,7 @@
         tools:ignore="HardcodedDebugMode">
         <activity android:name=".ScanForReward"></activity>
         <activity android:name=".ScanNfcTag" />
-        <activity android:name=".startMenue">
+        <activity android:name=".StartMenue">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

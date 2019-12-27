@@ -18,7 +18,6 @@ import static java.lang.Character.isLowerCase;
 import static java.lang.Character.isUpperCase;
 
 public class SaveReceivingAddress extends AppCompatActivity {
-    TextView currentAddress;
     public boolean checkAddress(String _address) {
         if ((_address.codePointCount(0,_address.length()) == 90 || _address.codePointCount(0,_address.length()) == 81)) {
             for (int i = 0; i < _address.length(); i++) {
@@ -28,6 +27,7 @@ public class SaveReceivingAddress extends AppCompatActivity {
             }
             return true;
         }
+
         else{
             return false;
         }

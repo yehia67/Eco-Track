@@ -18,26 +18,10 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.entity.mime.Header;
 
 public class ApiCalls {
-    private static final String BASE_URL = "http://192.168.1.4:5002/";
+    Constants base_url = new Constants();
     private static AsyncHttpClient client = new AsyncHttpClient();
-    public void  get(String url) {
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
-    }
 
-
-
-    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public  void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
     public static void getByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
@@ -48,8 +32,8 @@ public class ApiCalls {
         client.post(url, params, responseHandler);
     }
 
-    private static String getAbsoluteUrl(String relativeUrl) {
-        return BASE_URL + relativeUrl;
+    private  String getAbsoluteUrl(String relativeUrl) {
+        return base_url.BASE_URL + relativeUrl;
     }
 
 

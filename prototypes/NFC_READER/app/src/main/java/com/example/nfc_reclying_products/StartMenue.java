@@ -35,21 +35,20 @@ import java.util.TimerTask;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class startMenue extends AppCompatActivity {
-    Button clientAppButton ,trashAppButton;
-    static final int requestCode = 2;
-    private static final String baseUrl = "http://192.168.1.4:5002/";
-    Intent clientApp ,trashApp;
-    Intent trashAppIntentGo ;
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2) {
+public class StartMenue extends AppCompatActivity {
+    Button client_app_button ,trash_app_button;
+    static final int request_code = 2;
+    Constants base_url = new Constants();
+    Intent client_app ,trash_app_intent_go;
+    public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
+        super.onActivityResult(_requestCode, _resultCode, _data);
+        if (_requestCode == 2) {
             try {
-                String scannedItem = data.getStringExtra(ScanNfcTag.key);
+                String scanned_item = _data.getStringExtra(ScanNfcTag.key);
                 StringBuilder sb = new StringBuilder();
                 sb.append("product to be recycled address is ");
-                sb.append(scannedItem);
-                GiveReward(scannedItem);
+                sb.append(scanned_item);
+                giveReward(scanned_item);
                 Toast.makeText(getApplicationContext(), sb.toString(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "You scanned nothing", Toast.LENGTH_SHORT).show();
@@ -60,17 +59,17 @@ public class startMenue extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_menue);
-        clientApp = new Intent(getApplicationContext() ,MainActivity.class);
-        trashAppIntentGo = new Intent(getApplicationContext(),ScanForReward.class);
-        clientAppButton =(Button)findViewById(R.id.clientAppButton);
-        trashAppButton = (Button)findViewById(R.id.trashAppButton);
-        clientAppButton.setOnClickListener(new View.OnClickListener() {
+        client_app = new Intent(getApplicationContext() ,MainActivity.class);
+        trash_app_intent_go = new Intent(getApplicationContext(),ScanForReward.class);
+        client_app_button =(Button)findViewById(R.id.clientAppButton);
+        trash_app_button = (Button)findViewById(R.id.trashAppButton);
+        client_app_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 //-------------------------------------------------------------------------------------------------------
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest testRequest = new StringRequest(Request.Method.GET,baseUrl+"test",new Response.Listener<String>(){
+                RequestQueue request_queue = Volley.newRequestQueue(getApplicationContext());
+                StringRequest test_request = new StringRequest(Request.Method.GET,base_url.BASE_URL+"test",new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(getApplicationContext(),response.toString(), LENGTH_LONG).show();
@@ -81,34 +80,34 @@ public class startMenue extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),error.toString(), LENGTH_LONG).show();
                     }
                 });
-                 requestQueue.add(testRequest);
+                request_queue.add(test_request);
 
                 //-------------------------------------------------------------------------------------------------------
 
-                startActivity(clientApp);
+                startActivity(client_app);
             }
         });
-        trashAppButton.setOnClickListener(new View.OnClickListener() {
+        trash_app_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(trashAppIntentGo ,requestCode);
+                startActivityForResult(trash_app_intent_go ,request_code);
             }
         });
 
     }
     //----------------------------------------------------------------------------------------------------------------
-    public void GiveReward(String _productAdress){
-        SharedPreferences sharedPreferences = getSharedPreferences("root", Context.MODE_PRIVATE);
-        String rootAddress = sharedPreferences.getString("root", "404 address");
-        if(!(rootAddress == "404 address")){
+    public void giveReward(String _productAdress){
+        SharedPreferences shared_preferences = getSharedPreferences("root", Context.MODE_PRIVATE);
+        String root_address = shared_preferences.getString("root", "404 address");
+        if(!(root_address == "404 address")){
             try {
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                JSONObject jsonBody = new JSONObject();
-                jsonBody.put("root",rootAddress);
-                jsonBody.put("productAddress",_productAdress);
-                final String requestBody = jsonBody.toString();
+                RequestQueue request_queue = Volley.newRequestQueue(getApplicationContext());
+                JSONObject json_body = new JSONObject();
+                json_body.put("root",root_address);
+                json_body.put("productAddress",_productAdress);
+                final String request_body = json_body.toString();
 
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, baseUrl+"giveReward", new Response.Listener<String>() {
+                StringRequest string_request = new StringRequest(Request.Method.POST, base_url.BASE_URL+"giveReward", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(getApplicationContext(),"response is "+response, LENGTH_LONG).show();
@@ -128,35 +127,35 @@ public class startMenue extends AppCompatActivity {
                     @Override
                     public byte[] getBody() throws AuthFailureError {
                         try {
-                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                            return request_body == null ? null : request_body.getBytes("utf-8");
                         } catch (UnsupportedEncodingException uee) {
-                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", request_body, "utf-8");
                             return null;
                         }
                     }
 
                     @Override
                     protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                        String responseString = "";
+                        String response_string = "";
                         if (response != null) {
-                            responseString = String.valueOf(response.statusCode);
+                            response_string = String.valueOf(response.statusCode);
                             // can get more details such as response.headers
                         }
-                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                        return Response.success(response_string, HttpHeaderParser.parseCacheHeaders(response));
                     }
                 };
-                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                string_request.setRetryPolicy(new DefaultRetryPolicy(
                         0,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-                requestQueue.add(stringRequest);
+                request_queue.add(string_request);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         else {
-            Toast.makeText(getApplicationContext(), rootAddress , LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), root_address , LENGTH_SHORT).show();
         }
 
     }
