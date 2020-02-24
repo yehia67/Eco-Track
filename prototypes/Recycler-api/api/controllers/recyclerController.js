@@ -24,12 +24,8 @@ exports.addOwner = async (req,res) =>{
   console.log('owner address =',req.body.ownerAddress.length)
 
   const response = await manageClients.addNewOwner(req.body.root,req.body.productAddress,req.body.ownerAddress)
-<<<<<<< HEAD
-  res.json("added Owenr new root ")
-=======
   console.log(('------------------------------response is  '+response))
   res.json(response)
->>>>>>> 8cc6d242c4e794a3de48bc2c2a2b3d9d15822420
 }
 exports.giveReward = async (req,res) =>{
   const response = await giveReward.execute(req.body.root,req.body.productAddress)
