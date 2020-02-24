@@ -5,6 +5,9 @@ const cat = async (hash) =>{
     console.log("read hash =",hash)
     return content.toString()
 }
+/*cat('QmYhGkWQ1V1bThZjvvX8qzBH66rAkCteVKRy7kcKtBFhoD').then(function(r){
+    console.log(r)
+})*/
 module.exports = {
     execute : cat
 }

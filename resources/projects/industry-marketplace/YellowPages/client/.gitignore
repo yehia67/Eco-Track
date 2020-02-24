@@ -1,0 +1,13 @@
+*.log
+
+# Dependency directories
+node_modules/
+
+.npmrc
+config.json
+config_backup.json
+/build
+
+# DS_Store
+.DS_Store
+*/**/.DS_Store
