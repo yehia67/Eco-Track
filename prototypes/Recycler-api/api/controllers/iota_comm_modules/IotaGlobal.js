@@ -6,9 +6,9 @@ const seed = 'XGIVJKNUIDKDVAXGRK9SFXYFVOLEHSJOIZVROT9DUAMYUUXPPBZWYQWJNEYPVKOMKR
 // Define the depth that the node will use for tip selection
 const depth = 3;
 // Define the minimum weight magnitude for the Devnet
-const minimumWeightMagnitude = 9;
+const minimumWeightMagnitude = 14;
 //MAM
-const providerLink = 'https://nodes.devnet.iota.org:443'
+const providerLink = 'https://nodes.thetangle.org/'
 const sideKey = 'DONTSHARETHISPASSWORD'
 
 let mamState = Mam.init(providerLink)

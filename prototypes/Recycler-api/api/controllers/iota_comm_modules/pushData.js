@@ -10,7 +10,7 @@ const pushData = async(_secretKey,_provider,packet) =>{
     iotaGlobal.mamState = message.state
 
     // Attach the payload
-    await Mam.attach(message.payload, message.address, 3, 9)
+    await Mam.attach(message.payload, message.address, 3, 14)
 
     return message.root
 }

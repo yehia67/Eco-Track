@@ -2,7 +2,7 @@ const fetchRoot = require('./fetchRoot')
 const sendData = require('./pushData')
 
 const send = async(data) =>{
-    const root = await sendData.execute('DONTSHARETHISPASSWORD','https://nodes.devnet.iota.org:443',data)
+    const root = await sendData.execute('DONTSHARETHISPASSWORD','https://nodes.thetangle.org/',data)
     return root
 }
 const fetch = async(root) =>{

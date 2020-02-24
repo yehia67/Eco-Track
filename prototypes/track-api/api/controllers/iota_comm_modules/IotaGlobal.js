@@ -4,7 +4,7 @@ const Mam = require('@iota/mam')
 const seed = 'IOWPPONJTYHHVRFRGFRWRVQU9VDMQYLEVVEABJPW9PT9F9SYMGIOFDXPYSLGESFTMBSJECQEPLHGWWYRZ'
 let address = 'YEHIA9TA9COPCTMOIFUEJVGUNDLSSJQCORYMEAZHRAUJXH9HGNI99BMLQDQOZNCLNVOLFMSFUIVPMYXDWEZFSZQROC'
 const iota =iotaLibrary.composeAPI({
-    provider: 'https://nodes.devnet.iota.org:443'
+    provider: 'https://nodes.thetangle.org/'
 })
 const SetAddress = (_address) =>{
     address = _address;

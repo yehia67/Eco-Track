@@ -6,7 +6,7 @@ const IotaGlobal = require('./IotaGlobal')
 
 
 
-let mamState = IotaGlobal.Mam.init('https://nodes.devnet.iota.org:443')
+let mamState = IotaGlobal.Mam.init('https://nodes.thetangle.org/')
 
 // We are using MAM restricted mode with a shared secret in this example
 const mamType = 'restricted'
@@ -22,14 +22,14 @@ const Publish = async data => {
   mamState = message.state
 
   // Attach the message
-  await IotaGlobal.Mam.attach(message.payload, message.address, 3, 9)
+  await IotaGlobal.Mam.attach(message.payload, message.address, 3, 14)
   return message.root
   
 }
 
-/* Publish("Data data").then(function(r){
+Publish("Data data").then(function(r){
 console.log(r)
-}) */
+}) 
 module.exports ={
   execute:Publish
 }

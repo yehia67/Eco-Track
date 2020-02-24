@@ -5,21 +5,7 @@ const getLastHash = (AsciiArray) =>{
    const lastHash = AsciiArray[AsciiArray.length-1]
    return lastHash.substring(1,lastHash.length-1)
 }
-const deployProducts = async (DBJSON)=>{
-   const products = JSON.parse(JSON.stringify(DBJSON))
-   const root = await manageMAM.send('initialized root')
-   const addresses = []
-   Array.prototype.forEach.call(products,async(product) =>{
-      let productIPFShash =  await addToIPFS.execute(JSON.parse(JSON.stringify(product)))
-      let address = await manageMAM.send(productIPFShash)
-      addresses.push(address)
-    })
-   const productDetails = {
-      'root':root,
-      'addresses':addresses
-   }
-   return productDetails
-}
+
 const create = async(DBJSON,option)=>{
    if(option === 0){
      const ipfsHash = await addToIPFS.execute(JSON.parse(JSON.stringify(DBJSON)))
@@ -54,6 +40,21 @@ const deleteRaw = async(root,key)=>{
    delete DBjson[key];
    const newRoot = await create(DBjson,0)
    return newRoot
+}
+const deployProducts = async (DBJSON)=>{
+   const products = JSON.parse(JSON.stringify(DBJSON))
+   const root = await manageMAM.send('initialized root')
+   const addresses = []
+   Array.prototype.forEach.call(products,async(product) =>{
+      let productIPFShash =  await addToIPFS.execute(JSON.parse(JSON.stringify(product)))
+      let address = await manageMAM.send(productIPFShash)
+      addresses.push(address)
+    })
+   const productDetails = {
+      'root':root,
+      'addresses':addresses
+   }
+   return productDetails
 }
 const senario_1 = async()=>{
     const yarab = {}

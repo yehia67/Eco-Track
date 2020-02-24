@@ -1,8 +1,0 @@
-{
-  "sensorId": "RecylerModule",
-  "secretKey": "DDGBLQAGZPUEBUZ",
-  "debug": true,
-  "provider": "undefined",
-  "endpoint": "https://us-central1-datamarket-617e1.cloudfunctions.net/newData",
-  "serverUrl": "https://swapi.co/api/vehicles/"
-}

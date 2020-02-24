@@ -90,10 +90,10 @@ const init = async()=>{
 
 
 }
-  /* init().then(function(r){
+/*  init().then(function(r){
     console.log('**************************************')
     console.log(r)
-})    */
+})     */
 module.exports ={
     init:initializePropreries,
     addNewClient:addNewClient,
