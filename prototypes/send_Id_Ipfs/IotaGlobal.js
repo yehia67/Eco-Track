@@ -6,7 +6,7 @@ const address = 'YEHIA9TA9COPCTMOIFUEJVGUNDLSSJQCORYMEAZHRAUJXH9HGNI99BMLQDQOZNC
 const ipfsLibrary = require('ipfs-mini')
 const ipfs = new ipfsLibrary({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 const iota =iotaLibrary.composeAPI({
-    provider: 'https://nodes.devnet.iota.org:443'
+    provider: 'http://localhost:14265:443'
 })
 
 module.exports = {

@@ -18,7 +18,7 @@ const SendPublicTransaction = (_seed,_address,_message) =>{
   ]
         IotaGlobal.iota
           .prepareTransfers(_seed, transfers)
-          .then(trytes => IotaGlobal.iota.sendTrytes(trytes, 3, 14))
+          .then(trytes => IotaGlobal.iota.sendTrytes(trytes, 3, 9))
           .then(bundle => {
             console.log('Transfer successfully sent')
             bundle.map(tx => console.log(tx))

@@ -3,7 +3,7 @@ const sendData = require('./pushData')
 const iotaGlobal = require('./IotaGlobal')
 
 const send = async(data) =>{
-    const root = await sendData.execute('DONTSHARETHISPASSWORD','https://nodes.devnet.iota.org:443',data)
+    const root = await sendData.execute('DONTSHARETHISPASSWORD','http://localhost:14265:443',data)
     return root
 }
 const fetch = async(root) =>{

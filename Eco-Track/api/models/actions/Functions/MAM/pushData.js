@@ -1,7 +1,7 @@
 const Mam = require('@iota/mam')
 const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
 const iotaGlobal = require('./IotaGlobal')
-const pushData = async(_secretKey,_provider,packet) =>{
+const pushData = async(packet) =>{
 
     const trytes = asciiToTrytes(JSON.stringify(packet))
     const message = Mam.create(iotaGlobal.mamState, trytes)
@@ -14,7 +14,12 @@ const pushData = async(_secretKey,_provider,packet) =>{
 
     return message.root
 }
-
+const test = async()=>{
+    
+    const result = await pushData('aaaaa')
+    console.log(result)
+}
+//test()
 module.exports ={
     execute:pushData
 }

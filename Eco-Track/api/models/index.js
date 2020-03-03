@@ -33,7 +33,7 @@ const deleteRaw = async(root,key)=>{
    const newRoot = await create(DBjson)
    return newRoot
 }
-const main = async()=>{
+const test = async()=>{
     const yarab = {}
     yarab['isa'] = "yarab yarab"
     yarab['bsmlah'] = "yarab yarab"
@@ -50,7 +50,7 @@ const main = async()=>{
     const readThirdDB = await read(rootDeletedDB)
     console.log(readThirdDB)
 }
-main()
+//test()
 module.exports={
    create:create,
    read:read,

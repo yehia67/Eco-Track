@@ -2,7 +2,7 @@ const fetchRoot = require('./fetchRoot')
 const sendData = require('./pushData')
 
 const send = async(data) =>{
-    const root = await sendData.execute('DONTSHARETHISPASSWORD','http://localhost:14265',data)
+    const root = await sendData.execute(data)
     return root
 }
 const fetch = async(root) =>{

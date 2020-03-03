@@ -7,20 +7,7 @@ const trackedProducts = {
   rootAddress: ''
 } 
 
-//For Testing
-/* const products = [{
-  id: '15p6013',
-  time: (new Date()).toLocaleString()
-},
-{
-  id:'229219',
-  location:'home'
-}
-]
-initComm(products).then(function (params) {
-  console.log(params)
-}) 
- */
+
 const init = (_products)=>{
     SendMamRestricted.execute("initialize root").then(function(result) {
       trackedProducts['rootAddress'] = result
@@ -39,6 +26,22 @@ const initRecycling = () =>{
   addressAndId.push('clientID')
   postCall.post("http://localhost:3002/initClient",addressAndId)
 }
+//For Testing
+/* const products = [{
+  id: '15p6013',
+  time: (new Date()).toLocaleString()
+},
+{
+  id:'229219',
+  location:'home'
+}
+]
+initComm(products).then(function (params) {
+  console.log(params)
+})  
+init(products).then(function(v){
+  console.log(v)
+}) */
 
  module.exports ={
     execute:initComm

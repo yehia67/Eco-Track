@@ -8,7 +8,7 @@ const depth = 3;
 // Define the minimum weight magnitude for the Devnet
 const minimumWeightMagnitude = 14;
 //MAM
-const providerLink = 'https://nodes.thetangle.org/'
+const providerLink = 'http://localhost:14265'
 const sideKey = 'DONTSHARETHISPASSWORD'
 
 let mamState = Mam.init(providerLink)
