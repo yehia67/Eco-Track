@@ -1,5 +1,6 @@
 
 const users = require('../authentication/initUsers')
+
 const create = async(_key,_products) =>{
     const products = {}
     for (let index = 0; index < _products.length; index++) {
@@ -9,17 +10,7 @@ const create = async(_key,_products) =>{
     return addr
  }
 
-const test = async()=>{
-    const products = [
-    {'id':'001','eco-friendly':'5%','date':Date()},
-    {'id':'002','eco-friendly':'5%','date':Date()}
-    ]
-   await create(key_test,products)
-   const user = await users.getUser(key_test) 
-   console.log(user)
-}
 
-//test()
 module.exports ={
     execute:create
 }
