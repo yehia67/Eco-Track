@@ -2,8 +2,9 @@ const Model = require('../../models/index')
 const generatKey = require('./generateSeeds')
 let env_root = 'XJ9N9YXEGRQGHAOXEOOUOIYKUWZAVQLLWUXACEOPURZXDNAS9MTFPGQXURNGDEAATDFGYSLQJXRPBDVMV'
 
-const users = async()=>{
+const init = async()=>{
     const root = await Model.create({'seed':[]})
+    env_root = root
     return root
  }
 
@@ -18,25 +19,28 @@ const users = async()=>{
    await Model.update(env_root,new_key,[user_json])
    return new_key
  }
- const updateUser = async(_key,newData)=>{
-    const user = await getUser(_key)
-    user.push(newData)
-    const address =  await Model.update(env_root,_key,user)
-    return address
- }
+
  const verify = async(_key)=>{
-     const users = await Model.read(env_root)
-     const users_json = JSON.parse(users)
-     if (users_json[_key]) {
-         return true
-     }
-     else{
-         return false
-     }
- }
- /**
-  * Gets
-  */
+    const users = await Model.read(env_root)
+    const users_json = JSON.parse(users)
+    if (users_json[_key]) {
+        return true
+    }
+    else{
+        return false
+    }
+}
+
+const getuserInfo = async(_key)=>{
+    const check = await verify(_key)
+    if (!check) {
+        throw new Error('User not registrated')
+    }
+    const get_users = await Model.read(env_root)
+    const get_users_json = JSON.parse(get_users)
+    return get_users_json[_key][0]
+}
+
 const getUser = async(_key)=>{
     const check = await verify(_key)
      if (!check) {
@@ -46,15 +50,17 @@ const getUser = async(_key)=>{
     const users_json = JSON.parse(users)
     return users_json[_key]
 } 
-const getuserInfo = async(_key)=>{
-     const check = await verify(_key)
-     if (!check) {
-         throw new Error('User not registrated')
-     }
-     const get_users = await Model.read(env_root)
-     const get_users_json = JSON.parse(get_users)
-     return get_users_json[_key][0]
+
+ const updateUser = async(_key,newData)=>{
+    const user = await getUser(_key)
+    user.push(newData)
+    const address =  await Model.update(env_root,_key,user)
+    return address
  }
+
+
+
+
 /**
  * Tests
  */
@@ -77,7 +83,7 @@ const create = async(_key,_products) =>{
     const address =  await Model.update(env_root,_key,producer)
  }
 const test = async()=>{
-    const rootTest = await users()
+    const rootTest = await init()
     env_root = rootTest
     console.log("env root = ",env_root)
     console.log('-------------------------------------------------------------------------')
@@ -118,8 +124,9 @@ const test = async()=>{
     const uers_1 = await getUser(addUserTest_1)
     console.log(uers_1)
 }
-test()
+//test()
  module.exports ={
+    init:init, 
     root:env_root,
     addUser:addUser,
     updateUser:updateUser,
