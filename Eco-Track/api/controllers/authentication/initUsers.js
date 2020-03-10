@@ -5,6 +5,7 @@ let env_root = 'XJ9N9YXEGRQGHAOXEOOUOIYKUWZAVQLLWUXACEOPURZXDNAS9MTFPGQXURNGDEAA
 const init = async()=>{
     const root = await Model.create({'seed':[]})
     env_root = root
+    console.log('initalize api with root =',env_root)
     return root
  }
 
@@ -12,8 +13,8 @@ const init = async()=>{
    const user_json = {
        "fname":_fname,
        "lname":_lname,
-       "_email":_email,
-       "_bussines_info":_bussines_info
+       "email":_email,
+       "bussines_info":_bussines_info
    }
    const new_key = generatKey.execute()
    await Model.update(env_root,new_key,[user_json])
@@ -31,7 +32,7 @@ const init = async()=>{
     }
 }
 
-const getuserInfo = async(_key)=>{
+const getUserInfo = async(_key)=>{
     const check = await verify(_key)
     if (!check) {
         throw new Error('User not registrated')
@@ -62,8 +63,8 @@ const getUser = async(_key)=>{
     init:init, 
     root:env_root,
     addUser:addUser,
-    updateUser:updateUser,
     verify:verify,
+    getUserInfo:getUserInfo,
     getUser:getUser,
-    getuserInfo:getuserInfo
+    updateUser:updateUser 
 }

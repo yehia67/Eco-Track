@@ -3,7 +3,13 @@ const assert = require('assert')
 const userTest = require('../api/controllers/authentication/initUsers')
 
 const createProductsTest = require('../api/controllers/Products/createProducts')
+const getProductsInfoTest  = require('../api/controllers/Products/getProductInfo')
+const getProductsHistoryTest  = require('../api/controllers/Products/getProductHistory')
+
 const updateProductsTest = require('../api/controllers/Products/updateProducts')
+
+
+
 describe('Test initializing root', ()=> {
     it('should return string with length 81',async ()=>{
        const root = await userTest.init()
@@ -63,7 +69,18 @@ describe('Products Managements', ()=> {
        assert.notEqual(user_from_old_key,user_from_new_key)
 
     })
-
+    it('Test Get the product info',async ()=>{
+      await userTest.init()
+      const userKey = await userTest.addUser('yehia','belo','yehia@belo.com','money money money')
+      const products = [
+       {'id':'001','eco-friendly':'5%','date':Date()},
+       {'id':'002','eco-friendly':'5%','date':Date()}
+       ]
+      await createProductsTest.execute(userKey,products)
+      const productInfo = await getProductsInfoTest.execute(userKey+',,'+'001')
+      assert.equal(productInfo.id,products[0].id)
+   })
+  
     it('products should been updated',async ()=>{
         await userTest.init()
         const userKey = await userTest.addUser('yehia','belo','yehia@belo.com','money money money')
@@ -75,11 +92,21 @@ describe('Products Managements', ()=> {
         const user_from_old_key = await userTest.getUser(userKey)
         await updateProductsTest.execute(userKey,'001',{'shipper':'the product is broken'})
         const user_from_new_key = await userTest.getUser(userKey)
-        console.log('user before adding products')
-        console.log(user_from_old_key)
-        console.log('user after adding products')
-        console.log(user_from_new_key)
         assert.notEqual(user_from_old_key,user_from_new_key)
      })
 
+     it('Test Get the product history',async ()=>{
+      await userTest.init()
+      const userKey = await userTest.addUser('yehia','belo','yehia@belo.com','money money money')
+      const products = [
+       {'id':'001','eco-friendly':'5%','date':Date()},
+       {'id':'002','eco-friendly':'5%','date':Date()}
+       ]
+      await createProductsTest.execute(userKey,products)
+      await updateProductsTest.execute(userKey,'001',{'shipper':'the product is broken'})
+      const productHistory = await getProductsHistoryTest.execute(userKey+',,'+'001')
+      assert.equal(productHistory[0].id,products[0].id)
+      assert.equal(productHistory[1].shipper,'the product is broken')
+
+   })
 })
