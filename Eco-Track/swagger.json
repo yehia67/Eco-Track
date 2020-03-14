@@ -1,0 +1,168 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Eco-Track For Supply Chain And Recycling",
+        "description": "Smart System To Manage Supply Chain Using Blockchain Next Generation",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:4000",
+    "basePath": "/",
+    "tags": [{
+        "name": "Users",
+        "description": "API for Users in the system"
+    }],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/Users/add": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Add new producer in system",
+                "parameters": [{
+                    "name": "producer",
+                    "in": {
+
+                        "name": "userId",
+                        "schema": {
+                            "type": "integer",
+                            "required": true,
+                            "description": "Numeric ID of the user to get"
+                        }
+                    },
+                    "description": "Producer that we want to create"
+                }],
+                "produces": [
+                    "String"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "81 Capital letters with 9 digit",
+
+                        "schema": {
+                            "example": {
+                                "address": "XGIVJKNUIDKDVAXGRK9SFXYFVOLEHSJOIZVROT9DUAMYUUXPPBZWYQWJNEYPVKOMKR9SNRYSZXUHDFKNB"
+                            },
+
+                            "Model": {
+                                "ay aa;": "Sdasdadsds"
+                            }
+
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "parameters": [{
+                "name": "userId",
+                "in": "path",
+                "required": true,
+                "description": "ID of user that we want to find",
+                "type": "string"
+            }],
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user with given ID",
+                "responses": {
+                    "200": {
+                        "description": "User is found",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete user with given ID",
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User is deleted",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update user with give ID",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [{
+                    "name": "user",
+                    "in": "body",
+                    "description": "User with new values of properties",
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "User is updated",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Producer": {
+            "required": [
+                "fname",
+                "lname",
+                "email",
+                "bussines_info"
+            ],
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "bussines_info": {
+                    "type": "string"
+                }
+            }
+        },
+        "Users": {
+            "type": "array",
+            "$ref": "#/definitions/Producer"
+        }
+    }
+}

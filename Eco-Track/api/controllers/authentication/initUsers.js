@@ -24,7 +24,7 @@ const init = async()=>{
  const verify = async(_key)=>{
     const users = await Model.read(env_root)
     const users_json = JSON.parse(users)
-    if (users_json[_key]) {
+    if (users_json[_key] ) {
         return true
     }
     else{
@@ -59,6 +59,11 @@ const getUser = async(_key)=>{
     return address
  }
 
+ const deleteUser = async(_key) =>{ 
+    const address =  await Model.update(env_root,_key,false) 
+    return address 
+}
+
  module.exports ={
     init:init, 
     root:env_root,
@@ -66,5 +71,6 @@ const getUser = async(_key)=>{
     verify:verify,
     getUserInfo:getUserInfo,
     getUser:getUser,
-    updateUser:updateUser 
+    updateUser:updateUser,
+    deleteUser:deleteUser 
 }

@@ -29,17 +29,17 @@ describe('Users authentiactions', ()=> {
     it('get user personal info',async ()=>{
         await userTest.init()
         const userKey = await userTest.addUser('yehia','belo','yehia@belo.com','money money money')
-        const info = await userTest.getuserInfo(userKey)
+        const info = await userTest.getUserInfo(userKey)
         const user_json = {
             "fname":'yehia',
             "lname":'belo',
-            "_email":'yehia@belo.com',
-            "_bussines_info":'money money money'
+            "email":'yehia@belo.com',
+            "bussines_info":'money money money'
         }
         assert.equal(info.fname,user_json.fname)
         assert.equal(info.lname,user_json.lname)
-        assert.equal(info._email,user_json._email)
-        assert.equal(info._bussines_info,user_json._bussines_info)
+        assert.equal(info.email,user_json.email)
+        assert.equal(info.bussines_info,user_json.bussines_info)
      })
      it('get/update user',async ()=>{
         await userTest.init()
@@ -49,6 +49,13 @@ describe('Users authentiactions', ()=> {
         assert.equal(user_from_key[1][0]["001"][0].id ,"001") 
         assert.equal(user_from_key[1][1]["002"][0].id,"002")     
      })
+     it('user should be deleted',async ()=>{
+      await userTest.init()
+      const userKey = await userTest.addUser('yehia','belo','yehia@belo.com','money money money')
+      await userTest.deleteUser(userKey)
+      const checkUser = await userTest.verify(userKey)
+      assert.equal(checkUser,false)   
+   })
 })
 
 describe('Products Managements', ()=> {
@@ -90,7 +97,7 @@ describe('Products Managements', ()=> {
          ]
         await createProductsTest.execute(userKey,products)
         const user_from_old_key = await userTest.getUser(userKey)
-        await updateProductsTest.execute(userKey,'001',{'shipper':'the product is broken'})
+        await updateProductsTest.execute(userKey+',,'+'001',{'shipper':'the product is broken'})
         const user_from_new_key = await userTest.getUser(userKey)
         assert.notEqual(user_from_old_key,user_from_new_key)
      })
@@ -103,7 +110,7 @@ describe('Products Managements', ()=> {
        {'id':'002','eco-friendly':'5%','date':Date()}
        ]
       await createProductsTest.execute(userKey,products)
-      await updateProductsTest.execute(userKey,'001',{'shipper':'the product is broken'})
+      await updateProductsTest.execute(userKey+',,'+'001',{'shipper':'the product is broken'})
       const productHistory = await getProductsHistoryTest.execute(userKey+',,'+'001')
       assert.equal(productHistory[0].id,products[0].id)
       assert.equal(productHistory[1].shipper,'the product is broken')
