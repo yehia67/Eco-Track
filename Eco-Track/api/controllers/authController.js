@@ -6,7 +6,7 @@ manageUser.init().then((root)=>{
 
 exports.add = async (req,res) =>{
     const response = await manageUser.addUser(req.body.fname,req.body.lname,req.body.email,req.body.bussines_info)
-    res.json('Your key is '+ response )
+    res.json({"seed":response.new_key, "key":response.secuirty_key} )
 }
 
 exports.getUserInfo = async (req,res) =>{

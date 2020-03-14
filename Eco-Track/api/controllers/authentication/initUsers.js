@@ -1,5 +1,6 @@
 const Model = require('../../models/index')
 const generatKey = require('./generateSeeds')
+const secuirtyKey = require('./secuirtyKey')
 let env_root = 'XJ9N9YXEGRQGHAOXEOOUOIYKUWZAVQLLWUXACEOPURZXDNAS9MTFPGQXURNGDEAATDFGYSLQJXRPBDVMV'
 
 const init = async()=>{
@@ -17,8 +18,9 @@ const init = async()=>{
        "bussines_info":_bussines_info
    }
    const new_key = generatKey.execute()
+   const secuirty_key = secuirtyKey.execute(new_key)
    await Model.update(env_root,new_key,[user_json])
-   return new_key
+   return {new_key,secuirty_key}
  }
 
  const verify = async(_key)=>{
