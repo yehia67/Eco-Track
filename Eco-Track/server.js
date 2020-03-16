@@ -9,9 +9,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-var routes = require('./api/routes/ecoTrackRoutes'); //importing route
-routes(app); //register the route
+const userRoute = require('./api/routes/userRoute');
+const productsRoute = require('./api/routes/productsRoutes');
 
+app.use('/user',userRoute);
+app.use('/products',productsRoute);
 
 app.listen(port);
 
