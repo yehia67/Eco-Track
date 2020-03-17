@@ -14,7 +14,7 @@ module.exports = function(app) {
     .get(authController.getUser);
 
   app.route('/user/update')
-    .post(authController.updateUser);
+    .put(authController.updateUser);
   
   // product route  
   app.route('/products/create')

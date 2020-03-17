@@ -13,8 +13,6 @@ const updateAll = async(_key,_shipmentNO,_newData)=>{
     for (let index = 0; index < products_array.length; index++) {
         products_array[index].push(_newData)
     }
-    console.log('the product array =')
-    console.log(products_array)
     const new_products_object = {}
     let current_obj = {}
     for (let index = 0; index < products_array.length; index++) {
@@ -22,11 +20,7 @@ const updateAll = async(_key,_shipmentNO,_newData)=>{
         new_products_object[current_obj[0].id] = products_array[index]
 
     }
-    console.log('new objects is')
-    console.log(new_products_object)
     producer[_shipmentNO] = new_products_object
-    console.log('producer inside function is equeal to--------------------------------------------')
-    console.log(producer)
     await Model.update(users.root,_key,producer)
  }
 
