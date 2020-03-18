@@ -11,14 +11,15 @@ const init = async()=>{
  }
 
  const addUser = async(_fname,_lname,_email,_bussines_info) =>{
-   const user_json = {
+    const new_key = generatKey.execute()
+    const secuirty_key = secuirtyKey.execute(new_key)
+    const user_json = {
        "fname":_fname,
        "lname":_lname,
        "email":_email,
-       "bussines_info":_bussines_info
+       "bussines_info":_bussines_info,
+       "seedKey":secuirty_key
    }
-   const new_key = generatKey.execute()
-   const secuirty_key = secuirtyKey.execute(new_key)
    await Model.update(env_root,new_key,[user_json])
    return {new_key,secuirty_key}
  }
@@ -41,28 +42,41 @@ const getUserInfo = async(_key)=>{
     }
     const get_users = await Model.read(env_root)
     const get_users_json = JSON.parse(get_users)
+    delete get_users_json[_key][0].seedKey
     return get_users_json[_key][0]
 }
-
-const getUser = async(_key)=>{
-    const check = await verify(_key)
+const checkSeedKey = async(_seed,_seedKey) =>{
+    const check = await verify(_seed)
+    if (!check) {
+        throw new Error('User not registrated')
+    }
+    const get_users = await Model.read(env_root)
+    const get_users_json = JSON.parse(get_users)
+    const seedKey = get_users_json[_seed][0].seedKey
+    if (seedKey === _seedKey) {
+        return true
+    } 
+    return false
+}
+const getUser = async(_seed,_seedKey)=>{
+    const check = await checkSeedKey(_seed,_seedKey)
      if (!check) {
-         throw new Error('User not registrated')
+         throw new Error('401')
      }
     const users = await Model.read(env_root)
     const users_json = JSON.parse(users)
-    return users_json[_key]
+    return users_json[_seed]
 } 
 
- const updateUser = async(_key,newData)=>{
-    const user = await getUser(_key)
+ const updateUser = async(_seed,_seedKey,newData)=>{
+    const user = await getUser(_seed,_seedKey)
     user.push(newData)
-    const address =  await Model.update(env_root,_key,user)
+    const address =  await Model.update(env_root,_seed,user)
     return address
  }
 
- const deleteUser = async(_key) =>{ 
-    const address =  await Model.update(env_root,_key,false) 
+ const deleteUser = async(_seed) =>{ 
+    const address =  await Model.update(env_root,_seed,false) 
     return address 
 }
 
@@ -74,5 +88,6 @@ const getUser = async(_key)=>{
     getUserInfo:getUserInfo,
     getUser:getUser,
     updateUser:updateUser,
-    deleteUser:deleteUser 
+    deleteUser:deleteUser,
+    checkSeedKey:checkSeedKey 
 }

@@ -15,7 +15,7 @@ exports.getUserInfo = async (req,res) =>{
 }
 
 exports.getUser = async (req,res) =>{
-    const response = await manageUser.getUser(req.body.key)
+    const response = await manageUser.getUser(req.body.seed,req.body.seedKey)
     res.json(response)
 }
 

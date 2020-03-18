@@ -6,7 +6,7 @@ const updateProduct = require('./Products/updateProducts')
 
 
 exports.create = async (req,res) =>{
-    const response = await createProducts.execute(req.body.key,req.body.products)
+    const response = await createProducts.execute(req.body.key,req.body.seedKey,req.body.products)
     res.json('Product created')
 }
 
