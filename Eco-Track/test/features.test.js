@@ -31,7 +31,7 @@ describe('Users authentiactions', ()=> {
     it('get user personal info',async ()=>{
         await userTest.init()
         const userKey = await userTest.addUser('yehia','belo','yehia@belo.com','money money money')
-        const info = await userTest.getUserInfo(userKey.new_key)
+        const info = await userTest.getUserInfo(userKey.new_key, userKey.secuirty_key)
         const user_json = {
             "fname":'yehia',
             "lname":'belo',

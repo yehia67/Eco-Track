@@ -10,7 +10,7 @@ exports.add = async (req,res) =>{
 }
 
 exports.getUserInfo = async (req,res) =>{
-    const response = await manageUser.getUserInfo(req.body.key)
+    const response = await manageUser.getUserInfo(req.body.key,req.body.secuirty_key)
     res.json(response)
 }
 

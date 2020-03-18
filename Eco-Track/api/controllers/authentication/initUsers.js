@@ -1,4 +1,5 @@
 const Model = require('../../models/index')
+const managePassword = require('./managePasswords')
 const generatKey = require('./generateSeeds')
 const secuirtyKey = require('./secuirtyKey')
 let env_root = 'XJ9N9YXEGRQGHAOXEOOUOIYKUWZAVQLLWUXACEOPURZXDNAS9MTFPGQXURNGDEAATDFGYSLQJXRPBDVMV'
@@ -33,10 +34,14 @@ const init = async()=>{
         return false
     }
 }
+ const checkPassword = async (_secuirty_key)=>{
+     return await managePassword.checkPassword(_secuirty_key)
+ }
 
-const getUserInfo = async(_key)=>{
-    const check = await verify(_key)
-    if (!check) {
+const getUserInfo = async(_key,_secuirty_key)=>{
+    const check = await verify(_key)()
+    const password = await checkPassword(_secuirty_key)
+    if (!check || password){
         throw new Error('User not registrated')
     }
     const get_users = await Model.read(env_root)
