@@ -1,7 +1,11 @@
 'use strict';
 const manageUser = require('./authentication/initUsers')
+const initPasswords = require('./authentication/managePasswords')
 manageUser.init().then((root)=>{
     manageUser.root = root
+})
+initPasswords.initRoot().then((root)=>{
+    initPasswords.root = root
 })
 
 exports.add = async (req,res) =>{
@@ -10,6 +14,8 @@ exports.add = async (req,res) =>{
 }
 
 exports.getUserInfo = async (req,res) =>{
+    console.log('the key is',req.body.key)
+    console.log('the sec key is',req.body.secuirty_key)
     const response = await manageUser.getUserInfo(req.body.key,req.body.secuirty_key)
     res.json(response)
 }

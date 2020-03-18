@@ -26,10 +26,7 @@ const update = async(root,key,value)=>{
 const deleteRaw = async(root,key)=>{
    const DB = await read(root)
    const DBjson = JSON.parse(DB)
-/*    console.log('---------------')
-   console.log(DBjson) */
    delete DBjson[key];
-   //console.log(DBjson)
    const newRoot = await create(DBjson)
    return newRoot
 }

@@ -6,7 +6,7 @@ const initRoot = async()=>{
     root = await Model.create({'password':'root password'})
     console.log('the root of passwords manager is',root)
 }
-initRoot()
+
 const addPassword = async (_secuirtyKey,_seed)=>{
     await Model.update(root,_secuirtyKey,_seed)
     return true
@@ -14,6 +14,8 @@ const addPassword = async (_secuirtyKey,_seed)=>{
 
 const verifyPassword = async(_secuirtyKey)=>{
     const getPasswords = await Model.read(root)
+    console.log('the passwords are:--------------')
+    console.log(getPasswords)
     const getJsonPasswords = JSON.parse(getPasswords)
     if(getJsonPasswords[_secuirtyKey]){
         return true
@@ -34,6 +36,8 @@ const test = async()=>{
 }
 //test()
 module.exports={
+    root:root,
     addPassword:addPassword,
-    verifyPassword:verifyPassword
+    verifyPassword:verifyPassword,
+    initRoot:initRoot
 }
