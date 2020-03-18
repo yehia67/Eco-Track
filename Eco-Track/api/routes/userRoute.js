@@ -8,7 +8,7 @@ router.get('/info',authController.getUserInfo);
 
 router.get('/get',authController.getUser);
 
-router.post('/update',authController.updateUser);
+router.put('/update',authController.updateUser);
 
 
 module.exports = router ;
