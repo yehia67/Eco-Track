@@ -3,7 +3,7 @@ const users = require('../authentication/initUsers')
 
 const getProductHistory = async(QrCode) =>{
     const keyAndId = QrCode.split(',,')
-    const user = await users.getUser(keyAndId[0])
+    const user = await users.getUserForProducts(keyAndId[0])
     return user[1][keyAndId[1]]
  }
  
