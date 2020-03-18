@@ -9,7 +9,7 @@ router.get('/info',productsController.getProductInfo);
 
 router.get('/history',productsController.getProductHistory);
 
-router.post('/update',productsController.updateProduct);
+router.put('/update',productsController.updateProduct);
 
 router.post('/updateAll',productsController.updateAllProducts)
 

@@ -149,8 +149,6 @@ describe('Products Managements', ()=> {
       await updateAllProductsTest.execute(userKey.new_key,1,{'shipper':'the product is broken'})
       const user_from_json = await userTest.getUser(userKey.new_key)
       const user_products =user_from_json[1] 
-      console.log('------------------------------------------------')
-      console.log(user_products)
       assert.equal(user_products["001"][1].shipper,'the product is broken')
    })
 })

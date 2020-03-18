@@ -8,8 +8,8 @@ const getAllProducts = require('./Products/getAllProducts')
 
 
 exports.create = async (req,res) =>{
-    await createProducts.execute(req.body.key,req.body.products)
-    res.json('Product is created ')
+    const response = await createProducts.execute(req.body.key,req.body.products)
+    res.json('Product created')
 }
 
 exports.getProductInfo = async (req,res) =>{
@@ -18,8 +18,6 @@ exports.getProductInfo = async (req,res) =>{
 }  
 exports.getProductHistory = async (req,res) =>{
    const response =  await getProductHistory.execute(req.body.qrCode)
-    console.log('----------------------------------')
-    console.log(response)
     res.json(response)
 }  
 exports.updateProduct = async (req,res) =>{
