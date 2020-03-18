@@ -62,7 +62,7 @@ const getUser = async(_key)=>{
  }
 
  const deleteUser = async(_key) =>{ 
-    const address =  await Model.update(env_root,_key,false) 
+    const address =  await Model.update(env_root,_key,false)
     return address 
 }
 

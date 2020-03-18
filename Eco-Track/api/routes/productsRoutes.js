@@ -11,4 +11,9 @@ router.get('/history',productsController.getProductHistory);
 
 router.post('/update',productsController.updateProduct);
 
+router.post('/updateAll',productsController.updateAllProducts)
+
+router.get('/allProducts',productsController.getAllProducts)
+
+
 module.exports = router ;
