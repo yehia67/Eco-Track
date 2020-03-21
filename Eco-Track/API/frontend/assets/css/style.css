@@ -80,7 +80,6 @@ a {
     cursor: pointer;
 }
 
-
 .img-fluid {
     height: 60px;
     margin-bottom: 30px;
@@ -1251,36 +1250,36 @@ body.mobile-nav-active #mobile-nav-toggle i {
 /* Contact Section
 --------------------------------*/
 
-#contact {
+#signUp {
     background: #fff;
 }
 
-#contact .info {
+#signUp .info {
     color: #222;
 }
 
-#contact .info i {
+#signUp .info i {
     font-size: 32px;
     color: #71c55d;
     float: left;
 }
 
-#contact .info p {
+#signUp .info p {
     padding: 0 0 10px 50px;
     margin-bottom: 20px;
     line-height: 22px;
     font-size: 14px;
 }
 
-#contact .info .email p {
+#signUp .info .email p {
     padding-top: 5px;
 }
 
-#contact .social-links {
+#signUp .social-links {
     padding-bottom: 20px;
 }
 
-#contact .social-links a {
+#signUp .social-links a {
     font-size: 18px;
     display: inline-block;
     background: #71c55d;
@@ -1294,12 +1293,12 @@ body.mobile-nav-active #mobile-nav-toggle i {
     transition: 0.3s;
 }
 
-#contact .social-links a:hover {
+#signUp .social-links a:hover {
     background: #55b03f;
     color: #fff;
 }
 
-#contact .php-email-form .validate {
+#signUp .validate {
     display: none;
     color: red;
     margin: 0 0 15px 0;
@@ -1307,7 +1306,7 @@ body.mobile-nav-active #mobile-nav-toggle i {
     font-size: 13px;
 }
 
-#contact .php-email-form .error-message {
+#signUp .error-message {
     display: none;
     color: #fff;
     background: #ed3c0d;
@@ -1316,7 +1315,7 @@ body.mobile-nav-active #mobile-nav-toggle i {
     font-weight: 600;
 }
 
-#contact .php-email-form .sent-message {
+#signUp .sent-message {
     display: none;
     color: #fff;
     background: #18d26e;
@@ -1325,14 +1324,14 @@ body.mobile-nav-active #mobile-nav-toggle i {
     font-weight: 600;
 }
 
-#contact .php-email-form .loading {
+#signUp .loading {
     display: none;
     background: #fff;
     text-align: center;
     padding: 15px;
 }
 
-#contact .php-email-form .loading:before {
+#signUp .loading:before {
     content: "";
     display: inline-block;
     border-radius: 50%;
@@ -1345,35 +1344,36 @@ body.mobile-nav-active #mobile-nav-toggle i {
     animation: animate-loading 1s linear infinite;
 }
 
-#contact .php-email-form input,
-#contact .php-email-form textarea {
+#signUp input,
+#signUp textarea {
     border-radius: 0;
     box-shadow: none;
     font-size: 14px;
 }
 
-#contact .php-email-form input::focus,
-#contact .php-email-form textarea::focus {
+#signUp input::focus,
+#signUp textarea::focus {
     background-color: #71c55d;
 }
 
-#contact .php-email-form input {
+#signUp input {
     padding: 20px 15px;
 }
 
-#contact .php-email-form textarea {
+#signUp textarea {
     padding: 12px 15px;
 }
 
-#contact .php-email-form button[type="submit"] {
+#signUp button[type="button"] {
     background: #71c55d;
     border: 0;
+    border-radius: 12px;
     padding: 10px 24px;
     color: #fff;
     transition: 0.4s;
 }
 
-#contact .php-email-form button[type="submit"]:hover {
+#signUp button[type="button"]:hover {
     background: #92d283;
 }
 
@@ -1460,15 +1460,17 @@ body.mobile-nav-active #mobile-nav-toggle i {
     color: #71c55d;
 }
 
+
 /*--------------------------------------------------------------
 # My Classes
 --------------------------------------------------------------*/
+
 .img-blog {
-  height: 200px;
+    height: 200px;
 }
 
 .have-my-account {
-  text-decoration: underline !important;
-  cursor: pointer !important;
-  color: #4181f6 !important;
+    text-decoration: underline !important;
+    cursor: pointer !important;
+    color: #4181f6 !important;
 }
