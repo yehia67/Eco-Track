@@ -5,6 +5,8 @@ manageUser.init().then((root)=>{
 })
 
 exports.add = async (req,res) =>{
+    console.log('the front end request is')
+    console.log(req)
     const response = await manageUser.addUser(req.body.fname,req.body.lname,req.body.email,req.body.bussines_info)
     res.json({"seed":response.new_key, "key":response.secuirty_key} )
 }
