@@ -1,4 +1,6 @@
 const readXlsxFile = require('read-excel-file/node');
+console.log(readXlsxFile)
+alert('henaa')
 const products = []
 const product = {} 
 // File path.
