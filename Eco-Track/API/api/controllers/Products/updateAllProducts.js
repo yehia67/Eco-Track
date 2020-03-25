@@ -1,7 +1,7 @@
 const users = require('../authentication/initUsers')
 const Model = require('../../models/index')
 const updateAll = async(_key,_shipmentNO,_newData)=>{
-    const producer = await users.getUser(_key)
+    const producer = await users.getUserForProducts(_key)
     if(_shipmentNO === 0 || producer.length < _shipmentNO){
         throw new Error("Shipment number doesn't exist")
     }

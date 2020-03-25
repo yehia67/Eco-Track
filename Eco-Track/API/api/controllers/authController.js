@@ -15,12 +15,11 @@ exports.getUserInfo = async (req,res) =>{
 }
 
 exports.getUser = async (req,res) =>{
-    const response = await manageUser.getUser(req.body.key)
+    const response = await manageUser.getUser(req.body.seed,req.body.seedKey)
     res.json(response)
 }
 
 exports.updateUser = async (req,res) =>{
-    console.log(typeof req.body.newData)
     const response = await manageUser.updateUser(req.body.key,req.body.newData)
     res.json(response)
 }

@@ -48,6 +48,7 @@ import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.android.volley.Request.Method.HEAD;
 
 public class MainActivity extends AppCompatActivity {
     Constants base_url = new Constants();
