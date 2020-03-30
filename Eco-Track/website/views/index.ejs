@@ -417,8 +417,6 @@
                             <div class="alert alert-danger" role="alert">Take A Backup As You Will Never Recover Seed Or Key! </div>
                             <div class="text-left d-inline float-left"><button class="btn btn-success" type="button" onclick="return goToUploadProducts();">Create Products</button></div>
                             <div class="text-right d-inline float-right"><button class="btn btn-success" type="button" onclick="return getProductsReport();">Get Products Report</button></div>
-                            <div class="myloadingImg"></div>
-                            <div class="myloadingText">Loading</div>
                         </section>
                         <!-- End Seed & Key Section -->
 
@@ -456,6 +454,8 @@
                                     <input type="file" name="productsFile" class="form-control-file" id="productsFile" accept=".xlsx,.pdf">
                                 </div>
                                 <div class="text-centre"><button class="btn btn-success" type="button" onclick="return parseProductsData();">Create!</button>
+                                    <div class="myloadingImg"></div>
+                                    <div class="myloadingText">Loading</div>
                                 </div>
                             </form>
                         </section>

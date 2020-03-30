@@ -3,17 +3,17 @@ const createProducts = require('./Products/createProducts')
 const getProductInfo = require('./Products/getProductInfo')
 const getProductHistory = require('./Products/getProductHistory')
 const updateProduct = require('./Products/updateProducts')
-const uploadExcelFile = require('./Products/uploadExcelFile')
-
+const getAllProducts = require('./Products/getAllProducts.js')
 
 exports.create = async (req,res) =>{
-    console.log('body is')
-    console.log(req.body)
-    console.log(req.body.key)
-    console.log(req.body.seedKey)
-    console.log(req.body.products)
-    const response = await createProducts.execute(req.body.key,req.body.seedKey,req.body.products)
-    res.json('Product created')
+    const products = req.body.products.split( ",")
+    if (products[products.length-1] === "") {
+        products.pop()
+    }
+    const response = await createProducts.execute(req.body.key,req.body.seedKey,JSON.parse(JSON.stringify(products)))
+    console.log('response is',response)
+    const newProducts = await  getAllProducts.execute(req.body.key,req.body.seedKey,1)
+    res.json(newProducts)
 }
 
 
