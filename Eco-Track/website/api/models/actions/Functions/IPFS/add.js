@@ -4,6 +4,8 @@ const add = async (data) =>{
    const hash = await ipfs.add(JSON.stringify(data))
      return hash[0].path
 }
+
 module.exports = {
     execute : add
 }
+
