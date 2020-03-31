@@ -10,13 +10,10 @@ exports.create = async (req,res) =>{
     if (products[products.length-1] === "") {
         products.pop()
     }
-    console.log('products in controller are')
-    console.log(JSON.parse(JSON.stringify(products)))
     const response = await createProducts.execute(req.body.key,req.body.seedKey,JSON.parse(JSON.stringify(products)))
-    console.log('response is',response)
-/*     const newProducts = await  getAllProducts.execute(req.body.key,req.body.seedKey,1)
-    res.json(newProducts) */
-    res.json('producted created')
+    console.log("***************************************************************")
+    console.log(response)
+    res.json(response)
 }
 
 
