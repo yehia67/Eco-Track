@@ -43,7 +43,6 @@ app.use(function(req, res) {
 app.use(function(req, res) {
   res.status(500).send({url: req.originalUrl + 'Something broke!'})
 });
-
 console.log('tracker RESTful API server started on: ' + port);
 
 module.exports = app
