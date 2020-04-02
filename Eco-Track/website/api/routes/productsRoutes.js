@@ -10,7 +10,7 @@ router.get('/info',productsController.getProductInfo);
 
 router.get('/history',productsController.getProductHistory);
 
-router.get('/shippement',productsController.getProductHistory);
+router.post('/shippement',productsController.getShippement);
 
 router.put('/update',productsController.updateProduct);
 

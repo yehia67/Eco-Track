@@ -27,7 +27,10 @@ exports.getProductHistory = async (req,res) =>{
 }  
 
 exports.getShippement = async(req,res) =>{
-    const response = await getAllProducts.execute(req.body.seed,req.body.key,req.body.shippNo)
+    console.log('seed is',req.body.seed)
+    console.log('key is',req.body.key)
+    console.log('ship is',req.body.shippNo)
+    const response = await getAllProducts.execute(req.body.seed,req.body.key,parseInt(req.body.shippNo))
     res.json(response)
 }
 
