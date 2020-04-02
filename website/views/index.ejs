@@ -393,7 +393,7 @@
                                                     <div class="validate"></div>
                                                 </div>
                                                 <div class="pt-3">
-                                                    <a class="have-my-account  pt-3 float-left" data-toggle="" onclick="return goToSignIn();" data-target="">I Already Have My Account</a>
+                                                    <a class="have-my-account  pt-3 float-left" data-toggle="" data-target="">I Already Have My Account</a>
                                                     <div class="text-right"><button type="button" onclick="return parseUserData();">SignUp</button></div>
                                                     <div class="myloadingImg"></div>
                                                     <div class="myloadingText">Loading</div>
@@ -410,42 +410,15 @@
                         <!-- ======= Seed & Key  Section ======= -->
                         <section id='seedKey' style="display:none;">
                             <div class="section-title text-center text-capitalize">
-                                <h2 class="user-title">seed and key generated</h2>
+                                <h2>seed and key generated</h2>
                             </div>
-                            <div class="user-info">
-                                <p>Your Seed is <br>
-                                    <p class="seed"> </p> <br> Your key is<br> <span class="key">  </span><span class="note">(if you lost this key you can't recover your account)</span> </p>
-
-                                <div class="alert alert-danger" role="alert">Take A Backup As You Will Never Recover Seed Or Key! </div>
-                            </div>
+                            <p>Your Seed is <br>
+                                <p class="seed"> </p> <br> Your key is<br> <span class="key">  </span><span class="note">(if you lost this key you can't recover your account)</span> </p>
+                            <div class="alert alert-danger" role="alert">Take A Backup As You Will Never Recover Seed Or Key! </div>
                             <div class="text-left d-inline float-left"><button class="btn btn-success" type="button" onclick="return goToUploadProducts();">Create Products</button></div>
-                            <div class="text-right d-inline float-right"><button class="btn btn-success" type="button" onclick="return goToDonwloadReports();">Get Products Report</button></div>
+                            <div class="text-right d-inline float-right"><button class="btn btn-success" type="button" onclick="return getProductsReport();">Get Products Report</button></div>
                         </section>
                         <!-- End Seed & Key Section -->
-
-
-                        <!-- ======= User SignIn Section ======= -->
-                        <section id='signIn' style="display:none;">
-                            <div class="section-title text-center text-capitalize">
-                                <h2>Enter Your Seed And Key</h2>
-                            </div>
-                            <form id="signInForm">
-                                <div class="form-group">
-                                    <input type="text" name="seed" class="form-control" id="singInSeed" placeholder="Your Seed" data-rule="minlen:81" />
-                                    <div class="validate"></div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="key" class="form-control" id="singInKey" placeholder="Your Key" data-rule="minlen:20" />
-                                    <div class="validate"></div>
-                                </div>
-                                <div class="text-left d-inline float-left"><button class="btn btn-success" type="button" onclick="return goToSignUp();"> Back</button></div>
-                                <div class="text-right d-inline float-right"><button class="btn btn-success" type="button" onclick="return  userAuth();">Submit</button></div>
-                                <div class="myloadingImg"></div>
-                                <div class="myloadingText">Loading</div>
-                            </form>
-                        </section>
-                        <!-- User SignIn Section-->
-
 
                         <!-- ======= Upload Products  Section ======= -->
                         <section id='uploadProducts' style="display:none;">
@@ -480,65 +453,13 @@
                                     <label for="upladedFile">Upload .xlsx file or a .pdf file with the nfc tags if you use it before</label>
                                     <input type="file" name="productsFile" class="form-control-file" id="productsFile" accept=".xlsx,.pdf">
                                 </div>
-                                <div class="text-left d-inline float-left"><button class="btn btn-success" type="button" onclick="return goToDashboard();"> Back</button></div>
-                                <div class="text-right d-inline float-right"><button class="btn btn-success" type="button" onclick="return parseProductsData();">Create!</button>
-
+                                <div class="text-centre"><button class="btn btn-success" type="button" onclick="return parseProductsData();">Create!</button>
                                     <div class="myloadingImg"></div>
                                     <div class="myloadingText">Loading</div>
                                 </div>
                             </form>
                         </section>
                         <!-- Upload Products Section -->
-
-
-                        <!-- =======Products Report  Section ======= -->
-                        <section id='downloadReports' style="display:none;">
-                            <form id='downloadReportsForm'>
-                                <div class="form-group">
-                                    <label class="form-check-label"> Which service are you  interested in?</label><br/>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="serviceType" id="supplychain" value="supplychain">
-                                        <label class="form-check-label" for="inlineRadio1">Supply Chain</label>
-                                        <div class="validate"></div>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="serviceType" id="recycling" value="recycling">
-                                        <label class="form-check-label" for="inlineRadio2">Recycling</label>
-                                        <div class="validate"></div>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="serviceType" id="both" value="both">
-                                        <label class="form-check-label" for="inlineRadio2">Both</label>
-                                        <div class="validate"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="seed" class="form-control" id="seed" placeholder="Your Seed" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                                    <div class="validate"></div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="key" id="key" placeholder="Your Key" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                                    <div class="validate"></div>
-                                </div>
-                                <div class="form-group">
-                                    <select class="browser-default custom-select">
-                                        <option value="0" selected disabled>What is the order of your shippement?</option>
-                                        <option value="1">1<sup>th</sup></option>
-                                        <option value="2">2<sup>th</sup></option>
-                                        <option value="3">3<sup>th</sup></option>
-                                        <option value="4">4<sup>th</sup></option>
-                                        <option value="5">5<sup>th</sup></option>
-                                        <option value="all">Get All Shippements details</option>
-                                    </select>
-                                </div>
-                                <div class="text-left d-inline float-left"><button class="btn btn-success" type="button" onclick="return goToDashboardFromReport();"> Back</button></div>
-                                <div class="text-right d-inline float-right"><button class="btn btn-success" type="button" onclick="return downloadProducts();">download!</button>
-                                    <div class="myloadingImg"></div>
-                                    <div class="myloadingText">Loading</div>
-                                </div>
-                            </form>
-                        </section>
-                        <!-- Upload Report Section -->
                     </div>
                 </div>
             </div>
@@ -577,18 +498,9 @@
     <script src="assets/vendor/superfish/superfish.min.js"></script>
     <script src="assets/vendor/hoverIntent/hoverIntent.js"></script>
 
-    <!--Third Parities-->
-    <script src="https://unpkg.com/read-excel-file@4.x/bundle/read-excel-file.min.js"></script>
-    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
-
-    <!--Libraries-->
-    <script src="assets/js/libraries/readExcel.js"></script>
-    <script src="assets/js/libraries/downloadPDF.js"></script>
-
-
     <!-- Template Main JS File -->
+    <script src="https://unpkg.com/read-excel-file@4.x/bundle/read-excel-file.min.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/navigation.js"></script>
     <script src="assets/js/index.js"></script>
 </body>
 

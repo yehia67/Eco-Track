@@ -25,7 +25,10 @@ const init = async()=>{
  }
 
  const verify = async(_key)=>{
+     console.log('enter the verify with seed',_key)
     const users = await Model.read(env_root)
+    console.log('users are')
+    console.log(users)
     const users_json = JSON.parse(users)
     if (users_json[_key] ) {
         return true
@@ -50,14 +53,20 @@ const getUserInfo = async(_seed)=>{
     return get_users_json[_seed][0]
 }
 const checkSeedKey = async(_seed,_seedKey) =>{
+    console.log('the check is')
     const check = await verify(_seed)
+    console.log('the check value is',check)
     if (!check) {
         console.log('inside if check')
         throw new Error('User not registrated')
     }
     const get_users = await Model.read(env_root)
+    console.log('read value is')
+    console.log(get_users)
     const get_users_json = JSON.parse(get_users)
     const seedKey = get_users_json[_seed][0].seedKey
+    console.log('paramteer seedKey is',_seedKey)
+    console.log('the seedKey is',seedKey)
     if (seedKey === _seedKey) {
         console.log('inside if true')
         return true
@@ -65,6 +74,7 @@ const checkSeedKey = async(_seed,_seedKey) =>{
     return false
 }
 const getUser = async(_seed,_seedKey)=>{
+    console.log('enter get user')
     const check = await checkSeedKey(_seed,_seedKey)
     console.log('Check is',check)
      if (!check) {
@@ -72,6 +82,8 @@ const getUser = async(_seed,_seedKey)=>{
          throw new Error('401')
      }
     const users = await Model.read(env_root)
+    console.log('read from users database')
+    console.log(users)
     const users_json = JSON.parse(users)
     return users_json[_seed]
 } 

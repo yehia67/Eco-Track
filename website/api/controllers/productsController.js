@@ -11,6 +11,8 @@ exports.create = async (req,res) =>{
         products.pop()
     }
     const response = await createProducts.execute(req.body.key,req.body.seedKey,JSON.parse(JSON.stringify(products)))
+    console.log("***************************************************************")
+    console.log(response)
     res.json(response)
 }
 
@@ -25,11 +27,6 @@ exports.getProductHistory = async (req,res) =>{
    const response =  await getProductHistory.execute(req.body.qrCode)
     res.json(response)
 }  
-
-exports.getShippement = async(req,res) =>{
-    const response = await getAllProducts.execute(req.body.seed,req.body.key,req.body.shippNo)
-    res.json(response)
-}
 
 exports.updateProduct = async (req,res) =>{
     await updateProduct.execute(req.body.qrCode,req.body.product)

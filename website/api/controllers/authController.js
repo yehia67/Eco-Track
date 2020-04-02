@@ -8,17 +8,12 @@ exports.add = async (req,res) =>{
     const response = await manageUser.addUser(req.body.fname,req.body.lname,req.body.email,req.body.bussines_info)
     res.json({"seed":response.new_key, "key":response.secuirty_key})
 }
-exports.auth = async (req,res) =>{
-    console.log(req.body.seed)
-    console.log(req.body.key)
-    const response = await manageUser.checkSeedKey(req.body.seed,req.body.key)
-    console.log('response is',response)
-    res.json(response)
-}
+
 exports.getUserInfo = async (req,res) =>{
     const response = await manageUser.getUserInfo(req.body.key)
     res.json(response)
 }
+
 exports.getUser = async (req,res) =>{
     const response = await manageUser.getUser(req.body.seed,req.body.seedKey)
     res.json(response)

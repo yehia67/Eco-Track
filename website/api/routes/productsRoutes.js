@@ -10,8 +10,6 @@ router.get('/info',productsController.getProductInfo);
 
 router.get('/history',productsController.getProductHistory);
 
-router.get('/shippement',productsController.getProductHistory);
-
 router.put('/update',productsController.updateProduct);
 
 module.exports = router ;
