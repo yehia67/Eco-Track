@@ -6,9 +6,9 @@ const seed = 'XGIVJKNUIDKDVAXGRK9SFXYFVOLEHSJOIZVROT9DUAMYUUXPPBZWYQWJNEYPVKOMKR
 // Define the depth that the node will use for tip selection
 const depth = 3;
 // Define the minimum weight magnitude for the Devnet
-const minimumWeightMagnitude = 14;
+const minimumWeightMagnitude = 9;
 //MAM
-const providerLink = 'http://localhost:14265'
+const providerLink = 'https://nodes.devnet.iota.org:443' //Generate False Token https://faucet.devnet.iota.org/
 const sideKey = 'DONTSHARETHISPASSWORD'
 
 let mamState = Mam.init(providerLink)

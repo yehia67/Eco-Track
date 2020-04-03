@@ -57,6 +57,7 @@ const addNewOwner = async(_root,productAddress,ownerAddress)=>{
     return root
 }
 const init = async()=>{
+    console.log('yarab yarab')
    productsArr=[
     {
     'address':'GBWOKDFLITNEXFBRHMVHJVRNCBWXAKCOVCKMOQZDQJCTGNG9NQQCDI9VJYWMZBXDQIKBVMKCWRAEKJGGR',
@@ -90,10 +91,10 @@ const init = async()=>{
 
 
 }
-/*  init().then(function(r){
+/*   init().then(function(r){
     console.log('**************************************')
     console.log(r)
-})     */
+})    */  
 module.exports ={
     init:initializePropreries,
     addNewClient:addNewClient,
