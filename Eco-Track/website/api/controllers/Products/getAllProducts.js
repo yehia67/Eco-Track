@@ -6,7 +6,14 @@ const getAllProducts = async(_seed,_key,_shipmentNo) =>{
     if(_shipmentNo === 0 || user.length < _shipmentNo){
         throw new Error("Shipment number doesn't exist")
     }
-    return user[_shipmentNo]
+    if(_shipmentNo !== -1){
+       return user[_shipmentNo]
+    }
+    else{
+        user.shift()
+        return user
+    }
+
  }
  
 
