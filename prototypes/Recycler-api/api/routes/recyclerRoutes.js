@@ -8,7 +8,10 @@ module.exports = function(app) {
 
   app.route('/addOwner')
      .post(recycler.addOwner); 
-
+  
+  app.route('/products')
+     .get(recycler.getProducts); 
+   
   app.route('/giveReward')
      .post(recycler.giveReward);
 

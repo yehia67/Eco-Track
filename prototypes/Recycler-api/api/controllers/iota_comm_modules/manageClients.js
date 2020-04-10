@@ -56,7 +56,19 @@ const addNewOwner = async(_root,productAddress,ownerAddress)=>{
     const root = await mamManage.send(newPropretiesHash)
     return root
 }
-
+const geProducts = async (_root,_seed)=>{
+    const products= []
+    const proprietiesHash = await mamManage.fetch(_root)
+    const currentPropretiesString = await catIPFS.execute(getLastHash(proprietiesHash))
+    const currentPropretiesJSON = JSON.parse(currentPropretiesString)
+    Object.keys(currentPropretiesJSON).forEach(function(key) {
+        console.log(key.substring(0,80))
+            if (key.substr(0,81) === _seed) {
+                products.push(currentPropretiesJSON[key])
+            }
+    })
+    return products
+}
 const init = async()=>{
     console.log('yarab yarab')
    productsArr=[
@@ -99,6 +111,7 @@ const init = async()=>{
 module.exports ={
     init:initializePropreries,
     addNewClient:addNewClient,
-    addNewOwner:addNewOwner
+    addNewOwner:addNewOwner,
+    geProducts:geProducts
 }
 

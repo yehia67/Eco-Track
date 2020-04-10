@@ -17,6 +17,7 @@ exports.addClient = async (req,res) =>{
  await manageClients.addNewClient(root,req.body.products)
   res.json("added new client succefuly")
 }
+
 exports.addOwner = async (req,res) =>{
   console.log(('------------------------------owner callllllllllllllllllllllllllll'))
   console.log('root =',root)
@@ -28,6 +29,12 @@ exports.addOwner = async (req,res) =>{
 
   const response = await manageClients.addNewOwner(root,req.body.productAddress,req.body.ownerAddress)
   console.log(('------------------------------response is  '+response))
+  res.json(response)
+}
+exports.getProducts = async (req,res) =>{
+  console.log('body iss')
+  console.log(req.query.seed)
+  const response = await manageClients.geProducts(root,req.query.seed)
   res.json(response)
 }
 exports.giveReward = async (req,res) =>{
