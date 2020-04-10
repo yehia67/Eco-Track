@@ -3,12 +3,11 @@ let products = []
 // The parameters we are gonna pass to the fetch function
 const getProductsRecyler = async (seed)=>{
 
-    fetch('http://localhost:5002/products?seed='+seed)
-    .then(res => products = res.json())
-    .then(json => products = console.log(json))
- return products
+ let response = await fetch('http://localhost:5002/products?seed='+seed)
+ let data = await response.json()
+ return data
 }
-getProductsRecyler('TZZPYDNEYG99FHTVJMKQWNNL99DPEKKQZPNZWV9TZGZJELRGFQCBEEJZEPUMKPLWMWFMVNTSJCOAEREHX')
-module.exports={
+/* getProductsRecyler('TZZPYDNEYG99FHTVJMKQWNNL99DPEKKQZPNZWV9TZGZJELRGFQCBEEJZEPUMKPLWMWFMVNTSJCOAEREHX')
+ */module.exports={
     execute:getProductsRecyler
 }

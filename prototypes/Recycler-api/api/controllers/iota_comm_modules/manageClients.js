@@ -62,7 +62,7 @@ const geProducts = async (_root,_seed)=>{
     const currentPropretiesString = await catIPFS.execute(getLastHash(proprietiesHash))
     const currentPropretiesJSON = JSON.parse(currentPropretiesString)
     Object.keys(currentPropretiesJSON).forEach(function(key) {
-        console.log(key.substring(0,80))
+        console.log('the ids',key.substring(0,81))
             if (key.substr(0,81) === _seed) {
                 products.push(currentPropretiesJSON[key])
             }
