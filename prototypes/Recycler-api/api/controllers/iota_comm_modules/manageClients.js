@@ -56,6 +56,7 @@ const addNewOwner = async(_root,productAddress,ownerAddress)=>{
     const root = await mamManage.send(newPropretiesHash)
     return root
 }
+
 const init = async()=>{
     console.log('yarab yarab')
    productsArr=[
