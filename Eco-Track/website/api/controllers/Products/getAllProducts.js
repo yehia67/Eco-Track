@@ -4,8 +4,6 @@ const recycledUser = require('../getProductsRecycler')
 const getAllProducts = async(_seed,_key,_shipmentNo) =>{
     const user = await users.getUser(_seed,_key)
     const recycledProducts = await recycledUser.execute(_seed)
-    console.log('--------------------------------------------')
-    console.log(recycledProducts)
     if(_shipmentNo === 0 || user.length < _shipmentNo){
         throw new Error("Shipment number doesn't exist")
     }

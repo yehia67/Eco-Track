@@ -17,19 +17,17 @@ exports.create = async (req,res) =>{
 
 
 exports.getProductInfo = async (req,res) =>{
-     const response = await getProductInfo.execute(req.body.qrCode)
+
+     const response = await getProductInfo.execute(req.query.qrCode)
      res.json(response)
 }  
 
 exports.getProductHistory = async (req,res) =>{
-   const response =  await getProductHistory.execute(req.body.qrCode)
+   const response =  await getProductHistory.execute(req.query.qrCode)
     res.json(response)
 }  
 
 exports.getShippement = async(req,res) =>{
-    console.log('seed is',req.body.seed)
-    console.log('key is',req.body.key)
-    console.log('ship is',req.body.shippNo)
     const response = await getAllProducts.execute(req.body.seed,req.body.key,parseInt(req.body.shippNo))
     res.json(response)
 }

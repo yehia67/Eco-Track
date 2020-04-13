@@ -76,6 +76,17 @@ const getUser = async(_seed,_seedKey)=>{
     return users_json[_seed]
 } 
 
+const getUserForProducts = async(_seed)=>{
+    const check = await verify(_seed)
+     if (!check) {
+        console.log('error shit')
+         throw new Error('401')
+     }
+    const users = await Model.read(env_root)
+    const users_json = JSON.parse(users)
+    return users_json[_seed]
+} 
+
 
  const updateUser = async(_seed,_seedKey,newData)=>{
     const user = await getUser(_seed,_seedKey)
@@ -98,5 +109,6 @@ const getUser = async(_seed,_seedKey)=>{
     getUser:getUser,
     updateUser:updateUser,
     deleteUser:deleteUser,
-    checkSeedKey:checkSeedKey 
+    checkSeedKey:checkSeedKey,
+    getUserForProducts:getUserForProducts
 }
