@@ -5,6 +5,7 @@ var express = require('express'),
 
 const path = require('path');  
 const layout = require('express-layout');
+
 const routes = require('./routes');
 
 //make way for some custom css, js and images

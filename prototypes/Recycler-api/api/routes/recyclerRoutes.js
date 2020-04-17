@@ -11,6 +11,8 @@ module.exports = function(app) {
   
   app.route('/products')
      .get(recycler.getProducts); 
+  app.route('/balance')
+     .get(recycler.balance);   
    
   app.route('/giveReward')
      .post(recycler.giveReward);

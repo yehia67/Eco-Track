@@ -2,6 +2,7 @@
 const giveReward = require('./iota_comm_modules/giveReward')
 const testMam = require('./iota_comm_modules/testMam')
 const manageClients = require('./iota_comm_modules/manageClients')
+const getBalance = require('./iota_comm_modules/getUserBalance')
 let root = ''
 
   manageClients.init().then((response)=>{
@@ -39,6 +40,12 @@ exports.getProducts = async (req,res) =>{
 }
 exports.giveReward = async (req,res) =>{
   const response = await giveReward.execute(root,req.body.productAddress)
+  res.json(response)
+}
+
+exports.balance = async(req,res)=>{
+  console.log('yasrab')
+  const response = await getBalance.execute(req.query.address)
   res.json(response)
 }
 
