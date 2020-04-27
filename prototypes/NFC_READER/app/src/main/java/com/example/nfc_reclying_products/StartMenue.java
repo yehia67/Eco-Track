@@ -32,6 +32,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.paperdb.Paper;
+
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -97,13 +99,9 @@ public class StartMenue extends AppCompatActivity {
     }
     //----------------------------------------------------------------------------------------------------------------
     public void giveReward(String _productAdress){
-        SharedPreferences shared_preferences = getSharedPreferences("root", Context.MODE_PRIVATE);
-        String root_address = shared_preferences.getString("root", "404 address");
-        if(!(root_address == "404 address")){
             try {
                 RequestQueue request_queue = Volley.newRequestQueue(getApplicationContext());
                 JSONObject json_body = new JSONObject();
-                json_body.put("root",root_address);
                 json_body.put("productAddress",_productAdress);
                 final String request_body = json_body.toString();
 
@@ -153,10 +151,8 @@ public class StartMenue extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        else {
-            Toast.makeText(getApplicationContext(), root_address , LENGTH_SHORT).show();
-        }
+
+
 
     }
     //-----------------------------------------------------------------------------------------------------------

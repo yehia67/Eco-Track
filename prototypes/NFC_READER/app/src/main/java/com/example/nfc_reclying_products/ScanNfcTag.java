@@ -114,83 +114,6 @@ public class ScanNfcTag extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void GiveReward(String _productAddress){
-        try{
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            String url = "http://192.168.1.14:5002/giveReward"; /*add url and routes IPV4*/
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("root", root);/*put request Body*/
-            jsonBody.put("productAddress", _productAddress);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,url,jsonBody,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            String result = response.toString();
-                            Toast.makeText(getApplicationContext(),"addOwner response" +result,Toast.LENGTH_SHORT).show();
-                        }
-                    },new Response.ErrorListener(){
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(),"Error getting response",Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(),"Error getting response is "+error,Toast.LENGTH_SHORT).show();
-
-                }
-            });
-            requestQueue.add(jsonObjectRequest);
-        }catch (Exception e ){
-            e.printStackTrace();
-            Toast.makeText(this,"catch error",Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private void SetOwner(String _productAddress){
-        //-----------------------------------------------------------------------------------------------------
-        SharedPreferences prefs = getSharedPreferences("Local Address", MODE_PRIVATE);
-        final String getAddress = prefs.getString("address", "404 address");
-        Toast.makeText(getApplicationContext(), "i entered set owners fn ", LENGTH_LONG);
-        Toast.makeText(getApplicationContext(), getAddress +"********"+_productAddress, LENGTH_LONG);
-
-        if(!getAddress.equals("404 address"))
-        {
-            try {
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                String url = "http://192.168.1.14:5002/addOwner"; //add url and routes IPV4
-                //JSONArray jsonArray = new JSONArray();
-                JSONObject jsonBody = new JSONObject();
-                jsonBody.put("root", root);//put request Body
-                jsonBody.put("productAddress", _productAddress);
-                jsonBody.put("ownerAddress" ,getAddress );
-                //jsonArray.put(jsonBody);
-                //final String requestBody = jsonBody.toString();
-                Toast.makeText(getApplicationContext(),"add owner entered ",Toast.LENGTH_SHORT).show();
-
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,url,jsonBody,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                String result = response.toString();
-                                Toast.makeText(getApplicationContext(),"addOwner response" +result,Toast.LENGTH_SHORT).show();
-                            }
-                        },new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Error getting response",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(),"Error getting response is "+error,Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-                requestQueue.add(jsonObjectRequest);
-=======
->>>>>>> 8cc6d242c4e794a3de48bc2c2a2b3d9d15822420
 
     private void readTextFromMessage(NdefMessage _ndefMessage) {
         NdefRecord[] ndef_records = _ndefMessage.getRecords();
@@ -237,3 +160,4 @@ public class ScanNfcTag extends AppCompatActivity {
         return tag_content;
     }
 }
+
