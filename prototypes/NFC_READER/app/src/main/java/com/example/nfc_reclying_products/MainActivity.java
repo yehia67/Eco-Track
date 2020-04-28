@@ -51,7 +51,6 @@ import io.paperdb.Paper;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -65,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
     SaveReceivingAddress manage_address = new SaveReceivingAddress();
     public  String root;
     public boolean flag = false ;
+    Retrofit retrofit = new Retrofit();
     ApiPlaceHolder apiPlaceHolder ;
+    AddOwner addOwner = new AddOwner();
 
 
     @Override
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
         if (_requestCode == 1) {
             try {
                 String scannedItem = _data.getStringExtra(ScanNfcTag.key);
-                addOwner(scannedItem);
+                AddOwnerCall(scannedItem);
                 this.product_address_tv.setText(scannedItem);
                 product_address_tv.setVisibility(View.VISIBLE);
                 Context applicationContext = getApplicationContext();
@@ -116,21 +117,7 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
         addressTv = findViewById(R.id.addressTv);
         balanceTv = findViewById(R.id.balanceTv);
         product_address_tv = findViewById(R.id.produdct_address);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(2, TimeUnit.MINUTES)
-                .readTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(2, TimeUnit.MINUTES)
-                .build();
-
-
-        //instance of retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.3:5002/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        apiPlaceHolder = retrofit.create(ApiPlaceHolder.class);
+        apiPlaceHolder = retrofit.retrofit.create(ApiPlaceHolder.class);
         hasAddress();
         Intent main_activity_get_intent1 = getIntent();
         final Intent scan_nfc_tag_intent_go = new Intent(this, ScanNfcTag.class);
@@ -176,69 +163,41 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
         }
         hasAddress();
     }
-    //----------------------------------------------------------------------------------------------------------------
-    public void addOwner(String _productAdress){
-        String owner_adderss = Paper.book("My_Address").read("address","404 address");
-        if(!(owner_adderss == "404 address")){
-            try {
-                RequestQueue request_queue = Volley.newRequestQueue(getApplicationContext());
-                JSONObject json_body = new JSONObject();
-                json_body.put("productAddress",_productAdress);
-                json_body.put("ownerAddress",owner_adderss);
-                Log.i("roooooooooooooooot",owner_adderss);
-                final String request_body = json_body.toString();
 
-                StringRequest string_request = new StringRequest(Request.Method.POST, base_url.BASE_URL+"addOwner", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(),"response is "+response, LENGTH_LONG).show();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),error.toString(), LENGTH_LONG).show();
-                    }
-                }) {
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
+    public void  ToastMessage(String msg){
+        Toast.makeText(this,msg, LENGTH_LONG).show();
+    }
+    //------------------------------------------------------------------------------------------------------------
+    public void AddOwnerCall(String _product_address){
+        String str = "No address found";
+        String get_address = Paper.book("My_Address").read("address",str);
+        if (!get_address.equals(str)) {
+            this.addOwner.setProductAddress(_product_address);
+            this.addOwner.setOwnerAddress(get_address);
+            Call<String> call = apiPlaceHolder.addOwner(this.addOwner);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, retrofit2.Response<String> response) {
 
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        try {
-                            return request_body == null ? null : request_body.getBytes("utf-8");
-                        } catch (UnsupportedEncodingException uee) {
-                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", request_body, "utf-8");
-                            return null;
-                        }
+                    if(!response.isSuccessful()){
+                        Log.i("ziwwwwww","something went wrong");
+                        return;
                     }
+                    else {
 
-                    @Override
-                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                        String responseString = "";
-                        if (response != null) {
-                            responseString = String.valueOf(response.statusCode);
-                            // can get more details such as response.headers
-                        }
-                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                        ToastMessage("Now you are the owner of this product");
                     }
-                };
-                string_request.setRetryPolicy(new DefaultRetryPolicy(
-                        0,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                }
 
-                request_queue.add(string_request);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            Toast.makeText(getApplicationContext(), owner_adderss , LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.i("ziwwwwww","failure");
+                }
+            });
         }
 
     }
+
 
     //-----------------------------------------------------------------------------------------------------------
 
@@ -252,13 +211,14 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
                 public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
 
                     if(!response.isSuccessful()){
-
+                        Log.i("ziwwwwww","something went wrong");
                         return;
                     }
                     else {
-
-                        balanceTv.setText("Your balance is :    "+Integer.toString(response.body())+"  iotas");
-
+                        Integer balance  = response.body();
+                        String balnce_str = Integer.toString(balance);
+                        balanceTv.setText("Your balance is      " + balnce_str + "  iotas");
+                        Log.i("ressssssssssss",balnce_str);
 
                     }
                 }
@@ -274,6 +234,14 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
 
 
     //------------------------------------------------------------------------------------------------------------------------------------
+
+
+    //--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+    //--------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
