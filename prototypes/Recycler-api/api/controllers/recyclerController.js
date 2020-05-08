@@ -40,6 +40,7 @@ exports.getProducts = async (req,res) =>{
 }
 exports.giveReward = async (req,res) =>{
   const response = await giveReward.execute(root,req.body.productAddress)
+  console.log(('------------------------------response is  '+response))
   res.json(response)
 }
 

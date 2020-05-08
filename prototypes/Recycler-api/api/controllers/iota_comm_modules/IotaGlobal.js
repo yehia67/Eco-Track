@@ -8,7 +8,7 @@ const depth = 3;
 // Define the minimum weight magnitude for the Devnet
 const minimumWeightMagnitude = 9;
 //MAM
-const providerLink = 'http://localhost:14265' //Generate False Token https://faucet.einfachiota.de/#/
+const providerLink = 'https://nodes.devnet.iota.org:443' //Generate False Token https://faucet.einfachiota.de/#/
 const sideKey = 'DONTSHARETHISPASSWORD'
 
 let mamState = Mam.init(providerLink)

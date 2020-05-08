@@ -2,7 +2,6 @@ package com.example.nfc_reclying_products;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
@@ -38,6 +37,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,78 +45,55 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import io.paperdb.Paper;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.android.volley.Request.Method.HEAD;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements WalletAddress.UpdateDialogListener{
     Constants base_url = new Constants();
     static final int request_code = 1;
-    EditText address;
-<<<<<<< HEAD
-    Button changeAddress;
-    TextView currentAddress;
-    Button historyButton;
-    private TextView mTextView;
-    SaveReceivingAddress manageAddress = new SaveReceivingAddress();
-    Button myItemsButton;
-    Button scanNfcTagButton;
-    Button setAddress;
-    public static final String root = "FLPYQZOAFZ9COLVBO9LJNZJYIWJJKDDQGZMHYJSLLNTANN9QWFUCQRLUVDQVBNTZUPKNAJAJKAODQVIYN";
-    //private final String[][] techList = {new String[]{NfcA.class.getName(), NfcB.class.getName(), NfcF.class.getName(), NfcV.class.getName(), IsoDep.class.getName(), MifareClassic.class.getName(), MifareUltralight.class.getName(), Ndef.class.getName()}};
-//-----------------------------------------------------------------------------------------------------------------------
-   public void ApiInit(){
-       try{
-
-           RequestQueue requestQueue = Volley.newRequestQueue(this);
-           String URL = "http://192.168.1.14:5002/init";
-           StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
-                   new Response.Listener<String>() {
-                       @Override
-                       public void onResponse(String response) {
-                           Toast.makeText(getApplicationContext(),"Api Init response : "+response, LENGTH_LONG).show();
-                       }
-                   }, new Response.ErrorListener() {
-               @Override
-               public void onErrorResponse(VolleyError error) {
-                   Toast.makeText(getApplicationContext(),error.getLocalizedMessage(), LENGTH_LONG).show();
-               }
-           });
-
-           requestQueue.add(stringRequest);
-
-
-       }catch (Exception e){
-           e.printStackTrace();
-           Toast.makeText(this,"catch error",Toast.LENGTH_SHORT).show();
-       }
-   }
-   //---------------------------------------------------------------------------------
-
-
-
-
-=======
-    Button change_address;
-    TextView current_address;
-    Button history_button;
-    TextView mTextView;
+    Button change_address ,scan_nfc_tag_button ,my_items_button ,history_button ;
+    TextView addressTv ,balanceTv ,product_address_tv ;
     SaveReceivingAddress manage_address = new SaveReceivingAddress();
-    Button my_items_button;
-    Button scan_nfc_tag_button;
-    Button set_address;
     public  String root;
-    public boolean flag = true ;
->>>>>>> 8cc6d242c4e794a3de48bc2c2a2b3d9d15822420
+    public boolean flag = false ;
+    Retrofit retrofit = new Retrofit();
+    ApiPlaceHolder apiPlaceHolder ;
+    AddOwner addOwner = new AddOwner();
+
+
+    @Override
+    public void applyText(String update_message) {
+        String wallet_address = update_message ;
+        storeAddress(update_message);
+    }
+
+    public void openUpdateDialog(){
+        WalletAddress wallet_address_dialog = new WalletAddress();
+        if(!flag){
+            wallet_address_dialog.setCancelable(false);
+        }
+        wallet_address_dialog.show(getSupportFragmentManager(),"Wallet Address");
+
+    }
+
+
     /* access modifiers changed from: protected */
     public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
         super.onActivityResult(_requestCode, _resultCode, _data);
         if (_requestCode == 1) {
             try {
                 String scannedItem = _data.getStringExtra(ScanNfcTag.key);
-                addOwner(scannedItem);
-                this.mTextView.setText(scannedItem);
+                AddOwnerCall(scannedItem);
+                this.product_address_tv.setText(scannedItem);
+                product_address_tv.setVisibility(View.VISIBLE);
                 Context applicationContext = getApplicationContext();
                 StringBuilder sb = new StringBuilder();
                 sb.append("product address is ");
@@ -132,45 +109,21 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_main);
-        address = (EditText) findViewById(R.id.address);
-        set_address = (Button) findViewById(R.id.setAddress);
+        Paper.init(this);
         change_address = (Button) findViewById(R.id.changeAdress);
-        change_address.setVisibility(View.INVISIBLE);
-        mTextView = (TextView) findViewById(R.id.textView_explanation);
-        mTextView.setText("item data will appear here when you start scanning");
         scan_nfc_tag_button = (Button) findViewById(R.id.scanNfcTagButton);
         history_button = (Button) findViewById(R.id.historyButton);
         my_items_button = (Button) findViewById(R.id.myItemsButton);
-        getCurrentAddress();
+        addressTv = findViewById(R.id.addressTv);
+        balanceTv = findViewById(R.id.balanceTv);
+        product_address_tv = findViewById(R.id.produdct_address);
+        apiPlaceHolder = retrofit.retrofit.create(ApiPlaceHolder.class);
+        hasAddress();
         Intent main_activity_get_intent1 = getIntent();
         final Intent scan_nfc_tag_intent_go = new Intent(this, ScanNfcTag.class);
-        //------------------------------------------------------------------------------------------
-        RequestQueue request_queue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest init_request = new StringRequest(Request.Method.GET,base_url.BASE_URL+"init",new Response.Listener<String>(){
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(),"init response "+response.toString(), LENGTH_LONG).show();
-                root = response ;
-                root = root.replaceAll("\"","");
-                SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("root", MODE_PRIVATE).edit() ;
-                editor.putString("root", root);
-                editor.apply();
-                Toast.makeText(getApplicationContext(),"root stored successfully!", LENGTH_LONG);
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.toString(), LENGTH_LONG).show();
-            }
-        });
-        request_queue.add(init_request);
-        //------------------------------------------------------------------------------------------
-
         change_address.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
-                MainActivity.this.address.setEnabled(true);
-                MainActivity.this.set_address.setVisibility(View.VISIBLE);
-                MainActivity.this.change_address.setVisibility(View.INVISIBLE);
+                openUpdateDialog();
             }
         });
         this.scan_nfc_tag_button.setOnClickListener(new OnClickListener() {
@@ -178,130 +131,119 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(scan_nfc_tag_intent_go, request_code);
             }
         });
-<<<<<<< HEAD
-        /*-----------------------------------------------------------------------------------------------------*/
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.14:5002/test",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(),response, LENGTH_LONG).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.getLocalizedMessage(), LENGTH_LONG).show();
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-        /*-----------------------------------------------------------------------------------------------------*/
-=======
->>>>>>> 8cc6d242c4e794a3de48bc2c2a2b3d9d15822420
+
+
     }
 
-    public void getCurrentAddress() {
-        current_address = (TextView) findViewById(R.id.defaultReceivingAddress);
-        String str = "404 address";
-        SharedPreferences prefs = getSharedPreferences("Local Address", MODE_PRIVATE);
-        String get_address = prefs.getString("address", "404 address");
+    public void hasAddress() {
+        String str = "No address found";
+        String get_address = Paper.book("My_Address").read("address",str);
         if (!get_address.equals(str)) {
-            change_address.setVisibility(View.VISIBLE);
-            change_address.setText("Change Address");
-            address.setEnabled(false);
-            set_address.setVisibility(View.INVISIBLE);
-            scan_nfc_tag_button.setVisibility(View.VISIBLE);
-            history_button.setVisibility(View.VISIBLE);
-            my_items_button.setVisibility(View.VISIBLE);
-            TextView text_view = this.current_address;
-            StringBuilder sb = new StringBuilder();
-            sb.append("Your current address is ");
-            sb.append(get_address);
-            text_view.setText(sb.toString());
+            addressTv.setText("Your wallet\'s address :     " +get_address );
+            balanceTv.setText("Your balance is :     1 iotas ");
+            checkBalance();
+            flag = true ;
             return;
         }
-        this.set_address.setText("Set Adress");
-        this.scan_nfc_tag_button.setVisibility(View.INVISIBLE);
-        this.history_button.setVisibility(View.INVISIBLE);
-        this.my_items_button.setVisibility(View.INVISIBLE);
+        else {
+            openUpdateDialog();
+        }
     }
 
-    public void storeAddress(View _view) {
-        if (manage_address.checkAddress(address.getText().toString())) {
+    public void storeAddress(String str) {
+        if (manage_address.checkAddress(str)) {
             try {
-                manage_address.storeAddress(this.address.getText().toString(), getApplicationContext());
+                manage_address.storeAddress(str, getApplicationContext());
+                addressTv.setText(str);
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(getApplicationContext(), "Invalid Address ", Toast.LENGTH_SHORT).show();
         }
-        getCurrentAddress();
+        hasAddress();
     }
-    //----------------------------------------------------------------------------------------------------------------
-    public void addOwner(String _productAdress){
-        SharedPreferences shared_preferences = getSharedPreferences("Local Address", Context.MODE_PRIVATE);
-        String owner_adderss = shared_preferences.getString("address", "404 address");
-        if(!(owner_adderss == "404 address")){
-            try {
-                RequestQueue request_queue = Volley.newRequestQueue(getApplicationContext());
-                JSONObject json_body = new JSONObject();
-                json_body.put("root",root);
-                json_body.put("productAddress",_productAdress);
-                json_body.put("ownerAddress",owner_adderss);
-                final String request_body = json_body.toString();
 
-                StringRequest string_request = new StringRequest(Request.Method.POST, base_url.BASE_URL+"addOwner", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(),"response is "+response, LENGTH_LONG).show();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),error.toString(), LENGTH_LONG).show();
-                    }
-                }) {
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
+    public void  ToastMessage(String msg){
+        Toast.makeText(this,msg, LENGTH_LONG).show();
+    }
+    //------------------------------------------------------------------------------------------------------------
+    public void AddOwnerCall(String _product_address){
+        String str = "No address found";
+        String get_address = Paper.book("My_Address").read("address",str);
+        if (!get_address.equals(str)) {
+            this.addOwner.setProductAddress(_product_address);
+            this.addOwner.setOwnerAddress(get_address);
+            Call<String> call = apiPlaceHolder.addOwner(this.addOwner);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, retrofit2.Response<String> response) {
 
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        try {
-                            return request_body == null ? null : request_body.getBytes("utf-8");
-                        } catch (UnsupportedEncodingException uee) {
-                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", request_body, "utf-8");
-                            return null;
-                        }
+                    if(!response.isSuccessful()){
+                        Log.i("ziwwwwww","something went wrong");
+                        return;
                     }
+                    else {
 
-                    @Override
-                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                        String responseString = "";
-                        if (response != null) {
-                            responseString = String.valueOf(response.statusCode);
-                            // can get more details such as response.headers
-                        }
-                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                        ToastMessage("Now you are the owner of this product");
                     }
-                };
-                string_request.setRetryPolicy(new DefaultRetryPolicy(
-                        0,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                }
 
-                request_queue.add(string_request);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-             Toast.makeText(getApplicationContext(), owner_adderss , LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.i("ziwwwwww","failure");
+                }
+            });
         }
 
     }
+
+
     //-----------------------------------------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------------------------------------
+    public void checkBalance(){
+        String owner_adderss = Paper.book("My_Address").read("address","404 address");
+        if(!(owner_adderss == "404 address")){
+            Call<Integer> call = apiPlaceHolder.getBalance(owner_adderss);
+            call.enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
+
+                    if(!response.isSuccessful()){
+                        Log.i("ziwwwwww","something went wrong");
+                        return;
+                    }
+                    else {
+                        Integer balance  = response.body();
+                        String balnce_str = Integer.toString(balance);
+                        balanceTv.setText("Your balance is      " + balnce_str + "  iotas");
+                        Log.i("ressssssssssss",balnce_str);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+
+                }
+            });
+        }
+
+    }
+
+
+    //------------------------------------------------------------------------------------------------------------------------------------
+
+
+    //--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+    //--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 }
+

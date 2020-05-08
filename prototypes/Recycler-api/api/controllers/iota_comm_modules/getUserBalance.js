@@ -6,7 +6,7 @@ const getUserBalance = async (address) =>{
      return balance['balances'][0]
 }
  
-getUserBalance('OTSZGTNPKFSGJLUPUNGGXFBYF9GVUEHOADZZTDEOJPWNEIVBLHOMUWPILAHTQHHVSBKTDVQIAEQOZXGFBOTPNP9MFW').then((r)=>{console.log(r)})
+getUserBalance('XGIVJKNUIDKDVAXGRK9SFXYFVOLEHSJOIZVROT9DUAMYUUXPPBZWYQWJNEYPVKOMKR9SNRYSZXUHDFKNB').then((r)=>{console.log(r)})
 module.exports ={
     execute:getUserBalance
 }
