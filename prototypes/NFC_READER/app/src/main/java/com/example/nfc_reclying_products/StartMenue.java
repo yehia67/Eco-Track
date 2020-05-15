@@ -16,8 +16,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.LinkedHashSet;
 import java.util.concurrent.TimeUnit;
 
+import io.paperdb.Paper;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +36,7 @@ public class StartMenue extends AppCompatActivity {
     ApiPlaceHolder apiPlaceHolder ;
     ProductAddress productAddress = new ProductAddress();
     Retrofit retrofit = new Retrofit();
+    LinkedHashSet<String> my_items_hash_set ;
     public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
         super.onActivityResult(_requestCode, _resultCode, _data);
         if (_requestCode == 2) {
@@ -112,7 +115,12 @@ public class StartMenue extends AppCompatActivity {
                     else {
 
                         ToastMessage("1 i. has been sent  congrats  check your balance !!");
-                       // balanceTv.setText("Your balance is      " + balnce_str + "  iotas");
+                        my_items_hash_set = new LinkedHashSet<>();
+                        my_items_hash_set = Paper.book("My_Items").read("my_items",new LinkedHashSet<>());
+                        if(!my_items_hash_set.isEmpty()){
+                            my_items_hash_set.remove(_product_address);
+                            Paper.book("My_Items").write("my_items",my_items_hash_set);
+                        }
 
 
                     }

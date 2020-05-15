@@ -16,7 +16,7 @@ exports.auth = async (req,res) =>{
     res.json(response)
 }
 exports.getUserInfo = async (req,res) =>{
-    const response = await manageUser.getUserInfo(req.body.key)
+    const response = await manageUser.getUserInfo(req.query.key)
     res.json(response)
 }
 exports.getUser = async (req,res) =>{

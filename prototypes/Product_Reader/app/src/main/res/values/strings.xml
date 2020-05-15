@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Product_Reader</string>
+    <string name="welcomeTV">Welcome to ecoTrack</string>
+    <string name="descriptionTV">Secure Transparent System For Supply Chain System and Recycling </string>
+    <string name="fnET">First name</string>
+    <string name="lnET">Last name</string>
+    <string name="emailET">Email</string>
+    <string name="addressET">address</string>
+    <string name="scanBtn">Scan a product</string>
+    <string name="saveInfoBtn">Save Info</string>
+    <string name="scanProduct">Approach a product to scan</string>
+    <string name="get_product_info">Get product info</string>
+    <string name="get_product_history">Get product history</string>
+    <string name="get_producer_info">Get producer info</string>
+    <string name="update_status">Update status</string>
+    <string name="loading">loading ...</string>
+    <string name="update_message">Type your message here </string>
+    <string name="submit">Submit</string>
+    <string name="update">Type your update message</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

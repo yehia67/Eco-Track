@@ -1,7 +1,9 @@
 package com.example.nfc_reclying_products;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
@@ -11,6 +13,7 @@ import android.nfc.tech.NfcB;
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +23,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -45,7 +51,10 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.Inflater;
 
 import io.paperdb.Paper;
 import okhttp3.OkHttpClient;
@@ -59,7 +68,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 public class MainActivity extends AppCompatActivity implements WalletAddress.UpdateDialogListener{
     Constants base_url = new Constants();
     static final int request_code = 1;
-    Button change_address ,scan_nfc_tag_button ,my_items_button ,history_button ;
+    Button change_address ,scan_nfc_tag_button ,my_items_button ;
     TextView addressTv ,balanceTv ,product_address_tv ;
     SaveReceivingAddress manage_address = new SaveReceivingAddress();
     public  String root;
@@ -67,12 +76,24 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
     Retrofit retrofit = new Retrofit();
     ApiPlaceHolder apiPlaceHolder ;
     AddOwner addOwner = new AddOwner();
+    LinkedHashSet<String> my_items_hash_set ,my_items_history_has_set,empty ;
+    ArrayList<String> my_items_arr_list ;
+    ArrayAdapter<String> arrayAdapter ;
+
+
+
 
 
     @Override
     public void applyText(String update_message) {
         String wallet_address = update_message ;
         storeAddress(update_message);
+    }
+
+    public void openItemsDialog(ListView lv){
+
+
+
     }
 
     public void openUpdateDialog(){
@@ -112,13 +133,14 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
         Paper.init(this);
         change_address = (Button) findViewById(R.id.changeAdress);
         scan_nfc_tag_button = (Button) findViewById(R.id.scanNfcTagButton);
-        history_button = (Button) findViewById(R.id.historyButton);
         my_items_button = (Button) findViewById(R.id.myItemsButton);
         addressTv = findViewById(R.id.addressTv);
         balanceTv = findViewById(R.id.balanceTv);
         product_address_tv = findViewById(R.id.produdct_address);
         apiPlaceHolder = retrofit.retrofit.create(ApiPlaceHolder.class);
         hasAddress();
+        empty = new LinkedHashSet<String>();
+        empty.add("You own no items");
         Intent main_activity_get_intent1 = getIntent();
         final Intent scan_nfc_tag_intent_go = new Intent(this, ScanNfcTag.class);
         change_address.setOnClickListener(new OnClickListener() {
@@ -129,6 +151,13 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
         this.scan_nfc_tag_button.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
                 startActivityForResult(scan_nfc_tag_intent_go, request_code);
+            }
+        });
+
+        this.my_items_button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                opemMyItems();
             }
         });
 
@@ -164,6 +193,22 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
         hasAddress();
     }
 
+    public void opemMyItems(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.list_view,null);
+        ListView lv =(ListView) view.findViewById(R.id.lv);
+        my_items_hash_set = new LinkedHashSet<>();
+        my_items_hash_set = Paper.book("My_Items").read("my_items",new LinkedHashSet<>());
+        my_items_arr_list = new ArrayList<>();
+        my_items_arr_list.addAll(my_items_hash_set);
+        arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,my_items_arr_list);
+        lv.setAdapter(arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
+        builder.setView(view).setTitle("My Items");
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     public void  ToastMessage(String msg){
         Toast.makeText(this,msg, LENGTH_LONG).show();
     }
@@ -185,7 +230,14 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
                     }
                     else {
 
+
                         ToastMessage("Now you are the owner of this product");
+                        my_items_hash_set = new LinkedHashSet<>();
+                        my_items_hash_set = Paper.book("My_Items").read("my_items",new LinkedHashSet<>());
+                        my_items_hash_set.add(_product_address);
+                        Paper.book("My_Items").write("my_items",my_items_hash_set);
+
+
                     }
                 }
 
@@ -203,32 +255,45 @@ public class MainActivity extends AppCompatActivity implements WalletAddress.Upd
 
 //-----------------------------------------------------------------------------------------------------------
     public void checkBalance(){
-        String owner_adderss = Paper.book("My_Address").read("address","404 address");
-        if(!(owner_adderss == "404 address")){
-            Call<Integer> call = apiPlaceHolder.getBalance(owner_adderss);
-            call.enqueue(new Callback<Integer>() {
-                @Override
-                public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
 
-                    if(!response.isSuccessful()){
-                        Log.i("ziwwwwww","something went wrong");
-                        return;
-                    }
-                    else {
-                        Integer balance  = response.body();
-                        String balnce_str = Integer.toString(balance);
-                        balanceTv.setText("Your balance is      " + balnce_str + "  iotas");
-                        Log.i("ressssssssssss",balnce_str);
+                String owner_adderss = Paper.book("My_Address").read("address","404 address");
+                if(!(owner_adderss == "404 address")){
+                    Call<Integer> call = apiPlaceHolder.getBalance(owner_adderss);
+                    call.enqueue(new Callback<Integer>() {
+                        @Override
+                        public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
 
-                    }
+                            if(!response.isSuccessful()){
+                                Log.i("ziwwwwww","something went wrong");
+                                return;
+                            }
+                            else {
+                                Integer balance  = response.body();
+                                String balnce_str = Integer.toString(balance);
+                                balanceTv.setText("Your balance is      " + balnce_str + "  iotas");
+                                Log.i("ressssssssssss",balnce_str);
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Integer> call, Throwable t) {
+
+                        }
+                    });
                 }
 
-                @Override
-                public void onFailure(Call<Integer> call, Throwable t) {
 
-                }
-            });
-        }
+                handler.postDelayed(this,1000*60);
+            }
+        };
+        handler.post(runnable);
+
+
 
     }
 
