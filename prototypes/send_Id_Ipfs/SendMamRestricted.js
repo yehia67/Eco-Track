@@ -7,7 +7,7 @@ const iotaGlobal = require('./IotaGlobal')
 
 
 //return state object that tracks the progress of your channel and channels you are following
-let mamState = iotaGlobal.mam.init('https://nodes.devnet.iota.org:443')
+let mamState = iotaGlobal.mam.init('http://localhost:14265:443')
 
 // We are using MAM restricted mode with a shared secret in this example
 const mamType = 'restricted'

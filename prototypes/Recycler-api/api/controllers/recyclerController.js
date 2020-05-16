@@ -2,33 +2,51 @@
 const giveReward = require('./iota_comm_modules/giveReward')
 const testMam = require('./iota_comm_modules/testMam')
 const manageClients = require('./iota_comm_modules/manageClients')
-const root = []
-exports.init = async (req,res) =>{
-  const response = await manageClients.init()
-  console.log('Mobile is connected root address =',response)
-  res.json(response)
-}
+const getBalance = require('./iota_comm_modules/getUserBalance')
+let root = ''
+
+  manageClients.init().then((response)=>{
+    root = response
+    console.log('Mobile is connected root address =',root)
+  })
+
+
 exports.addClient = async (req,res) =>{
-  console.log(req.body.root)
+  console.log('body iss')
+  console.log(req.body)
   console.log(req.body.products)
- await manageClients.addNewClient(req.body.root,req.body.products)
+ await manageClients.addNewClient(root,req.body.products)
   res.json("added new client succefuly")
 }
+
 exports.addOwner = async (req,res) =>{
   console.log(('------------------------------owner callllllllllllllllllllllllllll'))
-  console.log('root =',req.body.root)
+  console.log('root =',root)
   console.log('product address =',req.body.productAddress)
   console.log('owner address =',req.body.ownerAddress)
-  console.log('root =',req.body.root.length)
+  console.log('root =',root.length)
   console.log('product address =',req.body.productAddress.length)
   console.log('owner address =',req.body.ownerAddress.length)
 
-  const response = await manageClients.addNewOwner(req.body.root,req.body.productAddress,req.body.ownerAddress)
+  const response = await manageClients.addNewOwner(root,req.body.productAddress,req.body.ownerAddress)
   console.log(('------------------------------response is  '+response))
   res.json(response)
 }
+exports.getProducts = async (req,res) =>{
+  console.log('body iss')
+  console.log(req.query.seed)
+  const response = await manageClients.geProducts(root,req.query.seed)
+  res.json(response)
+}
 exports.giveReward = async (req,res) =>{
-  const response = await giveReward.execute(req.body.root,req.body.productAddress)
+  const response = await giveReward.execute(root,req.body.productAddress)
+  console.log(('------------------------------response is  '+response))
+  res.json(response)
+}
+
+exports.balance = async(req,res)=>{
+  console.log('yasrab')
+  const response = await getBalance.execute(req.query.address)
   res.json(response)
 }
 

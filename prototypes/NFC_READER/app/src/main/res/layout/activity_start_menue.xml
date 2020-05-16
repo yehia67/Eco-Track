@@ -10,7 +10,6 @@
         android:id="@+id/verticalLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/iota"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +20,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2" />
+
+        <TextView
+            android:id="@+id/welcomeTv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/welcomeTV"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:id="@+id/verticalLinearLayout2"
@@ -34,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="150dp"
+                android:background="@drawable/rounded_button"
                 android:text="@string/clientAppButton" />
 
             <Button
@@ -41,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
+                android:background="@drawable/rounded_button"
                 android:text="@string/recyclerAppButton" />
         </LinearLayout>
 

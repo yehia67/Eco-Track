@@ -1,32 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:overScrollMode="ifContentScrolls"
-    android:orientation="vertical" >
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/receiving_address"/>
-    <EditText android:id="@+id/address" android:layout_width="match_parent" android:layout_height="wrap_content" android:ems="10" android:layout_weight="2"/>
-    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:overScrollMode="ifContentScrolls"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/addressTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textColor="@android:color/background_light" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\n\n\n" />
+
+        <TextView
+            android:id="@+id/balanceTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textColor="@android:color/background_light" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\n\n\n" />
+
+        <TextView
+            android:id="@+id/produdct_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@android:color/background_light"
+            android:visibility="invisible" />
 
         <Button
-            android:id="@+id/setAddress"
-            android:layout_width="wrap_content"
+            android:id="@+id/changeAdress"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:onClick="storeAddress"
-            android:text="@string/setAddressButton" />
-        <Button android:id="@+id/changeAdress" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Button" android:layout_weight="1"/>
+
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/changeAddressButton" />
+
+        <Button
+            android:id="@+id/scanNfcTagButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/scanNfcTagButton" />
+
+        <Button
+            android:id="@+id/myItemsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/myItemsButton"
+            android:textFontWeight="2" />
+
+
     </LinearLayout>
-    <Button android:id="@+id/scanNfcTagButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/scanNfcTagButton"/>
-    <Button android:id="@+id/myItemsButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/myItemsButton"/>
-    <Button android:id="@+id/historyButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/historyButton"/>
-    <TextView android:id="@+id/defaultReceivingAddress" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/default_address"/>
-    <TextView android:id="@+id/textView_explanation" android:layout_width="match_parent" android:layout_height="match_parent" android:text=""/>
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>    

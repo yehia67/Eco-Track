@@ -9,7 +9,7 @@ const mamType = 'restricted'
 const mamSecret = 'DONTSHARETHISPASSWORD'
 
 // Initialise MAM State
-let mamState = IotaGlobal.Mam.init('https://nodes.thetangle.org/')
+let mamState = IotaGlobal.Mam.init('http://localhost:14265')
 
 // Callback used to pass data out of the fetch
 let resp = [] 
@@ -22,7 +22,7 @@ const FetchMam = async (_root) => {
   return resp
 }
 const test = async()=>{
-  const data = await FetchMam('GBESSUWPNWNMUQURNVNTHISLGDBADSYLQGRSUMPRDDEOYDNMSAUGYTTWKNUHNK9TKNZZGUGQQQCZKOFMM')
+  const data = await FetchMam('MZ9RUJQLIJHZFAVIFRPUNUHFMDK9ZAMEJWEISVGEZWACMENLWL9TJGWDCEUESCJ9TDJFDOVVSRGDUMMPI')
   console.log(data)
 }
 //test()

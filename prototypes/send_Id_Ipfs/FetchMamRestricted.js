@@ -11,7 +11,7 @@ const mamType = 'restricted'
 const mamSecret = 'DONTSHARETHISPASSWORD'
 
 // Initialise mam State
-let mamState = iotaGlobal.mam.init('https://nodes.devnet.iota.org:443')
+let mamState = iotaGlobal.mam.init('http://localhost:14265:443')
 
 // Callback used to pass data out of the fetch
 const logData = data => {

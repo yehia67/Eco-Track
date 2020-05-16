@@ -9,6 +9,8 @@
     <string name="scanNfcTextView">Scan your Nfc Tag Like This</string>
     <string name="scanNfcForRewardTextView">Scanning the product Address</string>
     <string name="search_menu_title">Search</string>
-    <string name="setAddressButton">Set</string>
+    <string name="changeAddressButton">change your wallet\'s address</string>
     <string name="clientAppButton">Consumer App</string>
+    <string name="walletAddress">Enter your wallet\'s address</string>
+    <string name="welcomeTV">Welcome to EcoTrack\n\n\nWhich Version of the app you want to open </string>
 </resources>

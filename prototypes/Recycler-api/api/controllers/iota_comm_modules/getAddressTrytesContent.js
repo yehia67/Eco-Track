@@ -9,7 +9,7 @@ const mamType = 'restricted'
 const mamSecret = 'DONTSHARETHISPASSWORD'
 
 // Initialise MAM State
-let mamState = IotaGlobal.Mam.init('https://nodes.thetangle.org/')
+let mamState = IotaGlobal.Mam.init('http://localhost:14265')
 /**
  * 
  * @param {the root address} _root 

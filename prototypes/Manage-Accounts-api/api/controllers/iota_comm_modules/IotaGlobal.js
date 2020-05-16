@@ -8,7 +8,7 @@ const depth = 3;
 // Define the minimum weight magnitude for the Devnet
 const minimumWeightMagnitude = 9;
 //MAM
-const providerLink = 'https://nodes.devnet.iota.org:443'
+const providerLink = 'http://localhost:14265:443'
 const sideKey = 'DONTSHARETHISPASSWORD'
 
 let mamState = Mam.init(providerLink)
