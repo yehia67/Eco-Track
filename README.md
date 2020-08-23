@@ -27,7 +27,7 @@ At line 11
 const providerLink = 'https://nodes.comnet.thetangle.org/'
 ```
 ## Run Eco-Track
-### Run Eco-Track Full-Stack 
+### Run  Full-Stack 
 ```
 cd Eco-Track/website
 npm start
