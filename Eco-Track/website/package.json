@@ -35,7 +35,7 @@
         "express-layout": "^0.1.0",
         "express-load": "^1.1.16",
         "fetch": "^1.1.0",
-        "node-fetch": "^2.6.0",
+        "node-fetch": "^2.6.1",
         "read-excel-file": "^4.0.6",
         "swagger": "^0.7.5"
     }
