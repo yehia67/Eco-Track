@@ -31,7 +31,7 @@
         "acquit": "^1.0.5",
         "chai-http": "^4.3.0",
         "ejs": "^3.0.1",
-        "express": "^4.17.1",
+        "express": "^4.17.3",
         "express-layout": "^0.1.0",
         "express-load": "^1.1.16",
         "node-fetch": "^2.6.0",
