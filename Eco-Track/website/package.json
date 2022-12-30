@@ -24,7 +24,7 @@
     "homepage": "https://github.com/yehia67/Eco-Track#readme",
     "devDependencies": {
         "chai": "^4.2.0",
-        "mocha": "^7.1.0",
+        "mocha": "^10.2.0",
         "nodemon": "^1.19.3"
     },
     "dependencies": {
